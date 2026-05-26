@@ -4,6 +4,27 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Trika — three in a row, beat the clock</title>
+
+<!-- Open Graph / Social sharing -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://playtrika.com" />
+<meta property="og:title" content="Trika — three in a row, beat the clock" />
+<meta property="og:description" content="Spot equations hidden in the grid. Tap three tiles in a row or column, beat the clock, build your streak. Free daily math puzzle." />
+<meta property="og:image" content="https://playtrika.com/og-image.png" />
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content="https://playtrika.com" />
+<meta name="twitter:title" content="Trika — three in a row, beat the clock" />
+<meta name="twitter:description" content="Spot equations hidden in the grid. Tap three tiles in a row or column, beat the clock, build your streak. Free daily math puzzle." />
+<meta name="twitter:image" content="https://playtrika.com/og-image.png" />
+
+<!-- SEO -->
+<meta name="description" content="Spot equations hidden in the grid. Tap three tiles in a row or column, beat the clock, build your streak. Free daily math puzzle." />
+<link rel="canonical" href="https://playtrika.com" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23fef9f0'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='20' font-family='Georgia,serif' font-weight='700' fill='%23ea580c'>T</text></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -625,6 +646,9 @@
     padding: 16px;
     overflow-y: auto;
   }
+  @media (max-width: 480px) {
+    .modal { padding: 0 12px; }
+  }
   .modal.hide { display: none; }
   .modal-card {
     text-align: center;
@@ -1116,7 +1140,72 @@
     100% { opacity: 0; transform: translate(-50%, -10px); }
   }
 
-  /* ===== MOBILE OPTIMIZATIONS ===== */
+  /* ===== INTRO MODAL MOBILE ===== */
+  /* On any phone-sized screen, make the intro compact and top-anchored */
+  @media (max-width: 480px) {
+    #intro {
+      align-items: flex-start;
+      padding: 20px 16px 24px;
+    }
+    #intro .modal-card {
+      margin-top: 0;
+    }
+    #intro h1 {
+      font-size: 40px;
+      margin-bottom: 2px;
+    }
+    #intro .tagline {
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+    .example-pair {
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .example-board {
+      padding: 8px;
+    }
+    .example-tile {
+      font-size: 20px;
+    }
+    .example-caption {
+      font-size: 12px;
+      margin-top: 6px;
+    }
+    .intro-steps {
+      margin-bottom: 14px;
+    }
+    .intro-step {
+      margin-bottom: 8px;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .intro-step .num {
+      width: 20px;
+      height: 20px;
+      font-size: 11px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .intro-step .text {
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    #intro .primary.full {
+      padding: 14px;
+      font-size: 13px;
+    }
+  }
+
+  /* Extra compact for very small phones (SE, Mini) */
+  @media (max-width: 380px) {
+    #intro h1 { font-size: 34px; }
+    #intro .tagline { font-size: 12px; margin-bottom: 10px; }
+    .example-pair { gap: 8px; margin-bottom: 10px; }
+    .example-tile { font-size: 17px; }
+    .intro-step .text { font-size: 11px; }
+    .intro-steps { margin-bottom: 10px; }
+  }
   /* Cap board on tall narrow screens so it doesn't dominate */
   @media (max-height: 800px) {
     body { padding: 8px 10px 16px; }
@@ -2219,7 +2308,7 @@
     }
     if (opRow.length) lines.push(opRow.join(' '));
     lines.push('');
-    lines.push('Play: https://trika.game');
+    lines.push('Play: https://playtrika.com');
     return lines.join('\n');
   }
   async function shareResult(stats) {
@@ -2231,7 +2320,7 @@
         await navigator.share({
           title: 'Trika — three in a row, beat the clock',
           text,
-          url: window.location.href
+          url: 'https://playtrika.com'
         });
         return;
       } catch (e) { /* user cancelled or share unavailable */ }
