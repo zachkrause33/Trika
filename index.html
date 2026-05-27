@@ -23,8 +23,15 @@
 <meta name="description" content="Spot equations hidden in the grid. Tap three tiles in a row or column, beat the clock, build your streak. Free daily math puzzle." />
 <link rel="canonical" href="https://playtrika.com" />
 
-<!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23fef9f0'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='20' font-family='Georgia,serif' font-weight='700' fill='%23ea580c'>T</text></svg>" />
+<!-- Favicon: triangle of three dots in brand gradient -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%23ea580c'/><stop offset='100%25' stop-color='%23d946ef'/></linearGradient></defs><rect width='32' height='32' rx='6' fill='%23fef9f0'/><circle cx='16' cy='9' r='3.8' fill='url(%23g)'/><circle cx='9' cy='22' r='3.8' fill='url(%23g)'/><circle cx='23' cy='22' r='3.8' fill='url(%23g)'/></svg>" />
+
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-r8dPXidL_Ce4WzoyxV94s.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -111,7 +118,13 @@
   }
 
   .app { max-width: 480px; margin: 0 auto; position: relative; z-index: 2; }
-
+  .footer-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
   header {
     display: flex;
     justify-content: space-between;
@@ -216,7 +229,7 @@
     background: var(--bg-card);
     border: 1px solid var(--line-soft);
     border-radius: 8px;
-    padding: 6px 4px;
+    padding: 10px 4px;
     text-align: center;
     transition: all 0.2s;
   }
@@ -225,17 +238,17 @@
     font-family: 'Fraunces', serif;
     font-variation-settings: "opsz" 144;
     font-weight: 700;
-    font-size: 17px;
+    font-size: 22px;
     color: var(--ink);
     line-height: 1;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     letter-spacing: 0;
     text-transform: none;
     transition: all 0.3s;
   }
   .strip .cell .l {
     color: var(--ink-soft);
-    font-size: 8px;
+    font-size: 9px;
   }
   .strip .cell.combo .v { color: var(--accent); }
   .strip .cell.hot {
@@ -257,12 +270,12 @@
   .op-pill {
     flex: 1;
     text-align: center;
-    padding: 6px;
+    padding: 10px 6px;
     background: var(--bg-card);
     border: 1px solid var(--line-soft);
     border-radius: 7px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--ink-soft);
     transition: all 0.3s;
@@ -307,7 +320,7 @@
     display: flex;
     justify-content: space-between;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 13px;
     color: var(--ink-soft);
     letter-spacing: 0.05em;
     margin-top: 4px;
@@ -368,9 +381,9 @@
     letter-spacing: -0.02em;
     position: relative;
   }
-  .grid.size-3 .tile { font-size: 44px; }
-  .grid.size-4 .tile { font-size: 34px; }
-  .grid.size-5 .tile { font-size: 28px; }
+  .grid.size-3 .tile { font-size: 52px; }
+  .grid.size-4 .tile { font-size: 40px; }
+  .grid.size-5 .tile { font-size: 32px; }
 
   /* Magnitude tints - subtle warmth based on value 1-9 (extends gracefully for larger) */
   .tile.mag-1 { background: var(--tile-1); }
@@ -622,13 +635,6 @@
   }
   button:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  .footer-actions {
-    display: flex;
-    gap: 6px;
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid var(--line);
-  }
   .footer-actions button {
     font-size: 10px;
     padding: 10px 8px;
@@ -637,17 +643,16 @@
   .modal {
     position: fixed;
     inset: 0;
-    background: rgba(254,249,240,0.97);
+    background: #fef9f0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     z-index: 200;
-    backdrop-filter: blur(8px);
-    padding: 16px;
+    padding: 0;
     overflow-y: auto;
   }
   @media (max-width: 480px) {
-    .modal { padding: 0 12px; }
+    .modal { padding: 0; }
   }
   .modal.hide { display: none; }
   .modal-card {
@@ -1140,71 +1145,98 @@
     100% { opacity: 0; transform: translate(-50%, -10px); }
   }
 
-  /* ===== INTRO MODAL MOBILE ===== */
-  /* On any phone-sized screen, make the intro compact and top-anchored */
-  @media (max-width: 480px) {
-    #intro {
-      align-items: flex-start;
-      padding: 20px 16px 24px;
-    }
-    #intro .modal-card {
-      margin-top: 0;
-    }
-    #intro h1 {
-      font-size: 40px;
-      margin-bottom: 2px;
-    }
-    #intro .tagline {
-      font-size: 13px;
-      margin-bottom: 14px;
-    }
-    .example-pair {
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .example-board {
-      padding: 8px;
-    }
-    .example-tile {
-      font-size: 20px;
-    }
-    .example-caption {
-      font-size: 12px;
-      margin-top: 6px;
-    }
-    .intro-steps {
-      margin-bottom: 14px;
-    }
-    .intro-step {
-      margin-bottom: 8px;
-      gap: 8px;
-      align-items: flex-start;
-    }
-    .intro-step .num {
-      width: 20px;
-      height: 20px;
-      font-size: 11px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .intro-step .text {
-      font-size: 12px;
-      line-height: 1.4;
-    }
-    #intro .primary.full {
-      padding: 14px;
-      font-size: 13px;
-    }
+  /* ===== INTRO MODAL — FULL SCREEN SOLID ===== */
+  #intro {
+    background: #fef9f0;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+  }
+  #intro .modal-card {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 40px 24px 32px;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+  #intro .intro-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  #intro h1 {
+    font-size: 64px;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  #intro .tagline {
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+  #intro .example-pair {
+    margin: 0;
+    justify-content: center;
+  }
+  #intro .example-board {
+    max-width: 160px;
+    padding: 12px;
+    flex: 1;
+  }
+  #intro .example-tile {
+    font-size: 26px;
+  }
+  #intro .example-caption {
+    font-size: 15px;
+    margin-top: 10px;
+  }
+  #intro .intro-steps {
+    margin: 0;
+  }
+  #intro .intro-step {
+    margin-bottom: 12px;
+  }
+  #intro .intro-step .text {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  #intro .primary.full {
+    flex: 0 0 auto;
+    padding: 18px 28px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
   }
 
-  /* Extra compact for very small phones (SE, Mini) */
+  /* Standard phones (iPhone 12/13/14/15) */
+  @media (max-width: 430px) {
+    #intro .modal-card { padding: 36px 20px 28px; }
+    #intro h1 { font-size: 56px; }
+    #intro .tagline { font-size: 15px; }
+    #intro .example-board { max-width: 145px; padding: 10px; }
+    #intro .example-tile { font-size: 24px; }
+    #intro .example-caption { font-size: 13px; margin-top: 8px; }
+    #intro .intro-step .text { font-size: 13px; }
+    #intro .intro-step { margin-bottom: 10px; }
+    #intro .primary.full { padding: 16px 28px; }
+  }
+
+  /* Small phones (iPhone SE, Mini) */
   @media (max-width: 380px) {
-    #intro h1 { font-size: 34px; }
-    #intro .tagline { font-size: 12px; margin-bottom: 10px; }
-    .example-pair { gap: 8px; margin-bottom: 10px; }
-    .example-tile { font-size: 17px; }
-    .intro-step .text { font-size: 11px; }
-    .intro-steps { margin-bottom: 10px; }
+    #intro .modal-card { padding: 28px 18px 24px; }
+    #intro h1 { font-size: 44px; }
+    #intro .tagline { font-size: 13px; }
+    #intro .example-board { max-width: 120px; padding: 8px; }
+    #intro .example-tile { font-size: 19px; }
+    #intro .example-caption { font-size: 11px; margin-top: 6px; }
+    #intro .intro-step .text { font-size: 12px; }
+    #intro .intro-step { margin-bottom: 8px; }
+    #intro .primary.full { padding: 14px 28px; }
   }
   /* Cap board on tall narrow screens so it doesn't dominate */
   @media (max-height: 800px) {
@@ -1225,9 +1257,9 @@
     .equation-display.success { font-size: 17px; }
     .board { padding: 8px; margin-bottom: 8px; border-radius: 12px; }
     .grid { gap: 5px; }
-    .grid.size-3 .tile { font-size: 40px; }
-    .grid.size-4 .tile { font-size: 30px; }
-    .grid.size-5 .tile { font-size: 26px; }
+    .grid.size-3 .tile { font-size: 46px; }
+    .grid.size-4 .tile { font-size: 34px; }
+    .grid.size-5 .tile { font-size: 28px; }
     .actions button { padding: 10px 12px; font-size: 11px; }
     .footer-actions { margin-top: 10px; padding-top: 10px; }
     .footer-actions button { padding: 9px 8px; font-size: 10px; }
@@ -1320,12 +1352,6 @@
     </div>
   </header>
 
-  <div class="pb-strip">
-    <div class="pb-cell"><span class="v" id="pb-today">0</span><span class="l">today's best</span></div>
-    <div class="pb-cell"><span class="v" id="pb-all">0</span><span class="l">all-time best</span></div>
-    <div class="pb-cell"><span class="v" id="pb-avg">0</span><span class="l">avg score</span></div>
-  </div>
-
   <div class="strip">
     <div class="cell" id="cell-streak"><span class="v" id="streak">0</span><span class="l">streak</span></div>
     <div class="cell combo" id="cell-mult"><span class="v" id="multiplier">×1</span><span class="l">multiplier</span></div>
@@ -1350,7 +1376,7 @@
   </div>
 
   <div class="equation-display" id="equation-display">
-    <span class="placeholder">tap three tiles in a row or column</span>
+    <span class="placeholder">select three tiles</span>
   </div>
 
   <div class="board">
@@ -1374,8 +1400,10 @@
 
 <div class="modal" id="intro">
   <div class="modal-card">
-    <h1>Trika</h1>
-    <div class="tagline">three in a row, beat the clock</div>
+    <div class="intro-top">
+      <h1>Trika</h1>
+      <div class="tagline">three in a row, beat the clock</div>
+    </div>
 
     <div class="example-pair">
       <div class="example-board">
@@ -1788,16 +1816,13 @@
     updateEquationDisplay();
   }
   function refreshPB() {
-    const stats = getStats();
-    document.getElementById('pb-today').textContent = stats.todayBest;
-    document.getElementById('pb-all').textContent = stats.allTimeBest;
-    document.getElementById('pb-avg').textContent = stats.avg;
+    // PB stats now live only in the leaderboard modal — no DOM elements to update
   }
   function updateEquationDisplay() {
     const el = document.getElementById('equation-display');
     el.className = 'equation-display';
     if (selected.length === 0) {
-      el.innerHTML = '<span class="placeholder">tap three tiles in a row or column</span>';
+      el.innerHTML = '<span class="placeholder">select three tiles</span>';
     } else {
       const vals = selected.map(s => board[s.r][s.c].value);
       el.textContent = vals.join('  ·  ');
@@ -2285,30 +2310,25 @@
 
   // ============ SHARE ============
   function buildShareText(stats) {
-    const opSymbols = { plus: '+', minus: '−', mult: '×', div: '÷' };
     const lines = [];
-    // If a milestone is included, lead with it
-    if (stats.milestone) {
-      lines.push(`Trika — ${stats.milestone.emoji} ${stats.milestone.name}`);
-      lines.push(`${stats.found} found · ${stats.score} pts`);
+    const highest = highestMilestoneReached(stats.found);
+    const milestone = stats.milestone || highest;
+
+    // Line 1: name + milestone emoji and title if earned
+    if (milestone) {
+      lines.push(`Trika ${milestone.emoji} ${milestone.name}`);
     } else {
-      const highest = highestMilestoneReached(stats.found);
-      if (highest) {
-        lines.push(`Trika — ${highest.emoji} ${highest.name}`);
-        lines.push(`${stats.score} pts · ${stats.found} found · ${stats.bestStreak} best streak`);
-      } else {
-        lines.push(`Trika — ${stats.score} pts`);
-        lines.push(`${stats.found} found · ${stats.bestStreak} best streak · L${stats.level}`);
-      }
+      lines.push('Trika');
     }
-    const opRow = [];
-    for (const op of ['plus','minus','mult','div']) {
-      const n = Math.min(stats.ops[op] || 0, 12);
-      for (let i = 0; i < n; i++) opRow.push(opSymbols[op]);
-    }
-    if (opRow.length) lines.push(opRow.join(' '));
+
+    // Line 2: score · found · level
+    const pts = stats.score.toLocaleString();
+    lines.push(`${pts} pts · ${stats.found} found · Level ${stats.level}`);
+
+    // Gap then URL
     lines.push('');
-    lines.push('Play: https://playtrika.com');
+    lines.push('playtrika.com');
+
     return lines.join('\n');
   }
   async function shareResult(stats) {
