@@ -1641,26 +1641,25 @@
     <div id="lb-panel-groups" class="lb-panel hide">
       <div id="lb-groups-home">
         <div class="lb-my-groups" id="lb-my-groups"></div>
-        <div class="lb-group-actions">
-          <button class="primary full" id="btn-create-group" style="margin-bottom: 8px;">+ Create a board</button>
-          <button class="secondary full" id="btn-join-group">Search / join a board</button>
+
+        <!-- Join form always visible, first -->
+        <div id="lb-join-form">
+          <div class="lb-form-title" style="font-size:18px; margin-bottom:8px;">Join a board</div>
+          <input type="text" id="input-join-query" placeholder="Board name or code (e.g. TRK-492)" />
+          <button class="primary full" id="btn-join-submit" style="margin-top: 8px;">Search</button>
+          <div class="lb-list" id="lb-join-results" style="margin-top: 10px;"></div>
+        </div>
+
+        <div style="border-top: 1px solid var(--line); margin: 16px 0;"></div>
+
+        <!-- Create form below -->
+        <div id="lb-create-form">
+          <div class="lb-form-title" style="font-size:18px; margin-bottom:8px;">Create a board</div>
+          <input type="text" id="input-group-name" placeholder="Board name (e.g. Game Night)" maxlength="30" />
+          <button class="secondary full" id="btn-create-submit" style="margin-top: 8px;">Create</button>
         </div>
       </div>
-      <!-- Create group form -->
-      <div id="lb-create-form" class="hide">
-        <div class="lb-form-title">Create a board</div>
-        <input type="text" id="input-group-name" placeholder="Board name (e.g. Game Night)" maxlength="30" />
-        <button class="primary full" id="btn-create-submit" style="margin-top: 8px;">Create</button>
-        <button class="secondary full" id="btn-create-cancel" style="margin-top: 6px;">Cancel</button>
-      </div>
-      <!-- Join group form -->
-      <div id="lb-join-form" class="hide">
-        <div class="lb-form-title">Join a board</div>
-        <input type="text" id="input-join-query" placeholder="Board name or code (e.g. TRK-492)" />
-        <button class="primary full" id="btn-join-submit" style="margin-top: 8px;">Search</button>
-        <button class="secondary full" id="btn-join-cancel" style="margin-top: 6px;">Cancel</button>
-        <div class="lb-list" id="lb-join-results" style="margin-top: 10px;"></div>
-      </div>
+
       <!-- View group board -->
       <div id="lb-group-view" class="hide">
         <div class="lb-group-header">
@@ -1672,7 +1671,8 @@
           <div class="lb-sub-tab" data-grouptab="alltime">All-Time</div>
         </div>
         <div class="lb-list" id="lb-group-list"></div>
-        <button class="secondary full" id="btn-submit-group" style="margin-top: 10px;">Submit my score</button>
+        <button class="primary full" id="btn-submit-group" style="margin-top: 10px;">Submit my score</button>
+        <button class="secondary full" id="btn-share-group" style="margin-top: 6px;">📤 Invite friends</button>
         <button class="secondary full" id="btn-group-back" style="margin-top: 6px;">← Back to boards</button>
       </div>
     </div>
@@ -2835,9 +2835,10 @@
 
   function showGroupsHome() {
     document.getElementById('lb-groups-home').classList.remove('hide');
-    document.getElementById('lb-create-form').classList.add('hide');
-    document.getElementById('lb-join-form').classList.add('hide');
     document.getElementById('lb-group-view').classList.add('hide');
+    document.getElementById('lb-join-results').innerHTML = '';
+    document.getElementById('input-join-query').value = '';
+    document.getElementById('input-group-name').value = '';
   }
 
   function renderGroupsHome() {
@@ -2909,8 +2910,6 @@
   async function openGroupView(code, name) {
     lbCurrentGroup = { code, name };
     document.getElementById('lb-groups-home').classList.add('hide');
-    document.getElementById('lb-create-form').classList.add('hide');
-    document.getElementById('lb-join-form').classList.add('hide');
     document.getElementById('lb-group-view').classList.remove('hide');
     document.getElementById('lb-group-view-name').textContent = name;
     document.getElementById('lb-group-view-code').textContent = code;
@@ -2971,8 +2970,52 @@
     }
   }
 
-  // ============ LEADERBOARD (local) ============
-  function renderLeaderboard() { renderMinePanel(); }
+  async function shareGroup() {
+    if (!lbCurrentGroup) return;
+    const url = `https://playtrika.com?join=${lbCurrentGroup.code}`;
+    const text = `Join my Trika board "${lbCurrentGroup.name}" and compete for the top score!\n\n${url}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: `Trika — ${lbCurrentGroup.name}`, text, url });
+        return;
+      } catch(e) {}
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast('Invite link copied!');
+    } catch(e) {
+      window.prompt('Copy invite link:', url);
+    }
+  }
+
+  // Deep link: auto-join group if ?join=TRK-XXX is in the URL
+  async function checkDeepLink() {
+    const params = new URLSearchParams(window.location.search);
+    const joinCode = params.get('join');
+    if (!joinCode) return;
+    // Clean the URL so it doesn't re-trigger on refresh
+    window.history.replaceState({}, '', window.location.pathname);
+    // Look up the group
+    const ids = getBinIds();
+    const binKey = `group-${joinCode.toUpperCase()}`;
+    if (!ids[binKey]) {
+      showToast(`Board code ${joinCode} not found`);
+      return;
+    }
+    try {
+      const data = await jsonbinGet(ids[binKey]);
+      const group = { name: data.name, code: data.code, binId: ids[binKey] };
+      const myGroups = getMyGroups();
+      if (!myGroups.find(g => g.code === group.code)) {
+        addMyGroup(group);
+        showToast(`Joined "${group.name}"! Submit your score after playing.`);
+      } else {
+        showToast(`You're already in "${group.name}"!`);
+      }
+    } catch(e) {
+      showToast('Could not join board — try again');
+    }
+  }
 
   function formatDate(d) {
     const todayStart = getTodayStart();
@@ -3048,34 +3091,7 @@
   });
 
   // Groups
-  document.getElementById('btn-create-group').addEventListener('click', () => {
-    document.getElementById('lb-groups-home').classList.add('hide');
-    document.getElementById('lb-create-form').classList.remove('hide');
-    document.getElementById('input-group-name').value = '';
-    setTimeout(() => document.getElementById('input-group-name').focus(), 100);
-  });
-  document.getElementById('btn-create-cancel').addEventListener('click', showGroupsHome);
-  document.getElementById('btn-create-submit').addEventListener('click', async () => {
-    const name = document.getElementById('input-group-name').value.trim();
-    if (!name) { showToast('Enter a board name'); return; }
-    showToast('Creating...');
-    await createGroup(name);
-  });
-  document.getElementById('input-group-name').addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('btn-create-submit').click();
-  });
-
-  document.getElementById('btn-join-group').addEventListener('click', () => {
-    document.getElementById('lb-groups-home').classList.add('hide');
-    document.getElementById('lb-join-form').classList.remove('hide');
-    document.getElementById('input-join-query').value = '';
-    document.getElementById('lb-join-results').innerHTML = '';
-    setTimeout(() => document.getElementById('input-join-query').focus(), 100);
-  });
-  document.getElementById('btn-join-cancel').addEventListener('click', () => {
-    document.getElementById('lb-join-form').classList.add('hide');
-    showGroupsHome();
-  });
+  // Groups — join
   document.getElementById('btn-join-submit').addEventListener('click', async () => {
     const query = document.getElementById('input-join-query').value.trim();
     if (!query) { showToast('Enter a name or code'); return; }
@@ -3102,10 +3118,23 @@
     if (e.key === 'Enter') document.getElementById('btn-join-submit').click();
   });
 
+  // Groups — create
+  document.getElementById('btn-create-submit').addEventListener('click', async () => {
+    const name = document.getElementById('input-group-name').value.trim();
+    if (!name) { showToast('Enter a board name'); return; }
+    showToast('Creating...');
+    await createGroup(name);
+  });
+  document.getElementById('input-group-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('btn-create-submit').click();
+  });
+
   document.getElementById('btn-group-back').addEventListener('click', () => {
     lbCurrentGroup = null;
     renderGroupsHome();
   });
+
+  document.getElementById('btn-share-group').addEventListener('click', shareGroup);
 
   // Group sub-tabs (today / all-time)
   document.querySelectorAll('[data-grouptab]').forEach(tab => {
@@ -3119,6 +3148,7 @@
 
   // Initial load
   refreshPB();
+  checkDeepLink();
 </script>
 </body>
 </html>
