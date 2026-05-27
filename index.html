@@ -1119,6 +1119,124 @@
     display: block;
   }
 
+  /* ===== GLOBAL LEADERBOARD ===== */
+  .lb-panel { display: flex; flex-direction: column; }
+  .lb-panel.hide { display: none; }
+  .lb-global-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-align: center;
+    padding: 6px 0;
+    letter-spacing: 0.05em;
+  }
+  .lb-sub-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .lb-sub-tab {
+    flex: 1;
+    text-align: center;
+    padding: 7px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .lb-sub-tab.active {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .lb-my-groups { margin-bottom: 12px; }
+  .lb-group-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .lb-group-item:active { border-color: var(--accent); }
+  .lb-group-item-name { font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px; color: var(--ink); }
+  .lb-group-item-code { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
+  .lb-group-actions { display: flex; flex-direction: column; gap: 6px; }
+  .lb-group-header {
+    background: linear-gradient(135deg, var(--accent), #d946ef);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .lb-group-name { font-family: 'Fraunces', serif; font-weight: 700; font-size: 20px; color: #fff; }
+  .lb-group-code { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.8); margin-top: 4px; letter-spacing: 0.1em; }
+  .lb-form-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; color: var(--ink); margin-bottom: 4px; text-align: center; }
+  .lb-form-sub { font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; text-align: center; }
+  #leaderboard input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    background: var(--bg-card);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  #leaderboard input[type="text"]:focus { border-color: var(--accent); }
+  .lb-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(254,249,240,0.97);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: 16px;
+    padding: 24px;
+    box-sizing: border-box;
+  }
+  .lb-overlay.hide { display: none; }
+  .lb-overlay-card { width: 100%; }
+  .lb-row-global {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--line-soft);
+  }
+  .lb-row-global .rank { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--ink-soft); min-width: 22px; text-align: center; }
+  .lb-row-global.top1 { border-color: #f59e0b; background: #fffbeb; }
+  .lb-row-global.top2 { border-color: #94a3b8; }
+  .lb-row-global.top3 { border-color: #cd7c3a; }
+  .lb-row-global.top1 .rank { color: #f59e0b; }
+  .lb-row-global.top2 .rank { color: #94a3b8; }
+  .lb-row-global.top3 .rank { color: #cd7c3a; }
+  .lb-row-global .player-info { flex: 1; }
+  .lb-row-global .player-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; color: var(--ink); }
+  .lb-row-global .player-meta { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ink-soft); letter-spacing: 0.05em; margin-top: 2px; }
+  .lb-row-global .player-score { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--ink); }
+  .lb-empty-global { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 20px 0; }
+  .lb-your-rank { text-align: center; font-size: 12px; color: var(--ink-soft); padding: 6px 0; font-family: 'JetBrains Mono', monospace; }
+
   /* Toast */
   .toast {
     position: fixed;
@@ -1484,15 +1602,93 @@
 </div>
 
 <div class="modal hide" id="leaderboard">
-  <div class="modal-card">
-    <h1 style="font-size: 36px; margin-bottom: 4px;">Best runs</h1>
-    <div class="tagline" style="margin-bottom: 16px;">your personal records</div>
-    <div class="lb-tabs">
-      <div class="lb-tab active" data-tab="all">All time</div>
-      <div class="lb-tab" data-tab="today">Today</div>
+  <div class="modal-card" id="lb-main-view">
+    <h1 style="font-size: 32px; margin-bottom: 4px;">Leaderboards</h1>
+    <div class="tagline" style="margin-bottom: 14px;">daily & all-time rankings</div>
+
+    <!-- Tab row: My Runs / Daily / All-Time / Groups -->
+    <div class="lb-tabs" id="lb-tabs">
+      <div class="lb-tab active" data-tab="mine">My Runs</div>
+      <div class="lb-tab" data-tab="daily">Daily</div>
+      <div class="lb-tab" data-tab="alltime">All-Time</div>
+      <div class="lb-tab" data-tab="groups">Groups</div>
     </div>
-    <div class="lb-list" id="lb-list"></div>
-    <button class="primary full" id="btn-lb-close">Back</button>
+
+    <!-- My runs list -->
+    <div id="lb-panel-mine" class="lb-panel">
+      <div class="lb-sub-tabs">
+        <div class="lb-sub-tab active" data-subtab="all">All time</div>
+        <div class="lb-sub-tab" data-subtab="today">Today</div>
+      </div>
+      <div class="lb-list" id="lb-list-mine"></div>
+    </div>
+
+    <!-- Global daily list -->
+    <div id="lb-panel-daily" class="lb-panel hide">
+      <div class="lb-global-status" id="lb-daily-status">Loading...</div>
+      <div class="lb-list" id="lb-list-daily"></div>
+      <button class="secondary full" id="btn-submit-daily" style="margin-top: 10px;">Submit my score</button>
+    </div>
+
+    <!-- Global all-time list -->
+    <div id="lb-panel-alltime" class="lb-panel hide">
+      <div class="lb-global-status" id="lb-alltime-status">Loading...</div>
+      <div class="lb-list" id="lb-list-alltime"></div>
+      <button class="secondary full" id="btn-submit-alltime" style="margin-top: 10px;">Submit my score</button>
+    </div>
+
+    <!-- Groups panel -->
+    <div id="lb-panel-groups" class="lb-panel hide">
+      <div id="lb-groups-home">
+        <div class="lb-my-groups" id="lb-my-groups"></div>
+        <div class="lb-group-actions">
+          <button class="primary full" id="btn-create-group" style="margin-bottom: 8px;">+ Create a board</button>
+          <button class="secondary full" id="btn-join-group">Search / join a board</button>
+        </div>
+      </div>
+      <!-- Create group form -->
+      <div id="lb-create-form" class="hide">
+        <div class="lb-form-title">Create a board</div>
+        <input type="text" id="input-group-name" placeholder="Board name (e.g. Game Night)" maxlength="30" />
+        <button class="primary full" id="btn-create-submit" style="margin-top: 8px;">Create</button>
+        <button class="secondary full" id="btn-create-cancel" style="margin-top: 6px;">Cancel</button>
+      </div>
+      <!-- Join group form -->
+      <div id="lb-join-form" class="hide">
+        <div class="lb-form-title">Join a board</div>
+        <input type="text" id="input-join-query" placeholder="Board name or code (e.g. TRK-492)" />
+        <button class="primary full" id="btn-join-submit" style="margin-top: 8px;">Search</button>
+        <button class="secondary full" id="btn-join-cancel" style="margin-top: 6px;">Cancel</button>
+        <div class="lb-list" id="lb-join-results" style="margin-top: 10px;"></div>
+      </div>
+      <!-- View group board -->
+      <div id="lb-group-view" class="hide">
+        <div class="lb-group-header">
+          <div class="lb-group-name" id="lb-group-view-name"></div>
+          <div class="lb-group-code" id="lb-group-view-code"></div>
+        </div>
+        <div class="lb-sub-tabs">
+          <div class="lb-sub-tab active" data-grouptab="daily">Today</div>
+          <div class="lb-sub-tab" data-grouptab="alltime">All-Time</div>
+        </div>
+        <div class="lb-list" id="lb-group-list"></div>
+        <button class="secondary full" id="btn-submit-group" style="margin-top: 10px;">Submit my score</button>
+        <button class="secondary full" id="btn-group-back" style="margin-top: 6px;">← Back to boards</button>
+      </div>
+    </div>
+
+    <button class="primary full" id="btn-lb-close" style="margin-top: 12px;">Back</button>
+  </div>
+
+  <!-- Name entry overlay -->
+  <div id="lb-name-entry" class="lb-overlay hide">
+    <div class="lb-overlay-card">
+      <div class="lb-form-title">Your display name</div>
+      <div class="lb-form-sub">Shows on the leaderboard</div>
+      <input type="text" id="input-player-name" placeholder="Enter your name" maxlength="20" />
+      <button class="primary full" id="btn-name-submit" style="margin-top: 10px;">Submit score</button>
+      <button class="secondary full" id="btn-name-cancel" style="margin-top: 6px;">Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -2362,57 +2558,429 @@
     };
   }
 
-  // ============ LEADERBOARD ============
-  let lbActiveTab = 'all';
+  // ============ JSONBIN CONFIG ============
+  const JSONBIN_KEY = '$2a$10$yDd21niqXkaX1MiteHDKOeYbzS7AlbeZ0MFdkSy34mEi0OiEf0N7C';
+  const JSONBIN_BASE = 'https://api.jsonbin.io/v3';
+  const BINS = { daily: null, alltime: null, groups: null };
+  // These bin IDs get created on first run and stored in localStorage
+  function getBinIds() {
+    const stored = localStorage.getItem('trika-bin-ids');
+    return stored ? JSON.parse(stored) : {};
+  }
+  function saveBinIds(ids) {
+    localStorage.setItem('trika-bin-ids', JSON.stringify(ids));
+  }
+
+  async function jsonbinGet(binId) {
+    const res = await fetch(`${JSONBIN_BASE}/b/${binId}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
+    const data = await res.json();
+    return data.record;
+  }
+  async function jsonbinCreate(name, initialData) {
+    const res = await fetch(`${JSONBIN_BASE}/b`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_KEY,
+        'X-Bin-Name': name,
+        'X-Bin-Private': 'false'
+      },
+      body: JSON.stringify(initialData)
+    });
+    const data = await res.json();
+    return data.metadata.id;
+  }
+  async function jsonbinUpdate(binId, data) {
+    await fetch(`${JSONBIN_BASE}/b/${binId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_KEY
+      },
+      body: JSON.stringify(data)
+    });
+  }
+
+  // Get or create a bin by purpose
+  async function getOrCreateBin(purpose, initialData) {
+    const ids = getBinIds();
+    if (ids[purpose]) return ids[purpose];
+    const id = await jsonbinCreate(`trika-${purpose}`, initialData);
+    ids[purpose] = id;
+    saveBinIds(ids);
+    return id;
+  }
+
+  // Today's date string for daily board keying
+  function todayKey() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  // Generate a short group code like TRK-492
+  function genGroupCode() {
+    const n = Math.floor(Math.random() * 900) + 100;
+    return `TRK-${n}`;
+  }
+
+  // Get/set player display name
+  function getPlayerName() { return localStorage.getItem('trika-player-name') || ''; }
+  function setPlayerName(n) { localStorage.setItem('trika-player-name', n.trim()); }
+
+  // ============ GLOBAL LEADERBOARD ============
+  let lbActiveTab = 'mine';
+  let lbMineSubTab = 'all';
+  let lbGroupSubTab = 'daily';
+  let lbPendingSubmit = null; // { type: 'daily'|'alltime'|'group', groupCode? }
+  let lbCurrentGroup = null;
+
   function openLeaderboard() {
-    renderLeaderboard();
+    renderMinePanel();
     document.getElementById('leaderboard').classList.remove('hide');
+    switchLbTab('mine');
   }
   function closeLeaderboard() {
     document.getElementById('leaderboard').classList.add('hide');
+    document.getElementById('lb-name-entry').classList.add('hide');
+    showGroupsHome();
   }
-  function renderLeaderboard() {
+
+  function switchLbTab(tab) {
+    lbActiveTab = tab;
+    document.querySelectorAll('#lb-tabs .lb-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tab === tab);
+    });
+    ['mine','daily','alltime','groups'].forEach(p => {
+      document.getElementById(`lb-panel-${p}`).classList.toggle('hide', p !== tab);
+    });
+    if (tab === 'daily') loadGlobalDaily();
+    if (tab === 'alltime') loadGlobalAllTime();
+    if (tab === 'groups') renderGroupsHome();
+  }
+
+  // ---- My Runs panel ----
+  function renderMinePanel() {
     const store = loadStore();
     const todayStart = getTodayStart();
     let runs = [...store.runs];
-    if (lbActiveTab === 'today') runs = runs.filter(r => r.date >= todayStart);
+    if (lbMineSubTab === 'today') runs = runs.filter(r => r.date >= todayStart);
     runs.sort((a, b) => b.score - a.score);
     runs = runs.slice(0, 10);
-
-    const list = document.getElementById('lb-list');
+    const list = document.getElementById('lb-list-mine');
     if (!runs.length) {
-      list.innerHTML = `<div class="lb-empty">${lbActiveTab === 'today' ? 'No runs today yet — play one!' : 'No runs yet — play your first!'}</div>`;
+      list.innerHTML = `<div class="lb-empty">${lbMineSubTab === 'today' ? 'No runs today yet — play one!' : 'No runs yet — play your first!'}</div>`;
       return;
     }
     list.innerHTML = runs.map((r, i) => {
       const rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
-      const date = new Date(r.date);
-      const dateStr = formatDate(date);
       const milestone = highestMilestoneReached(r.found);
-      const milestoneStr = milestone ? `${milestone.emoji} ${milestone.name}` : '';
-      return `
-        <div class="lb-row ${rankClass}">
-          <div class="rank">${i + 1}</div>
-          <div class="info">
-            <div class="score-big">${r.score}</div>
-            <div class="meta">${milestoneStr ? milestoneStr + ' · ' : ''}${r.found} found · streak ${r.bestStreak}</div>
-          </div>
-          <div class="date">${dateStr}</div>
+      const milestoneStr = milestone ? `${milestone.emoji} ${milestone.name} · ` : '';
+      return `<div class="lb-row ${rankClass}">
+        <div class="rank">${i+1}</div>
+        <div class="info">
+          <div class="score-big">${r.score.toLocaleString()}</div>
+          <div class="meta">${milestoneStr}${r.found} found · streak ${r.bestStreak}</div>
         </div>
-      `;
+        <div class="date">${formatDate(new Date(r.date))}</div>
+      </div>`;
     }).join('');
   }
+
+  // ---- Global daily board ----
+  async function loadGlobalDaily() {
+    document.getElementById('lb-daily-status').textContent = 'Loading...';
+    document.getElementById('lb-list-daily').innerHTML = '';
+    try {
+      const binId = await getOrCreateBin('daily', { boards: {} });
+      const data = await jsonbinGet(binId);
+      const today = todayKey();
+      const scores = (data.boards[today] || []).sort((a,b) => b.score - a.score);
+      renderGlobalList('lb-list-daily', scores);
+      document.getElementById('lb-daily-status').textContent = `Today · ${scores.length} submission${scores.length !== 1 ? 's' : ''}`;
+    } catch(e) {
+      document.getElementById('lb-daily-status').textContent = 'Could not load — try again';
+    }
+  }
+
+  // ---- Global all-time board ----
+  async function loadGlobalAllTime() {
+    document.getElementById('lb-alltime-status').textContent = 'Loading...';
+    document.getElementById('lb-list-alltime').innerHTML = '';
+    try {
+      const binId = await getOrCreateBin('alltime', { scores: [] });
+      const data = await jsonbinGet(binId);
+      const scores = (data.scores || []).sort((a,b) => b.score - a.score);
+      renderGlobalList('lb-list-alltime', scores);
+      document.getElementById('lb-alltime-status').textContent = `All-time · ${scores.length} player${scores.length !== 1 ? 's' : ''}`;
+    } catch(e) {
+      document.getElementById('lb-alltime-status').textContent = 'Could not load — try again';
+    }
+  }
+
+  function renderGlobalList(listId, scores) {
+    const list = document.getElementById(listId);
+    const playerName = getPlayerName();
+    if (!scores.length) {
+      list.innerHTML = '<div class="lb-empty-global">No scores yet — be the first!</div>';
+      return;
+    }
+    const top10 = scores.slice(0, 10);
+    list.innerHTML = top10.map((s, i) => {
+      const rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+      const isYou = s.name === playerName && playerName;
+      const milestone = highestMilestoneReached(s.found || 0);
+      const milestoneStr = milestone ? `${milestone.emoji} ` : '';
+      return `<div class="lb-row-global ${rankClass}">
+        <div class="rank">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i+1}</div>
+        <div class="player-info">
+          <div class="player-name">${isYou ? '⭐ ' : ''}${milestoneStr}${s.name}</div>
+          <div class="player-meta">${s.found || 0} found · Level ${s.level || 1}</div>
+        </div>
+        <div class="player-score">${s.score.toLocaleString()}</div>
+      </div>`;
+    }).join('');
+    // Show your rank if outside top 10
+    if (playerName) {
+      const yourIdx = scores.findIndex(s => s.name === playerName);
+      if (yourIdx >= 10) {
+        list.innerHTML += `<div class="lb-your-rank">You're #${yourIdx+1} of ${scores.length}</div>`;
+      }
+    }
+  }
+
+  // ---- Submit score ----
+  function startSubmit(type, groupCode) {
+    const name = getPlayerName();
+    if (!lastFinalStats || lastFinalStats.score === 0) {
+      showToast('Play a game first!');
+      return;
+    }
+    if (name) {
+      // Name already saved — submit directly
+      doSubmit(type, name, groupCode);
+    } else {
+      // Ask for name
+      lbPendingSubmit = { type, groupCode };
+      document.getElementById('input-player-name').value = '';
+      document.getElementById('lb-name-entry').classList.remove('hide');
+      setTimeout(() => document.getElementById('input-player-name').focus(), 100);
+    }
+  }
+
+  async function doSubmit(type, name, groupCode) {
+    showToast('Submitting...');
+    const stats = lastFinalStats;
+    const entry = {
+      name,
+      score: stats.score,
+      found: stats.found,
+      level: stats.level,
+      date: Date.now()
+    };
+    try {
+      if (type === 'daily') {
+        const binId = await getOrCreateBin('daily', { boards: {} });
+        const data = await jsonbinGet(binId);
+        const today = todayKey();
+        if (!data.boards[today]) data.boards[today] = [];
+        // Replace if better, else add
+        const existing = data.boards[today].findIndex(s => s.name === name);
+        if (existing >= 0) {
+          if (entry.score > data.boards[today][existing].score) {
+            data.boards[today][existing] = entry;
+          }
+        } else {
+          data.boards[today].push(entry);
+        }
+        await jsonbinUpdate(binId, data);
+        showToast('Score submitted!');
+        loadGlobalDaily();
+      } else if (type === 'alltime') {
+        const binId = await getOrCreateBin('alltime', { scores: [] });
+        const data = await jsonbinGet(binId);
+        const existing = data.scores.findIndex(s => s.name === name);
+        if (existing >= 0) {
+          if (entry.score > data.scores[existing].score) data.scores[existing] = entry;
+        } else {
+          data.scores.push(entry);
+        }
+        await jsonbinUpdate(binId, data);
+        showToast('Score submitted!');
+        loadGlobalAllTime();
+      } else if (type === 'group' && groupCode) {
+        await submitToGroup(groupCode, entry);
+      }
+    } catch(e) {
+      showToast('Submit failed — try again');
+    }
+  }
+
+  // ---- Groups ----
+  function getMyGroups() {
+    const stored = localStorage.getItem('trika-my-groups');
+    return stored ? JSON.parse(stored) : [];
+  }
+  function saveMyGroups(groups) {
+    localStorage.setItem('trika-my-groups', JSON.stringify(groups));
+  }
+  function addMyGroup(group) {
+    const groups = getMyGroups();
+    if (!groups.find(g => g.code === group.code)) {
+      groups.push(group);
+      saveMyGroups(groups);
+    }
+  }
+
+  function showGroupsHome() {
+    document.getElementById('lb-groups-home').classList.remove('hide');
+    document.getElementById('lb-create-form').classList.add('hide');
+    document.getElementById('lb-join-form').classList.add('hide');
+    document.getElementById('lb-group-view').classList.add('hide');
+  }
+
+  function renderGroupsHome() {
+    showGroupsHome();
+    const groups = getMyGroups();
+    const container = document.getElementById('lb-my-groups');
+    if (!groups.length) {
+      container.innerHTML = '<div class="lb-empty-global" style="padding: 12px 0;">No boards yet — create one or join a friend\'s.</div>';
+      return;
+    }
+    container.innerHTML = groups.map(g => `
+      <div class="lb-group-item" onclick="openGroupView('${g.code}', '${g.name.replace(/'/g, "\\'")}')">
+        <div>
+          <div class="lb-group-item-name">${g.name}</div>
+          <div class="lb-group-item-code">${g.code}</div>
+        </div>
+        <div class="lb-group-item-arrow">›</div>
+      </div>
+    `).join('');
+  }
+
+  async function createGroup(name) {
+    const code = genGroupCode();
+    const binId = await getOrCreateBin(`group-${code}`, {
+      name, code,
+      daily: {},
+      alltime: []
+    });
+    // Store binId mapping
+    const ids = getBinIds();
+    ids[`group-${code}`] = binId;
+    saveBinIds(ids);
+    const group = { name, code, binId };
+    addMyGroup(group);
+    showToast(`Board "${name}" created!`);
+    openGroupView(code, name);
+  }
+
+  async function searchGroups(query) {
+    // Search by code first (exact), then by scanning known bins
+    const ids = getBinIds();
+    const results = [];
+    // Check if query looks like a code
+    const upperQ = query.toUpperCase();
+    const codeKey = `group-${upperQ}`;
+    if (ids[codeKey]) {
+      try {
+        const data = await jsonbinGet(ids[codeKey]);
+        results.push({ name: data.name, code: data.code, binId: ids[codeKey] });
+      } catch(e) {}
+    }
+    // Also check locally saved groups by name
+    const myGroups = getMyGroups();
+    myGroups.forEach(g => {
+      if (g.name.toLowerCase().includes(query.toLowerCase()) || g.code === upperQ) {
+        if (!results.find(r => r.code === g.code)) results.push(g);
+      }
+    });
+    return results;
+  }
+
+  async function joinGroup(group) {
+    addMyGroup(group);
+    showToast(`Joined "${group.name}"!`);
+    renderGroupsHome();
+    openGroupView(group.code, group.name);
+  }
+
+  async function openGroupView(code, name) {
+    lbCurrentGroup = { code, name };
+    document.getElementById('lb-groups-home').classList.add('hide');
+    document.getElementById('lb-create-form').classList.add('hide');
+    document.getElementById('lb-join-form').classList.add('hide');
+    document.getElementById('lb-group-view').classList.remove('hide');
+    document.getElementById('lb-group-view-name').textContent = name;
+    document.getElementById('lb-group-view-code').textContent = code;
+    loadGroupBoard(code, lbGroupSubTab);
+  }
+
+  async function loadGroupBoard(code, tab) {
+    const ids = getBinIds();
+    const binId = ids[`group-${code}`];
+    if (!binId) {
+      document.getElementById('lb-group-list').innerHTML = '<div class="lb-empty-global">Board not found. Ask the creator to share the code.</div>';
+      return;
+    }
+    document.getElementById('lb-group-list').innerHTML = '<div class="lb-empty-global">Loading...</div>';
+    try {
+      const data = await jsonbinGet(binId);
+      let scores;
+      if (tab === 'daily') {
+        const today = todayKey();
+        scores = (data.daily[today] || []).sort((a,b) => b.score - a.score);
+      } else {
+        scores = (data.alltime || []).sort((a,b) => b.score - a.score);
+      }
+      renderGlobalList('lb-group-list', scores);
+    } catch(e) {
+      document.getElementById('lb-group-list').innerHTML = '<div class="lb-empty-global">Could not load — try again</div>';
+    }
+  }
+
+  async function submitToGroup(code, entry) {
+    const ids = getBinIds();
+    const binId = ids[`group-${code}`];
+    if (!binId) { showToast('Board not found'); return; }
+    try {
+      const data = await jsonbinGet(binId);
+      const name = entry.name;
+      const today = todayKey();
+      // Daily
+      if (!data.daily[today]) data.daily[today] = [];
+      const dailyIdx = data.daily[today].findIndex(s => s.name === name);
+      if (dailyIdx >= 0) {
+        if (entry.score > data.daily[today][dailyIdx].score) data.daily[today][dailyIdx] = entry;
+      } else {
+        data.daily[today].push(entry);
+      }
+      // All-time
+      const alltimeIdx = data.alltime.findIndex(s => s.name === name);
+      if (alltimeIdx >= 0) {
+        if (entry.score > data.alltime[alltimeIdx].score) data.alltime[alltimeIdx] = entry;
+      } else {
+        data.alltime.push(entry);
+      }
+      await jsonbinUpdate(binId, data);
+      showToast('Score submitted!');
+      loadGroupBoard(code, lbGroupSubTab);
+    } catch(e) {
+      showToast('Submit failed — try again');
+    }
+  }
+
+  // ============ LEADERBOARD (local) ============
+  function renderLeaderboard() { renderMinePanel(); }
+
   function formatDate(d) {
     const todayStart = getTodayStart();
     const yesterdayStart = todayStart - 24*60*60*1000;
     const t = d.getTime();
-    if (t >= todayStart) {
-      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    } else if (t >= yesterdayStart) {
-      return 'Yesterday';
-    } else {
-      return d.toLocaleDateString([], { month: 'short', day: 'numeric' });
-    }
+    if (t >= todayStart) return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    else if (t >= yesterdayStart) return 'Yesterday';
+    else return d.toLocaleDateString([], { month: 'short', day: 'numeric' });
   }
 
   // ============ EVENTS ============
@@ -2427,30 +2995,129 @@
   document.getElementById('btn-hint').addEventListener('click', showHint);
   document.getElementById('btn-again').addEventListener('click', startGame);
   document.getElementById('btn-start').addEventListener('click', startGame);
-
   document.getElementById('btn-share-result').addEventListener('click', () => shareResult(lastFinalStats));
   document.getElementById('btn-share-quick').addEventListener('click', () => {
     const stats = getQuickShareStats();
-    if (stats.score === 0 && stats.found === 0) {
-      showToast('Play first, then share!');
-      return;
-    }
+    if (stats.score === 0 && stats.found === 0) { showToast('Play first, then share!'); return; }
     shareResult(stats);
   });
+
+  // Leaderboard tabs
   document.getElementById('btn-leaderboard').addEventListener('click', openLeaderboard);
   document.getElementById('btn-view-leaderboard').addEventListener('click', openLeaderboard);
   document.getElementById('btn-lb-close').addEventListener('click', closeLeaderboard);
 
-  document.querySelectorAll('.lb-tab').forEach(tab => {
+  document.querySelectorAll('#lb-tabs .lb-tab').forEach(tab => {
+    tab.addEventListener('click', () => switchLbTab(tab.dataset.tab));
+  });
+
+  // My runs sub-tabs
+  document.querySelectorAll('#lb-panel-mine .lb-sub-tab').forEach(tab => {
     tab.addEventListener('click', () => {
-      document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#lb-panel-mine .lb-sub-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      lbActiveTab = tab.dataset.tab;
-      renderLeaderboard();
+      lbMineSubTab = tab.dataset.subtab;
+      renderMinePanel();
     });
   });
 
-  // Initial PB load on intro screen
+  // Submit buttons
+  document.getElementById('btn-submit-daily').addEventListener('click', () => startSubmit('daily'));
+  document.getElementById('btn-submit-alltime').addEventListener('click', () => startSubmit('alltime'));
+  document.getElementById('btn-submit-group').addEventListener('click', () => {
+    if (lbCurrentGroup) startSubmit('group', lbCurrentGroup.code);
+  });
+
+  // Name entry
+  document.getElementById('btn-name-submit').addEventListener('click', () => {
+    const name = document.getElementById('input-player-name').value.trim();
+    if (!name) { showToast('Enter a name first'); return; }
+    setPlayerName(name);
+    document.getElementById('lb-name-entry').classList.add('hide');
+    if (lbPendingSubmit) {
+      doSubmit(lbPendingSubmit.type, name, lbPendingSubmit.groupCode);
+      lbPendingSubmit = null;
+    }
+  });
+  document.getElementById('btn-name-cancel').addEventListener('click', () => {
+    document.getElementById('lb-name-entry').classList.add('hide');
+    lbPendingSubmit = null;
+  });
+  document.getElementById('input-player-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('btn-name-submit').click();
+  });
+
+  // Groups
+  document.getElementById('btn-create-group').addEventListener('click', () => {
+    document.getElementById('lb-groups-home').classList.add('hide');
+    document.getElementById('lb-create-form').classList.remove('hide');
+    document.getElementById('input-group-name').value = '';
+    setTimeout(() => document.getElementById('input-group-name').focus(), 100);
+  });
+  document.getElementById('btn-create-cancel').addEventListener('click', showGroupsHome);
+  document.getElementById('btn-create-submit').addEventListener('click', async () => {
+    const name = document.getElementById('input-group-name').value.trim();
+    if (!name) { showToast('Enter a board name'); return; }
+    showToast('Creating...');
+    await createGroup(name);
+  });
+  document.getElementById('input-group-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('btn-create-submit').click();
+  });
+
+  document.getElementById('btn-join-group').addEventListener('click', () => {
+    document.getElementById('lb-groups-home').classList.add('hide');
+    document.getElementById('lb-join-form').classList.remove('hide');
+    document.getElementById('input-join-query').value = '';
+    document.getElementById('lb-join-results').innerHTML = '';
+    setTimeout(() => document.getElementById('input-join-query').focus(), 100);
+  });
+  document.getElementById('btn-join-cancel').addEventListener('click', () => {
+    document.getElementById('lb-join-form').classList.add('hide');
+    showGroupsHome();
+  });
+  document.getElementById('btn-join-submit').addEventListener('click', async () => {
+    const query = document.getElementById('input-join-query').value.trim();
+    if (!query) { showToast('Enter a name or code'); return; }
+    document.getElementById('lb-join-results').innerHTML = '<div class="lb-empty-global">Searching...</div>';
+    const results = await searchGroups(query);
+    if (!results.length) {
+      document.getElementById('lb-join-results').innerHTML = '<div class="lb-empty-global">No boards found. Check the name or code.</div>';
+      return;
+    }
+    document.getElementById('lb-join-results').innerHTML = results.map((g, i) =>
+      `<div class="lb-group-item" id="join-result-${i}">
+        <div>
+          <div class="lb-group-item-name">${g.name}</div>
+          <div class="lb-group-item-code">${g.code}</div>
+        </div>
+        <div style="color: var(--accent); font-weight: 700; font-size: 13px;">Join →</div>
+      </div>`
+    ).join('');
+    results.forEach((g, i) => {
+      document.getElementById(`join-result-${i}`).addEventListener('click', () => joinGroup(g));
+    });
+  });
+  document.getElementById('input-join-query').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('btn-join-submit').click();
+  });
+
+  document.getElementById('btn-group-back').addEventListener('click', () => {
+    lbCurrentGroup = null;
+    renderGroupsHome();
+  });
+
+  // Group sub-tabs (today / all-time)
+  document.querySelectorAll('[data-grouptab]').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('[data-grouptab]').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      lbGroupSubTab = tab.dataset.grouptab;
+      if (lbCurrentGroup) loadGroupBoard(lbCurrentGroup.code, lbGroupSubTab);
+    });
+  });
+
+  // Initial load
   refreshPB();
 </script>
 </body>
