@@ -1841,19 +1841,18 @@
     return null;
   }
 
-  // Check if three tiles in order form a valid equation.
-  // Result can be at the END (a OP b = c) or at the START (c = a OP b, i.e. read in reverse).
-  // We never put the result in the middle — that would create confusing non-directional reads.
-  // Valid: [9,6,3] → 9-6=3 ✓  [3,6,9] → 9-6=3 reading right-to-left ✓
-  // Valid: [3,9,6] → reading right-to-left: 6 OP 9 = 3? No — but 6,9,3 reversed is 3 OP 9 = 6? No.
-  // Actually [3,9,6]: forward 3+9≠6, 3-9≠6, 3×9≠6, 3÷9≠6. Backward 6+9≠3, 6-9≠3(neg), 6×9≠3, 6÷9≠3. Not valid. Correct.
-  // [4,20,5]: forward 4+20≠5, 4-20≠5, 4×20≠5, 4÷20≠5. Backward 5+20≠4, 5-20≠4, 5×20≠4, 5÷20≠4. Not valid. Correct.
-  // [20,4,5]: forward 20÷4=5 ✓. Valid.
-  // [5,4,20]: backward read = [20,4,5] forward → 20÷4=5 ✓. Valid.
+  // Valid equation patterns for tiles [p, q, r] in order:
+  // The operator always sits between the two operands (middle tile position is NOT the operator —
+  // actually the equation reads as a natural sentence along the line):
+  //   Forward:  p OP q = r  (e.g. [4,4,8] → 4+4=8, [9,6,3] → 9-6=3, [20,5,4] → 20÷5=4)
+  //   Backward: r OP q = p  (same line read in reverse, e.g. [8,4,4] → 4+4=8 reading RTL)
+  // Result is always at one END. Never in the middle.
+  // [4,8,4] → 4 OP 8 = 4? No valid op. 4 OP 8 = 4? No. Correctly rejected.
+  // [3,9,6] → 3 OP 9 = 6? No. 6 OP 9 = 3? 6-9=-3≠3. Correctly rejected.
   function checkEquation(p, q, r, ops) {
     return (
-      checkOrdered(p, q, r, ops) ||   // forward:  p OP q = r
-      checkOrdered(r, q, p, ops)      // backward: r OP q = p (same line read in reverse)
+      checkOrdered(p, q, r, ops) ||  // forward:  p OP q = r
+      checkOrdered(r, q, p, ops)     // backward: r OP q = p
     );
   }
   function findSolution(ops) {
