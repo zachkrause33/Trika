@@ -1234,8 +1234,14 @@
   .lb-row-global .player-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; color: var(--ink); }
   .lb-row-global .player-meta { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ink-soft); letter-spacing: 0.05em; margin-top: 2px; }
   .lb-row-global .player-score { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--ink); }
-  .lb-empty-global { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 20px 0; }
-  .lb-your-rank { text-align: center; font-size: 12px; color: var(--ink-soft); padding: 6px 0; font-family: 'JetBrains Mono', monospace; }
+  .lb-auto-submit-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--good);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+    padding: 8px 0 4px;
+  }
 
   /* Toast */
   .toast {
@@ -1639,29 +1645,25 @@
 
     <!-- Groups panel -->
     <div id="lb-panel-groups" class="lb-panel hide">
+
+      <!-- Home: join + create forms -->
       <div id="lb-groups-home">
         <div class="lb-my-groups" id="lb-my-groups"></div>
 
-        <!-- Join form always visible, first -->
-        <div id="lb-join-form">
-          <div class="lb-form-title" style="font-size:18px; margin-bottom:8px;">Join a board</div>
-          <input type="text" id="input-join-query" placeholder="Board name or code (e.g. TRK-492)" />
-          <button class="primary full" id="btn-join-submit" style="margin-top: 8px;">Search</button>
-          <div class="lb-list" id="lb-join-results" style="margin-top: 10px;"></div>
-        </div>
+        <div class="lb-form-title" style="font-size:18px; margin-bottom:8px;">Join a board</div>
+        <input type="text" id="input-join-query" placeholder="Board name or code (e.g. TRK-492)" />
+        <button class="primary full" id="btn-join-submit" style="margin-top: 8px;">Search</button>
+        <div class="lb-list" id="lb-join-results" style="margin-top: 10px;"></div>
 
         <div style="border-top: 1px solid var(--line); margin: 16px 0;"></div>
 
-        <!-- Create form below -->
-        <div id="lb-create-form">
-          <div class="lb-form-title" style="font-size:18px; margin-bottom:8px;">Create a board</div>
-          <input type="text" id="input-group-name" placeholder="Board name (e.g. Game Night)" maxlength="30" />
-          <button class="secondary full" id="btn-create-submit" style="margin-top: 8px;">Create</button>
-        </div>
+        <div class="lb-form-title" style="font-size:18px; margin-bottom:8px;">Create a board</div>
+        <input type="text" id="input-group-name" placeholder="Board name (e.g. Game Night)" maxlength="30" />
+        <button class="primary full" id="btn-create-submit" style="margin-top: 8px;">Create</button>
       </div>
 
-      <!-- View group board -->
-      <div id="lb-group-view" class="hide">
+      <!-- Group board view — completely separate, hidden by default -->
+      <div id="lb-group-view" style="display:none;">
         <div class="lb-group-header">
           <div class="lb-group-name" id="lb-group-view-name"></div>
           <div class="lb-group-code" id="lb-group-view-code"></div>
@@ -1671,8 +1673,8 @@
           <div class="lb-sub-tab" data-grouptab="alltime">All-Time</div>
         </div>
         <div class="lb-list" id="lb-group-list"></div>
-        <button class="primary full" id="btn-submit-group" style="margin-top: 10px;">Submit my score</button>
-        <button class="secondary full" id="btn-share-group" style="margin-top: 6px;">📤 Invite friends</button>
+        <div class="lb-auto-submit-note">✓ Your best score auto-submits after each game</div>
+        <button class="secondary full" id="btn-share-group" style="margin-top: 10px;">📤 Invite friends</button>
         <button class="secondary full" id="btn-group-back" style="margin-top: 6px;">← Back to boards</button>
       </div>
     </div>
@@ -2314,6 +2316,8 @@
       }, 700);
     }
     refreshPB();
+    // Auto-submit to all joined groups silently
+    autoSubmitToGroups();
     // Longer delay so the player has time to see the missed answer
     setTimeout(() => {
       document.getElementById('gameover').classList.remove('hide');
@@ -2661,6 +2665,22 @@
   }
 
   // ---- My Runs panel ----
+  // Auto-submit best score to all joined groups silently after every game
+  async function autoSubmitToGroups() {
+    const name = getPlayerName();
+    if (!name || !lastFinalStats || lastFinalStats.score === 0) return;
+    const groups = getMyGroups();
+    if (!groups.length) return;
+    const entry = {
+      name,
+      score: lastFinalStats.score,
+      found: lastFinalStats.found,
+      level: lastFinalStats.level,
+      date: Date.now()
+    };
+    await Promise.allSettled(groups.map(g => submitToGroup(g.code, entry, true)));
+  }
+
   function renderMinePanel() {
     const store = loadStore();
     const todayStart = getTodayStart();
@@ -2834,11 +2854,14 @@
   }
 
   function showGroupsHome() {
-    document.getElementById('lb-groups-home').classList.remove('hide');
-    document.getElementById('lb-group-view').classList.add('hide');
-    document.getElementById('lb-join-results').innerHTML = '';
-    document.getElementById('input-join-query').value = '';
-    document.getElementById('input-group-name').value = '';
+    document.getElementById('lb-groups-home').style.display = '';
+    document.getElementById('lb-group-view').style.display = 'none';
+    const joinResults = document.getElementById('lb-join-results');
+    if (joinResults) joinResults.innerHTML = '';
+    const joinInput = document.getElementById('input-join-query');
+    if (joinInput) joinInput.value = '';
+    const nameInput = document.getElementById('input-group-name');
+    if (nameInput) nameInput.value = '';
   }
 
   function renderGroupsHome() {
@@ -2918,8 +2941,8 @@
 
   async function openGroupView(code, name) {
     lbCurrentGroup = { code, name };
-    document.getElementById('lb-groups-home').classList.add('hide');
-    document.getElementById('lb-group-view').classList.remove('hide');
+    document.getElementById('lb-groups-home').style.display = 'none';
+    document.getElementById('lb-group-view').style.display = '';
     document.getElementById('lb-group-view-name').textContent = name;
     document.getElementById('lb-group-view-code').textContent = code;
     loadGroupBoard(code, lbGroupSubTab);
@@ -2948,23 +2971,24 @@
     }
   }
 
-  async function submitToGroup(code, entry) {
+  async function submitToGroup(code, entry, silent = false) {
     const ids = getBinIds();
     const binId = ids[`group-${code}`];
-    if (!binId) { showToast('Board not found'); return; }
+    if (!binId) { if (!silent) showToast('Board not found'); return; }
     try {
       const data = await jsonbinGet(binId);
       const name = entry.name;
       const today = todayKey();
-      // Daily
+      // Daily — replace if better
       if (!data.daily[today]) data.daily[today] = [];
       const dailyIdx = data.daily[today].findIndex(s => s.name === name);
       if (dailyIdx >= 0) {
         if (entry.score > data.daily[today][dailyIdx].score) data.daily[today][dailyIdx] = entry;
+        else if (silent) return; // No improvement, skip write
       } else {
         data.daily[today].push(entry);
       }
-      // All-time
+      // All-time — replace if better
       const alltimeIdx = data.alltime.findIndex(s => s.name === name);
       if (alltimeIdx >= 0) {
         if (entry.score > data.alltime[alltimeIdx].score) data.alltime[alltimeIdx] = entry;
@@ -2972,10 +2996,12 @@
         data.alltime.push(entry);
       }
       await jsonbinUpdate(binId, data);
-      showToast('Score submitted!');
-      loadGroupBoard(code, lbGroupSubTab);
+      if (!silent) {
+        showToast('Score submitted!');
+        loadGroupBoard(code, lbGroupSubTab);
+      }
     } catch(e) {
-      showToast('Submit failed — try again');
+      if (!silent) showToast('Submit failed — try again');
     }
   }
 
@@ -3092,9 +3118,6 @@
   // Submit buttons
   document.getElementById('btn-submit-daily').addEventListener('click', () => startSubmit('daily'));
   document.getElementById('btn-submit-alltime').addEventListener('click', () => startSubmit('alltime'));
-  document.getElementById('btn-submit-group').addEventListener('click', () => {
-    if (lbCurrentGroup) startSubmit('group', lbCurrentGroup.code);
-  });
 
   // Name entry
   document.getElementById('btn-name-submit').addEventListener('click', () => {
