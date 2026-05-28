@@ -1841,23 +1841,11 @@
     return null;
   }
 
-  // Valid equation patterns for tiles [p, q, r] in order:
-  // For ALL ops: result at end or start reading the line naturally
-  //   p OP q = r  (forward)
-  //   r OP q = p  (backward)
-  // For MINUS and DIV only: big number can be in middle position as first operand
-  //   q OP r = p  (e.g. [3,9,6] → 9-6=3, [4,20,5] → 20÷5=4)
-  //   q OP p = r  (e.g. [6,9,3] → 9-6=3 reading other way)
-  // We never allow result in middle (p OP r = q) for any operation.
+  // Equation must read naturally in tile order or reverse tile order.
+  // [p, q, r] is valid if p OP q = r  OR  r OP q = p
+  // No rearranging. The equation must make sense reading along the line.
   function checkEquation(p, q, r, ops) {
-    const basic = checkOrdered(p, q, r, ops) || checkOrdered(r, q, p, ops);
-    if (basic) return basic;
-    // Extra checks for minus/div only
-    const minusDiv = ops.filter(o => o === 'minus' || o === 'div');
-    if (minusDiv.length) {
-      return checkOrdered(q, r, p, minusDiv) || checkOrdered(q, p, r, minusDiv);
-    }
-    return null;
+    return checkOrdered(p, q, r, ops) || checkOrdered(r, q, p, ops);
   }
   function findSolution(ops) {
     const n = board.length;
@@ -1958,7 +1946,10 @@
       const horizontal = Math.random() < 0.5;
       const row = horizontal ? rnd(0, gridSize - 1) : rnd(0, gridSize - 3);
       const col = horizontal ? rnd(0, gridSize - 3) : rnd(0, gridSize - 1);
-      const ordered = Math.random() < 0.5 ? triple : [...triple].reverse();
+      // Only reverse for plus/mult (commutative) — minus/div must stay in x OP y = z order
+      const op = diff.ops[rnd(0, diff.ops.length - 1)];
+      const canReverse = op === 'plus' || op === 'mult';
+      const ordered = (canReverse && Math.random() < 0.5) ? [...triple].reverse() : triple;
       for (let i = 0; i < 3; i++) {
         const r = horizontal ? row : row + i;
         const c = horizontal ? col + i : col;
@@ -1975,7 +1966,10 @@
       const horizontal = Math.random() < 0.5;
       const row = horizontal ? rnd(0, gridSize - 1) : rnd(0, gridSize - 3);
       const col = horizontal ? rnd(0, gridSize - 3) : rnd(0, gridSize - 1);
-      const ordered = Math.random() < 0.5 ? triple : [...triple].reverse();
+      // Only reverse for plus/mult (commutative) — minus/div must stay in order
+      const op = diff.ops[rnd(0, diff.ops.length - 1)];
+      const canReverse = op === 'plus' || op === 'mult';
+      const ordered = (canReverse && Math.random() < 0.5) ? [...triple].reverse() : triple;
       for (let i = 0; i < 3; i++) {
         const r = horizontal ? row : row + i;
         const c = horizontal ? col + i : col;
