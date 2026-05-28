@@ -1842,21 +1842,22 @@
   }
 
   // Valid equation patterns for tiles [p, q, r] in order:
-  // Result must be at the START or END of the three tiles — never in the middle.
-  // This allows natural reads like:
-  //   [9,6,3] → 9-6=3 ✓ (result at end)
-  //   [3,6,9] → 9-6=3 backward ✓ (result at start)
-  //   [3,9,6] → 9-6=3 where result(3) is first, big(9) is middle ✓ (result at start, q OP r = p)
-  //   [4,8,4] → 8-4=4: result(4) is last ✓ — this IS valid math, accept it
-  // The only thing we reject is result in the MIDDLE position (tile q is the result):
-  //   p OP r = q would put result in middle — we don't check this
+  // For ALL ops: result at end or start reading the line naturally
+  //   p OP q = r  (forward)
+  //   r OP q = p  (backward)
+  // For MINUS and DIV only: big number can be in middle position as first operand
+  //   q OP r = p  (e.g. [3,9,6] → 9-6=3, [4,20,5] → 20÷5=4)
+  //   q OP p = r  (e.g. [6,9,3] → 9-6=3 reading other way)
+  // We never allow result in middle (p OP r = q) for any operation.
   function checkEquation(p, q, r, ops) {
-    return (
-      checkOrdered(p, q, r, ops) ||  // p OP q = r  (result at end)
-      checkOrdered(r, q, p, ops) ||  // r OP q = p  (result at start, reading backward)
-      checkOrdered(q, r, p, ops) ||  // q OP r = p  (result at start, e.g. [3,9,6] → 9-6=3)
-      checkOrdered(q, p, r, ops)     // q OP p = r  (result at end, operands swapped)
-    );
+    const basic = checkOrdered(p, q, r, ops) || checkOrdered(r, q, p, ops);
+    if (basic) return basic;
+    // Extra checks for minus/div only
+    const minusDiv = ops.filter(o => o === 'minus' || o === 'div');
+    if (minusDiv.length) {
+      return checkOrdered(q, r, p, minusDiv) || checkOrdered(q, p, r, minusDiv);
+    }
+    return null;
   }
   function findSolution(ops) {
     const n = board.length;
