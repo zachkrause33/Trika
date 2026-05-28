@@ -2862,19 +2862,22 @@
 
   async function createGroup(name) {
     const code = genGroupCode();
-    const binId = await getOrCreateBin(`group-${code}`, {
-      name, code,
-      daily: {},
-      alltime: []
-    });
-    // Store binId mapping
-    const ids = getBinIds();
-    ids[`group-${code}`] = binId;
-    saveBinIds(ids);
-    const group = { name, code, binId };
-    addMyGroup(group);
-    showToast(`Board "${name}" created!`);
-    openGroupView(code, name);
+    const initialData = { name, code, daily: {}, alltime: [] };
+    try {
+      const binId = await jsonbinCreate(`trika-group-${code}`, initialData);
+      // Save binId mapping locally
+      const ids = getBinIds();
+      ids[`group-${code}`] = binId;
+      saveBinIds(ids);
+      // Save to my groups with binId included
+      const group = { name, code, binId };
+      addMyGroup(group);
+      showToast(`Board "${name}" created!`);
+      renderGroupsHome();
+      openGroupView(code, name);
+    } catch(e) {
+      showToast('Could not create board — check connection');
+    }
   }
 
   async function searchGroups(query) {
@@ -2901,6 +2904,12 @@
   }
 
   async function joinGroup(group) {
+    // Save binId locally so this device can load the board
+    if (group.binId) {
+      const ids = getBinIds();
+      ids[`group-${group.code}`] = group.binId;
+      saveBinIds(ids);
+    }
     addMyGroup(group);
     showToast(`Joined "${group.name}"!`);
     renderGroupsHome();
@@ -2972,7 +2981,11 @@
 
   async function shareGroup() {
     if (!lbCurrentGroup) return;
-    const url = `https://playtrika.com?join=${lbCurrentGroup.code}`;
+    const ids = getBinIds();
+    const binId = ids[`group-${lbCurrentGroup.code}`];
+    if (!binId) { showToast('Board not ready yet — try again'); return; }
+    // Embed both code AND binId so any device can join without prior knowledge
+    const url = `https://playtrika.com?join=${lbCurrentGroup.code}&bid=${binId}`;
     const text = `Join my Trika board "${lbCurrentGroup.name}" and compete for the top score!\n\n${url}`;
     if (navigator.share) {
       try {
@@ -2988,29 +3001,41 @@
     }
   }
 
-  // Deep link: auto-join group if ?join=TRK-XXX is in the URL
+  // Deep link: auto-join group if ?join=TRK-XXX&bid=BINID is in the URL
   async function checkDeepLink() {
     const params = new URLSearchParams(window.location.search);
     const joinCode = params.get('join');
+    const binId = params.get('bid');
     if (!joinCode) return;
-    // Clean the URL so it doesn't re-trigger on refresh
+    // Clean the URL immediately so it doesn't re-trigger on refresh
     window.history.replaceState({}, '', window.location.pathname);
-    // Look up the group
+    // If binId came in the URL, save it locally so this device can use it
+    if (binId) {
+      const ids = getBinIds();
+      const binKey = `group-${joinCode.toUpperCase()}`;
+      if (!ids[binKey]) {
+        ids[binKey] = binId;
+        saveBinIds(ids);
+      }
+    }
+    // Now look up the group using the (now locally saved) binId
     const ids = getBinIds();
     const binKey = `group-${joinCode.toUpperCase()}`;
-    if (!ids[binKey]) {
-      showToast(`Board code ${joinCode} not found`);
+    const resolvedBinId = ids[binKey];
+    if (!resolvedBinId) {
+      showToast('Board not found — ask the creator to reshare the link');
       return;
     }
     try {
-      const data = await jsonbinGet(ids[binKey]);
-      const group = { name: data.name, code: data.code, binId: ids[binKey] };
+      const data = await jsonbinGet(resolvedBinId);
+      const group = { name: data.name, code: data.code, binId: resolvedBinId };
       const myGroups = getMyGroups();
       if (!myGroups.find(g => g.code === group.code)) {
         addMyGroup(group);
-        showToast(`Joined "${group.name}"! Submit your score after playing.`);
+        // Show a welcome toast after a short delay so game loads first
+        setTimeout(() => showToast(`Joined "${group.name}"! Play a game then submit your score.`), 1200);
       } else {
-        showToast(`You're already in "${group.name}"!`);
+        setTimeout(() => showToast(`You're already in "${group.name}"!`), 1200);
       }
     } catch(e) {
       showToast('Could not join board — try again');
