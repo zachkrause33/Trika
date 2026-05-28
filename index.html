@@ -1634,12 +1634,11 @@
     <h1 style="font-size: 32px; margin-bottom: 4px;">Leaderboards</h1>
     <div class="tagline" style="margin-bottom: 14px;">daily & all-time rankings</div>
 
-    <!-- Tab row: My Runs / Daily / All-Time / Groups -->
+    <!-- Tab row: My Runs / Daily / All-Time -->
     <div class="lb-tabs" id="lb-tabs">
       <div class="lb-tab active" data-tab="mine">My Runs</div>
       <div class="lb-tab" data-tab="daily">Daily</div>
       <div class="lb-tab" data-tab="alltime">All-Time</div>
-      <div class="lb-tab" data-tab="groups">Groups</div>
     </div>
 
     <!-- My runs list -->
@@ -1655,53 +1654,17 @@
     <div id="lb-panel-daily" class="lb-panel hide">
       <div class="lb-global-status" id="lb-daily-status">Loading...</div>
       <div class="lb-list" id="lb-list-daily"></div>
-      <button class="secondary full" id="btn-submit-daily" style="margin-top: 10px;">Submit my score</button>
+      <button class="primary full" id="btn-submit-daily" style="margin-top: 10px;">Submit my score</button>
     </div>
 
     <!-- Global all-time list -->
     <div id="lb-panel-alltime" class="lb-panel hide">
       <div class="lb-global-status" id="lb-alltime-status">Loading...</div>
       <div class="lb-list" id="lb-list-alltime"></div>
-      <button class="secondary full" id="btn-submit-alltime" style="margin-top: 10px;">Submit my score</button>
+      <button class="primary full" id="btn-submit-alltime" style="margin-top: 10px;">Submit my score</button>
     </div>
 
-    <!-- Groups panel -->
-    <div id="lb-panel-groups" class="lb-panel hide">
-
-      <!-- Home: join + create forms -->
-      <div id="lb-groups-home">
-        <div class="lb-my-groups" id="lb-my-groups"></div>
-
-        <div class="lb-form-title" style="font-size:18px; margin-bottom:8px;">Join a board</div>
-        <input type="text" id="input-join-query" placeholder="Board name or code (e.g. TRK-492)" />
-        <button class="primary full" id="btn-join-submit" style="margin-top: 8px;">Search</button>
-        <div class="lb-list" id="lb-join-results" style="margin-top: 10px;"></div>
-
-        <div style="border-top: 1px solid var(--line); margin: 16px 0;"></div>
-
-        <div class="lb-form-title" style="font-size:18px; margin-bottom:8px;">Create a board</div>
-        <input type="text" id="input-group-name" placeholder="Board name (e.g. Game Night)" maxlength="30" />
-        <button class="primary full" id="btn-create-submit" style="margin-top: 8px;">Create</button>
-      </div>
-
-      <!-- Group board view — completely separate, hidden by default -->
-      <div id="lb-group-view" style="display:none;">
-        <div class="lb-group-header">
-          <div class="lb-group-name" id="lb-group-view-name"></div>
-          <div class="lb-group-code" id="lb-group-view-code"></div>
-        </div>
-        <div class="lb-sub-tabs">
-          <div class="lb-sub-tab active" data-grouptab="daily">Today</div>
-          <div class="lb-sub-tab" data-grouptab="alltime">All-Time</div>
-        </div>
-        <div class="lb-list" id="lb-group-list"></div>
-        <div class="lb-auto-submit-note">✓ Your best score auto-submits after each game</div>
-        <button class="secondary full" id="btn-share-group" style="margin-top: 10px;">📤 Invite friends</button>
-        <button class="secondary full" id="btn-group-back" style="margin-top: 6px;">← Back to boards</button>
-      </div>
-    </div>
-
-    <button class="primary full" id="btn-lb-close" style="margin-top: 12px;">Back</button>
+    <button class="secondary full" id="btn-lb-close" style="margin-top: 12px;">Back</button>
   </div>
 
   <!-- Name entry overlay -->
@@ -2356,8 +2319,6 @@
       }, 700);
     }
     refreshPB();
-    // Auto-submit to all joined groups silently
-    autoSubmitToGroups();
     // Longer delay so the player has time to see the missed answer
     setTimeout(() => {
       document.getElementById('gameover').classList.remove('hide');
@@ -2696,12 +2657,11 @@
     document.querySelectorAll('#lb-tabs .lb-tab').forEach(t => {
       t.classList.toggle('active', t.dataset.tab === tab);
     });
-    ['mine','daily','alltime','groups'].forEach(p => {
+    ['mine','daily','alltime'].forEach(p => {
       document.getElementById(`lb-panel-${p}`).classList.toggle('hide', p !== tab);
     });
     if (tab === 'daily') loadGlobalDaily();
     if (tab === 'alltime') loadGlobalAllTime();
-    if (tab === 'groups') renderGroupsHome();
   }
 
   // ---- My Runs panel ----
@@ -2786,14 +2746,15 @@
       list.innerHTML = '<div class="lb-empty-global">No scores yet — be the first!</div>';
       return;
     }
-    const top10 = scores.slice(0, 10);
-    list.innerHTML = top10.map((s, i) => {
+    const top25 = scores.slice(0, 25);
+    list.innerHTML = top25.map((s, i) => {
       const rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
       const isYou = s.name === playerName && playerName;
       const milestone = highestMilestoneReached(s.found || 0);
       const milestoneStr = milestone ? `${milestone.emoji} ` : '';
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1;
       return `<div class="lb-row-global ${rankClass}">
-        <div class="rank">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i+1}</div>
+        <div class="rank">${medal}</div>
         <div class="player-info">
           <div class="player-name">${isYou ? '⭐ ' : ''}${milestoneStr}${s.name}</div>
           <div class="player-meta">${s.found || 0} found · Level ${s.level || 1}</div>
@@ -2801,11 +2762,11 @@
         <div class="player-score">${s.score.toLocaleString()}</div>
       </div>`;
     }).join('');
-    // Show your rank if outside top 10
+    // Show your rank if outside top 25
     if (playerName) {
       const yourIdx = scores.findIndex(s => s.name === playerName);
-      if (yourIdx >= 10) {
-        list.innerHTML += `<div class="lb-your-rank">You're #${yourIdx+1} of ${scores.length}</div>`;
+      if (yourIdx >= 25) {
+        list.innerHTML += `<div class="lb-your-rank">You're #${yourIdx + 1} of ${scores.length}</div>`;
       }
     }
   }
@@ -3136,7 +3097,7 @@
     shareResult(stats);
   });
 
-  // Leaderboard tabs
+  // Leaderboard
   document.getElementById('btn-leaderboard').addEventListener('click', openLeaderboard);
   document.getElementById('btn-view-leaderboard').addEventListener('click', openLeaderboard);
   document.getElementById('btn-lb-close').addEventListener('click', closeLeaderboard);
@@ -3177,63 +3138,6 @@
   document.getElementById('input-player-name').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('btn-name-submit').click();
   });
-
-  // Groups
-  // Groups — join
-  document.getElementById('btn-join-submit').addEventListener('click', async () => {
-    const query = document.getElementById('input-join-query').value.trim();
-    if (!query) { showToast('Enter a name or code'); return; }
-    document.getElementById('lb-join-results').innerHTML = '<div class="lb-empty-global">Searching...</div>';
-    const results = await searchGroups(query);
-    if (!results.length) {
-      document.getElementById('lb-join-results').innerHTML = '<div class="lb-empty-global">No boards found. Check the name or code.</div>';
-      return;
-    }
-    document.getElementById('lb-join-results').innerHTML = results.map((g, i) =>
-      `<div class="lb-group-item" id="join-result-${i}">
-        <div>
-          <div class="lb-group-item-name">${g.name}</div>
-          <div class="lb-group-item-code">${g.code}</div>
-        </div>
-        <div style="color: var(--accent); font-weight: 700; font-size: 13px;">Join →</div>
-      </div>`
-    ).join('');
-    results.forEach((g, i) => {
-      document.getElementById(`join-result-${i}`).addEventListener('click', () => joinGroup(g));
-    });
-  });
-  document.getElementById('input-join-query').addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('btn-join-submit').click();
-  });
-
-  // Groups — create
-  document.getElementById('btn-create-submit').addEventListener('click', async () => {
-    const name = document.getElementById('input-group-name').value.trim();
-    if (!name) { showToast('Enter a board name'); return; }
-    showToast('Creating...');
-    await createGroup(name);
-  });
-  document.getElementById('input-group-name').addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('btn-create-submit').click();
-  });
-
-  document.getElementById('btn-group-back').addEventListener('click', () => {
-    lbCurrentGroup = null;
-    renderGroupsHome();
-  });
-
-  document.getElementById('btn-share-group').addEventListener('click', shareGroup);
-
-  // Group sub-tabs (today / all-time)
-  document.querySelectorAll('[data-grouptab]').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('[data-grouptab]').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      lbGroupSubTab = tab.dataset.grouptab;
-      if (lbCurrentGroup) loadGroupBoard(lbCurrentGroup.code, lbGroupSubTab);
-    });
-  });
-
   // Initial load
   refreshPB();
   checkDeepLink();
