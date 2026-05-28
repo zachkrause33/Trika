@@ -59,16 +59,27 @@
     --op-mult:  #d946ef;
     --op-div:   #f59e0b;
 
-    /* Tile magnitude tints — subtle so they encode without screaming */
-    --tile-1: #fffbed; /* tiny: warm cream */
-    --tile-2: #fef3c7; /* small: butter */
-    --tile-3: #fde8b8; /* low-mid: pale apricot */
-    --tile-4: #fed7aa; /* mid: peach */
-    --tile-5: #fdba74; /* mid-high: warm peach */
-    --tile-6: #fb923c; /* high-mid: coral peach */
-    --tile-7: #fcb47e; /* high: light coral */
-    --tile-8: #f59e6e; /* higher: coral */
-    --tile-9: #e8825d; /* highest: deep coral */
+    /* Tile magnitude tints — warm cream through orange/red into cool purple/blue/green */
+    --tile-1:  #fffbed; /* cream */
+    --tile-2:  #fef3c7; /* butter */
+    --tile-3:  #fde8b8; /* pale apricot */
+    --tile-4:  #fed7aa; /* peach */
+    --tile-5:  #fdba74; /* warm peach */
+    --tile-6:  #fb923c; /* coral orange */
+    --tile-7:  #f97316; /* bright orange */
+    --tile-8:  #ea580c; /* deep orange */
+    --tile-9:  #c2410c; /* burnt orange */
+    --tile-10: #dc2626; /* red */
+    --tile-11: #b91c1c; /* deep red */
+    --tile-12: #9f1239; /* crimson */
+    --tile-13: #86198f; /* purple-magenta */
+    --tile-14: #7c3aed; /* violet */
+    --tile-15: #4f46e5; /* deep indigo */
+    --tile-16: #1d4ed8; /* navy blue */
+    --tile-17: #0369a1; /* ocean blue */
+    --tile-18: #0f766e; /* teal */
+    --tile-19: #15803d; /* forest green */
+    --tile-20: #166534; /* deep green */
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -386,15 +397,26 @@
   .grid.size-5 .tile { font-size: 32px; }
 
   /* Magnitude tints - subtle warmth based on value 1-9 (extends gracefully for larger) */
-  .tile.mag-1 { background: var(--tile-1); }
-  .tile.mag-2 { background: var(--tile-2); }
-  .tile.mag-3 { background: var(--tile-3); }
-  .tile.mag-4 { background: var(--tile-4); }
-  .tile.mag-5 { background: var(--tile-5); }
-  .tile.mag-6 { background: var(--tile-6); }
-  .tile.mag-7 { background: var(--tile-7); color: #fff; }
-  .tile.mag-8 { background: var(--tile-8); color: #fff; }
-  .tile.mag-9 { background: var(--tile-9); color: #fff; }
+  .tile.mag-1  { background: var(--tile-1); }
+  .tile.mag-2  { background: var(--tile-2); }
+  .tile.mag-3  { background: var(--tile-3); }
+  .tile.mag-4  { background: var(--tile-4); }
+  .tile.mag-5  { background: var(--tile-5); }
+  .tile.mag-6  { background: var(--tile-6); color: #fff; }
+  .tile.mag-7  { background: var(--tile-7); color: #fff; }
+  .tile.mag-8  { background: var(--tile-8); color: #fff; }
+  .tile.mag-9  { background: var(--tile-9); color: #fff; }
+  .tile.mag-10 { background: var(--tile-10); color: #fff; }
+  .tile.mag-11 { background: var(--tile-11); color: #fff; }
+  .tile.mag-12 { background: var(--tile-12); color: #fff; }
+  .tile.mag-13 { background: var(--tile-13); color: #fff; }
+  .tile.mag-14 { background: var(--tile-14); color: #fff; }
+  .tile.mag-15 { background: var(--tile-15); color: #fff; }
+  .tile.mag-16 { background: var(--tile-16); color: #fff; }
+  .tile.mag-17 { background: var(--tile-17); color: #fff; }
+  .tile.mag-18 { background: var(--tile-18); color: #fff; }
+  .tile.mag-19 { background: var(--tile-19); color: #fff; }
+  .tile.mag-20 { background: var(--tile-20); color: #fff; }
 
   .tile:hover {
     filter: brightness(1.08);
@@ -1834,8 +1856,12 @@
   }
 
   function magnitudeClass(value) {
-    // Map any positive integer to a 1-9 magnitude class
-    const clamped = Math.max(1, Math.min(9, value));
+    // 1-5:  warm cream to peach
+    // 6-9:  coral orange to burnt orange
+    // 10-12: red to crimson
+    // 13-15: magenta to indigo
+    // 16-20: navy to deep green
+    const clamped = Math.max(1, Math.min(20, value));
     return `mag-${clamped}`;
   }
 
