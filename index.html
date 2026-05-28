@@ -1841,16 +1841,19 @@
     return null;
   }
 
-  // Check all six permutations of three tiles so any arrangement works
-  // e.g. [3,9,6] matches 9-6=3, [4,20,5] matches 20÷5=4
+  // Check if three tiles in order form a valid equation.
+  // Result can be at the END (a OP b = c) or at the START (c = a OP b, i.e. read in reverse).
+  // We never put the result in the middle — that would create confusing non-directional reads.
+  // Valid: [9,6,3] → 9-6=3 ✓  [3,6,9] → 9-6=3 reading right-to-left ✓
+  // Valid: [3,9,6] → reading right-to-left: 6 OP 9 = 3? No — but 6,9,3 reversed is 3 OP 9 = 6? No.
+  // Actually [3,9,6]: forward 3+9≠6, 3-9≠6, 3×9≠6, 3÷9≠6. Backward 6+9≠3, 6-9≠3(neg), 6×9≠3, 6÷9≠3. Not valid. Correct.
+  // [4,20,5]: forward 4+20≠5, 4-20≠5, 4×20≠5, 4÷20≠5. Backward 5+20≠4, 5-20≠4, 5×20≠4, 5÷20≠4. Not valid. Correct.
+  // [20,4,5]: forward 20÷4=5 ✓. Valid.
+  // [5,4,20]: backward read = [20,4,5] forward → 20÷4=5 ✓. Valid.
   function checkEquation(p, q, r, ops) {
     return (
-      checkOrdered(p, q, r, ops) ||  // p OP q = r  (left to right)
-      checkOrdered(r, q, p, ops) ||  // r OP q = p  (right to left)
-      checkOrdered(p, r, q, ops) ||  // p OP r = q  (result in middle)
-      checkOrdered(q, r, p, ops) ||  // q OP r = p  (result in middle, reversed)
-      checkOrdered(q, p, r, ops) ||  // q OP p = r  (first two swapped)
-      checkOrdered(r, p, q, ops)     // r OP p = q  (all reversed)
+      checkOrdered(p, q, r, ops) ||   // forward:  p OP q = r
+      checkOrdered(r, q, p, ops)      // backward: r OP q = p (same line read in reverse)
     );
   }
   function findSolution(ops) {
