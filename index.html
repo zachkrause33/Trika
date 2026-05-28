@@ -1842,17 +1842,20 @@
   }
 
   // Valid equation patterns for tiles [p, q, r] in order:
-  // The operator always sits between the two operands (middle tile position is NOT the operator —
-  // actually the equation reads as a natural sentence along the line):
-  //   Forward:  p OP q = r  (e.g. [4,4,8] → 4+4=8, [9,6,3] → 9-6=3, [20,5,4] → 20÷5=4)
-  //   Backward: r OP q = p  (same line read in reverse, e.g. [8,4,4] → 4+4=8 reading RTL)
-  // Result is always at one END. Never in the middle.
-  // [4,8,4] → 4 OP 8 = 4? No valid op. 4 OP 8 = 4? No. Correctly rejected.
-  // [3,9,6] → 3 OP 9 = 6? No. 6 OP 9 = 3? 6-9=-3≠3. Correctly rejected.
+  // Result must be at the START or END of the three tiles — never in the middle.
+  // This allows natural reads like:
+  //   [9,6,3] → 9-6=3 ✓ (result at end)
+  //   [3,6,9] → 9-6=3 backward ✓ (result at start)
+  //   [3,9,6] → 9-6=3 where result(3) is first, big(9) is middle ✓ (result at start, q OP r = p)
+  //   [4,8,4] → 8-4=4: result(4) is last ✓ — this IS valid math, accept it
+  // The only thing we reject is result in the MIDDLE position (tile q is the result):
+  //   p OP r = q would put result in middle — we don't check this
   function checkEquation(p, q, r, ops) {
     return (
-      checkOrdered(p, q, r, ops) ||  // forward:  p OP q = r
-      checkOrdered(r, q, p, ops)     // backward: r OP q = p
+      checkOrdered(p, q, r, ops) ||  // p OP q = r  (result at end)
+      checkOrdered(r, q, p, ops) ||  // r OP q = p  (result at start, reading backward)
+      checkOrdered(q, r, p, ops) ||  // q OP r = p  (result at start, e.g. [3,9,6] → 9-6=3)
+      checkOrdered(q, p, r, ops)     // q OP p = r  (result at end, operands swapped)
     );
   }
   function findSolution(ops) {
@@ -2358,6 +2361,8 @@
       busy = false;
       return;
     }
+    // Sort by position so equation reads naturally left-to-right or top-to-bottom
+    // Then check both forward and backward — player can tap in any order
     const sortedCells = [...selected].sort((a, b) => (a.r - b.r) || (a.c - b.c));
     const vals = sortedCells.map(s => board[s.r][s.c].value);
     const result = checkEquation(vals[0], vals[1], vals[2], diff.ops);
