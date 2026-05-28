@@ -1848,11 +1848,14 @@
   }
 
   function streakMultiplier(s) {
-    if (s >= 10) return 5;
-    if (s >= 7)  return 4;
-    if (s >= 5)  return 3;
-    if (s >= 3)  return 2;
-    return 1;
+    if (s < 3)  return 1;
+    if (s < 5)  return 2;
+    if (s < 7)  return 3;
+    if (s < 10) return 4;
+    if (s < 15) return 5;
+    if (s < 20) return 7;
+    if (s < 25) return 10;
+    return Math.floor(s / 2); // uncapped — grows with streak beyond 25
   }
 
   function magnitudeClass(value) {
@@ -1866,15 +1869,26 @@
   }
 
   // ============ EQUATION LOGIC ============
+  // Check if three values form a valid equation in order: a OP b = c
   function checkOrdered(a, b, c, ops) {
     if (ops.includes('plus')  && a + b === c) return { eq: `${a} + ${b} = ${c}`, op: 'plus' };
-    if (ops.includes('minus') && a - b === c && b > 0 && c > 0) return { eq: `${a} − ${b} = ${c}`, op: 'minus' };
+    if (ops.includes('minus') && a - b === c && c >= 0) return { eq: `${a} − ${b} = ${c}`, op: 'minus' };
     if (ops.includes('mult')  && a * b === c) return { eq: `${a} × ${b} = ${c}`, op: 'mult' };
-    if (ops.includes('div')   && b !== 0 && Number.isInteger(a / b) && a / b === c && b > 1) return { eq: `${a} ÷ ${b} = ${c}`, op: 'div' };
+    if (ops.includes('div')   && b !== 0 && b > 1 && Number.isInteger(a / b) && a / b === c) return { eq: `${a} ÷ ${b} = ${c}`, op: 'div' };
     return null;
   }
-  function checkEquation(first, middle, last, ops) {
-    return checkOrdered(first, middle, last, ops) || checkOrdered(last, middle, first, ops);
+
+  // Check all six permutations of three tiles so any arrangement works
+  // e.g. [3,9,6] matches 9-6=3, [4,20,5] matches 20÷5=4
+  function checkEquation(p, q, r, ops) {
+    return (
+      checkOrdered(p, q, r, ops) ||  // p OP q = r  (left to right)
+      checkOrdered(r, q, p, ops) ||  // r OP q = p  (right to left)
+      checkOrdered(p, r, q, ops) ||  // p OP r = q  (result in middle)
+      checkOrdered(q, r, p, ops) ||  // q OP r = p  (result in middle, reversed)
+      checkOrdered(q, p, r, ops) ||  // q OP p = r  (first two swapped)
+      checkOrdered(r, p, q, ops)     // r OP p = q  (all reversed)
+    );
   }
   function findSolution(ops) {
     const n = board.length;
