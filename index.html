@@ -2569,15 +2569,10 @@
   // ============ JSONBIN CONFIG ============
   const JSONBIN_KEY = '$2a$10$yDd21niqXkaX1MiteHDKOeYbzS7AlbeZ0MFdkSy34mEi0OiEf0N7C';
   const JSONBIN_BASE = 'https://api.jsonbin.io/v3';
-  const BINS = { daily: null, alltime: null, groups: null };
-  // These bin IDs get created on first run and stored in localStorage
-  function getBinIds() {
-    const stored = localStorage.getItem('trika-bin-ids');
-    return stored ? JSON.parse(stored) : {};
-  }
-  function saveBinIds(ids) {
-    localStorage.setItem('trika-bin-ids', JSON.stringify(ids));
-  }
+
+  // Hardcoded bin IDs — same for every device, no localStorage dependency
+  const DAILY_BIN_ID  = '6a18406fddf5aa59f76ff008';
+  const ALLTIME_BIN_ID = '6a18407cddf5aa59f76ff039';
 
   async function jsonbinGet(binId) {
     const res = await fetch(`${JSONBIN_BASE}/b/${binId}/latest`, {
@@ -2716,8 +2711,7 @@
     document.getElementById('lb-daily-status').textContent = 'Loading...';
     document.getElementById('lb-list-daily').innerHTML = '';
     try {
-      const binId = await getOrCreateBin('daily', { boards: {} });
-      const data = await jsonbinGet(binId);
+      const data = await jsonbinGet(DAILY_BIN_ID);
       const today = todayKey();
       const scores = (data.boards[today] || []).sort((a,b) => b.score - a.score);
       renderGlobalList('lb-list-daily', scores);
@@ -2732,8 +2726,7 @@
     document.getElementById('lb-alltime-status').textContent = 'Loading...';
     document.getElementById('lb-list-alltime').innerHTML = '';
     try {
-      const binId = await getOrCreateBin('alltime', { scores: [] });
-      const data = await jsonbinGet(binId);
+      const data = await jsonbinGet(ALLTIME_BIN_ID);
       const scores = (data.scores || []).sort((a,b) => b.score - a.score);
       renderGlobalList('lb-list-alltime', scores);
       document.getElementById('lb-alltime-status').textContent = `All-time · ${scores.length} player${scores.length !== 1 ? 's' : ''}`;
@@ -2775,25 +2768,23 @@
   }
 
   // ---- Submit score ----
-  function startSubmit(type, groupCode) {
+  function startSubmit(type) {
     const name = getPlayerName();
     if (!lastFinalStats || lastFinalStats.score === 0) {
       showToast('Play a game first!');
       return;
     }
     if (name) {
-      // Name already saved — submit directly
-      doSubmit(type, name, groupCode);
+      doSubmit(type, name);
     } else {
-      // Ask for name
-      lbPendingSubmit = { type, groupCode };
+      lbPendingSubmit = { type };
       document.getElementById('input-player-name').value = '';
       document.getElementById('lb-name-entry').classList.remove('hide');
       setTimeout(() => document.getElementById('input-player-name').focus(), 100);
     }
   }
 
-  async function doSubmit(type, name, groupCode) {
+  async function doSubmit(type, name) {
     showToast('Submitting...');
     const stats = lastFinalStats;
     const entry = {
@@ -2805,36 +2796,39 @@
     };
     try {
       if (type === 'daily') {
-        const binId = await getOrCreateBin('daily', { boards: {} });
-        const data = await jsonbinGet(binId);
+        const data = await jsonbinGet(DAILY_BIN_ID);
         const today = todayKey();
         if (!data.boards[today]) data.boards[today] = [];
-        // Replace if better, else add
         const existing = data.boards[today].findIndex(s => s.name === name);
         if (existing >= 0) {
           if (entry.score > data.boards[today][existing].score) {
             data.boards[today][existing] = entry;
+          } else {
+            showToast('Not your best today — keep playing!');
+            return;
           }
         } else {
           data.boards[today].push(entry);
         }
-        await jsonbinUpdate(binId, data);
+        await jsonbinUpdate(DAILY_BIN_ID, data);
         showToast('Score submitted!');
         loadGlobalDaily();
       } else if (type === 'alltime') {
-        const binId = await getOrCreateBin('alltime', { scores: [] });
-        const data = await jsonbinGet(binId);
+        const data = await jsonbinGet(ALLTIME_BIN_ID);
         const existing = data.scores.findIndex(s => s.name === name);
         if (existing >= 0) {
-          if (entry.score > data.scores[existing].score) data.scores[existing] = entry;
+          if (entry.score > data.scores[existing].score) {
+            data.scores[existing] = entry;
+          } else {
+            showToast('Not your all-time best — keep playing!');
+            return;
+          }
         } else {
           data.scores.push(entry);
         }
-        await jsonbinUpdate(binId, data);
+        await jsonbinUpdate(ALLTIME_BIN_ID, data);
         showToast('Score submitted!');
         loadGlobalAllTime();
-      } else if (type === 'group' && groupCode) {
-        await submitToGroup(groupCode, entry);
       }
     } catch(e) {
       showToast('Submit failed — try again');
@@ -3130,7 +3124,7 @@
     setPlayerName(name);
     document.getElementById('lb-name-entry').classList.add('hide');
     if (lbPendingSubmit) {
-      doSubmit(lbPendingSubmit.type, name, lbPendingSubmit.groupCode);
+      doSubmit(lbPendingSubmit.type, name);
       lbPendingSubmit = null;
     }
   });
