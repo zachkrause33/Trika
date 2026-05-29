@@ -1,0 +1,145 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef9f0"/>
+      <stop offset="100%" stop-color="#fdecd8"/>
+    </linearGradient>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#d946ef"/>
+    </linearGradient>
+    <linearGradient id="dotGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#d946ef"/>
+    </linearGradient>
+    <filter id="softShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#1a1a1a" flood-opacity="0.08"/>
+    </filter>
+    <filter id="tileShadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#1a1a1a" flood-opacity="0.15"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e8d9c4" stroke-width="0.5" opacity="0.4"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Board container -->
+  <rect x="50" y="65" width="480" height="500" rx="28" fill="white" filter="url(#softShadow)"/>
+
+  <!-- 4x4 grid of tiles matching the actual game colors -->
+  <!-- Tile helper: each tile is 96x96 with 10px gap, starting at x=70, y=85 -->
+
+  <!-- Row 1: cream(4), orange(7), deepOrange(3), peach(9) -->
+  <!-- [4] cream -->
+  <rect x="70" y="85" width="96" height="96" rx="14" fill="#fef3c7" filter="url(#tileShadow)"/>
+  <text x="118" y="146" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="#1a1a1a">4</text>
+
+  <!-- [7] bright orange -->
+  <rect x="176" y="85" width="96" height="96" rx="14" fill="#f97316" filter="url(#tileShadow)"/>
+  <text x="224" y="146" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="white">7</text>
+
+  <!-- [3] deep orange — highlighted (part of equation) -->
+  <rect x="282" y="85" width="96" height="96" rx="14" fill="#ea580c" filter="url(#tileShadow)" stroke="#ea580c" stroke-width="4"/>
+  <text x="330" y="146" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="white">3</text>
+
+  <!-- [9] coral orange -->
+  <rect x="388" y="85" width="96" height="96" rx="14" fill="#fb923c" filter="url(#tileShadow)"/>
+  <text x="436" y="146" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="white">9</text>
+
+  <!-- Row 2: red(11), cream(2), orange(6), purple(13) -->
+  <!-- [11] red -->
+  <rect x="70" y="191" width="96" height="96" rx="14" fill="#dc2626" filter="url(#tileShadow)"/>
+  <text x="118" y="252" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="38" fill="white">11</text>
+
+  <!-- [2] butter -->
+  <rect x="176" y="191" width="96" height="96" rx="14" fill="#fef3c7" filter="url(#tileShadow)"/>
+  <text x="224" y="252" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="#1a1a1a">2</text>
+
+  <!-- [6] coral — highlighted -->
+  <rect x="282" y="191" width="96" height="96" rx="14" fill="#f97316" filter="url(#tileShadow)" stroke="#ea580c" stroke-width="4"/>
+  <text x="330" y="252" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="white">6</text>
+
+  <!-- [13] purple-magenta -->
+  <rect x="388" y="191" width="96" height="96" rx="14" fill="#86198f" filter="url(#tileShadow)"/>
+  <text x="436" y="252" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="38" fill="white">13</text>
+
+  <!-- Row 3: peach(5), deepOrange(8), cream(1), orange(6) — highlighted -->
+  <!-- [5] warm peach -->
+  <rect x="70" y="297" width="96" height="96" rx="14" fill="#fdba74" filter="url(#tileShadow)"/>
+  <text x="118" y="358" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="#1a1a1a">5</text>
+
+  <!-- [8] deep orange -->
+  <rect x="176" y="297" width="96" height="96" rx="14" fill="#ea580c" filter="url(#tileShadow)"/>
+  <text x="224" y="358" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="white">8</text>
+
+  <!-- [1] cream -->
+  <rect x="282" y="297" width="96" height="96" rx="14" fill="#fffbed" filter="url(#tileShadow)"/>
+  <text x="330" y="358" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="#1a1a1a">1</text>
+
+  <!-- [3] highlighted — result of equation -->
+  <rect x="388" y="297" width="96" height="96" rx="14" fill="#ea580c" filter="url(#tileShadow)" stroke="#ea580c" stroke-width="4"/>
+  <text x="436" y="358" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="white">3</text>
+
+  <!-- Row 4: orange(7), indigo(14), cream(2), red(10) -->
+  <!-- [7] orange -->
+  <rect x="70" y="403" width="96" height="96" rx="14" fill="#f97316" filter="url(#tileShadow)"/>
+  <text x="118" y="464" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="white">7</text>
+
+  <!-- [14] violet -->
+  <rect x="176" y="403" width="96" height="96" rx="14" fill="#7c3aed" filter="url(#tileShadow)"/>
+  <text x="224" y="464" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="38" fill="white">14</text>
+
+  <!-- [2] butter -->
+  <rect x="282" y="403" width="96" height="96" rx="14" fill="#fef3c7" filter="url(#tileShadow)"/>
+  <text x="330" y="464" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="#1a1a1a">2</text>
+
+  <!-- [10] red -->
+  <rect x="388" y="403" width="96" height="96" rx="14" fill="#dc2626" filter="url(#tileShadow)"/>
+  <text x="436" y="464" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="38" fill="white">10</text>
+
+  <!-- Equation callout pill -->
+  <rect x="118" y="516" width="294" height="48" rx="24" fill="url(#brandGrad)"/>
+  <text x="265" y="547" text-anchor="middle" font-family="'Courier New',monospace" font-weight="700" font-size="20" fill="white" letter-spacing="3">9 − 6 = 3  ✓</text>
+
+  <!-- Right side brand -->
+  <!-- Triangle dots -->
+  <circle cx="726" cy="148" r="30" fill="url(#dotGrad)" filter="url(#glow)"/>
+  <circle cx="680" cy="222" r="30" fill="url(#dotGrad)" filter="url(#glow)"/>
+  <circle cx="772" cy="222" r="30" fill="url(#dotGrad)" filter="url(#glow)"/>
+
+  <!-- Trika wordmark -->
+  <text x="836" y="205" font-family="Georgia,serif" font-weight="700" font-size="100" fill="url(#brandGrad)" letter-spacing="-2">Trika</text>
+
+  <!-- Tagline -->
+  <text x="680" y="268" font-family="Georgia,serif" font-style="italic" font-size="26" fill="#92400e" opacity="0.75">three in a row, beat the clock</text>
+
+  <!-- Divider -->
+  <line x1="680" y1="296" x2="1148" y2="296" stroke="#e5d9c4" stroke-width="1.5"/>
+
+  <!-- Pills -->
+  <rect x="680" y="320" width="160" height="42" rx="21" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+  <text x="760" y="347" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#ea580c">+ − × ÷</text>
+
+  <rect x="854" y="320" width="120" height="42" rx="21" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+  <text x="914" y="347" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#ea580c">Free</text>
+
+  <rect x="988" y="320" width="130" height="42" rx="21" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+  <text x="1053" y="347" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#ea580c">No ads</text>
+
+  <!-- Description lines -->
+  <text x="680" y="412" font-family="Georgia,serif" font-size="24" fill="#44322a" opacity="0.85">Spot hidden equations in a grid.</text>
+  <text x="680" y="450" font-family="Georgia,serif" font-size="24" fill="#44322a" opacity="0.85">Beat the clock. Build your streak.</text>
+  <text x="680" y="488" font-family="Georgia,serif" font-size="24" fill="#44322a" opacity="0.85">Climb the global leaderboard.</text>
+
+  <!-- URL badge -->
+  <rect x="680" y="522" width="288" height="52" rx="26" fill="url(#brandGrad)"/>
+  <text x="824" y="554" text-anchor="middle" font-family="'Courier New',monospace" font-weight="700" font-size="20" fill="white" letter-spacing="1">playtrika.com</text>
+</svg>
