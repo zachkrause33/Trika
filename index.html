@@ -219,8 +219,15 @@
 
   /* Leaderboard */
   .lb-tabs{display:flex;gap:6px;margin-bottom:12px;}
-  .lb-tab{flex:1;text-align:center;padding:8px;border-radius:8px;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--ink-soft);background:var(--bg-card);border:1px solid var(--line);cursor:pointer;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;}
-  .lb-tab.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .lb-tab{flex:1;text-align:center;padding:8px 4px;border-radius:8px;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;line-height:1.2;border:none;}
+  .lb-tab[data-tab="mine"]{background:#e8e4de;color:#6b6558;}
+  .lb-tab[data-tab="daily"]{background:#fde8d8;color:#c2410c;}
+  .lb-tab[data-tab="alltime"]{background:#ede9fe;color:#7c3aed;}
+  .lb-tab[data-tab="groups"]{background:#dcfce7;color:#15803d;}
+  .lb-tab[data-tab="mine"].active{background:var(--ink);color:#fff;}
+  .lb-tab[data-tab="daily"].active{background:linear-gradient(135deg,var(--accent),#f97316);color:#fff;}
+  .lb-tab[data-tab="alltime"].active{background:linear-gradient(135deg,#7c3aed,#d946ef);color:#fff;}
+  .lb-tab[data-tab="groups"].active{background:linear-gradient(135deg,var(--good),#0284c7);color:#fff;}
   .lb-panel{} .lb-panel.hide{display:none;}
   .lb-list{max-height:320px;overflow-y:auto;}
   .lb-row-global{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px;background:var(--bg-card);border:1px solid var(--line-soft);}
@@ -523,10 +530,10 @@
       <div class="eq" id="f-missed-eq">—</div>
     </div>
     <div class="modal-buttons">
-      <button class="secondary" id="f-btn-share-result">📤 Share</button>
+      <button class="secondary" id="f-btn-share-result" style="background:var(--bg-deep);">📤 Share</button>
       <button class="primary" id="f-btn-again">Play again</button>
     </div>
-    <button class="secondary full" id="f-btn-submit-score" style="margin-top:6px;">Submit to leaderboard</button>
+    <button class="primary full" id="f-btn-submit-score" style="margin-top:6px;background:linear-gradient(135deg,#7c3aed,#d946ef);box-shadow:0 4px 14px rgba(124,58,237,0.35);">Submit to all leaderboards</button>
     <button class="secondary full" id="f-btn-view-leaderboard" style="margin-top:6px;">🏆 View best runs</button>
   </div>
 </div>
@@ -585,11 +592,12 @@
     <div id="f-lb-panel-groups" class="lb-panel hide">
       <div id="f-lb-groups-home">
         <div id="f-lb-my-groups" style="margin-bottom:12px;"></div>
-        <div style="font-family:'Fraunces',serif;font-weight:700;font-size:18px;margin-bottom:8px;">Join a board</div>
-        <input type="text" id="f-input-join-query" placeholder="Board name or code (e.g. TRK-492)" style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-family:'Inter',sans-serif;font-size:16px;background:var(--bg);color:var(--ink);box-sizing:border-box;" />
-        <button class="primary full" id="f-btn-join-submit" style="margin-top:8px;">Search</button>
-        <div id="f-lb-join-results" style="margin-top:10px;"></div>
-        <div style="border-top:1px solid var(--line);margin:16px 0;"></div>
+
+        <!-- Join via invite -->
+        <div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:16px;border:1px solid var(--line-soft);">
+          <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:var(--ink);margin-bottom:6px;">📨 Joining a board</div>
+          <div style="font-family:'Inter',sans-serif;font-size:13px;color:var(--ink-soft);line-height:1.5;">You need an invite link from the board creator. Ask them to open their board and tap <strong style="color:var(--ink);">📤 Invite friends</strong> — clicking the link will auto-join you instantly.</div>
+        </div>
         <div style="font-family:'Fraunces',serif;font-weight:700;font-size:18px;margin-bottom:8px;">Create a board</div>
         <input type="text" id="f-input-group-name" placeholder="Board name (e.g. Game Night)" maxlength="30" style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-family:'Inter',sans-serif;font-size:16px;background:var(--bg);color:var(--ink);box-sizing:border-box;" />
         <button class="primary full" id="f-btn-create-submit" style="margin-top:8px;">Create</button>
@@ -1406,6 +1414,9 @@ function dNameSubmit() {
 }
 async function dDoSubmit(name) {
   showToast('Submitting...');
+  const submitBtn = document.getElementById('d-btn-submit-score');
+  const lbBtn = document.getElementById('d-btn-lb-submit');
+  [submitBtn, lbBtn].forEach(b => { if(b) { b.textContent = 'Submitting...'; b.disabled = true; }});
   const entry = { name, score: dFinalStats.score, found: dFinalStats.found, level: dFinalStats.level, date: Date.now() };
   try {
     const data = await jsonbinGet(DAILY_BIN_ID);
@@ -1414,14 +1425,18 @@ async function dDoSubmit(name) {
     const existing = data.boards[today].findIndex(s => s.name===name);
     if (existing >= 0) {
       if (entry.score > data.boards[today][existing].score) data.boards[today][existing] = entry;
-      else { showToast('Not your best today — keep playing!'); return; }
+      else { showToast('Not your best today — keep playing!'); [submitBtn,lbBtn].forEach(b=>{if(b){b.textContent='Submit Score';b.disabled=false;}}); return; }
     } else {
       data.boards[today].push(entry);
     }
     await jsonbinUpdate(DAILY_BIN_ID, data);
-    showToast('Score submitted!');
+    showToast('✓ Score submitted!');
+    [submitBtn,lbBtn].forEach(b => { if(b) { b.textContent = '✓ Submitted'; b.disabled = true; }});
     openDailyLeaderboard();
-  } catch(e) { showToast('Submit failed — try again'); }
+  } catch(e) {
+    showToast('Submit failed — try again');
+    [submitBtn,lbBtn].forEach(b => { if(b) { b.textContent = 'Submit Score'; b.disabled = false; }});
+  }
 }
 
 // ============================================================
@@ -1451,7 +1466,7 @@ document.getElementById('f-btn-leaderboard').addEventListener('click', openFreeL
 document.getElementById('f-btn-view-leaderboard').addEventListener('click', () => { hideModal('gameover-free'); openFreeLeaderboard(); });
 document.getElementById('f-btn-share-result').addEventListener('click', () => fShareResult(fFinalStats));
 document.getElementById('f-btn-share-quick').addEventListener('click', () => { const s=fLoadStore(); const best=s.runs.reduce((b,r)=>r.score>b.score?r:b,{score:0,found:0,level:1}); if(!best.score){showToast('Play first!');return;} fShareResult(best); });
-document.getElementById('f-btn-submit-score').addEventListener('click', () => fStartSubmit('alltime'));
+document.getElementById('f-btn-submit-score').addEventListener('click', () => fStartSubmit('all'));
 document.getElementById('f-btn-lb-close').addEventListener('click', () => hideModal('leaderboard-free'));
 document.getElementById('f-btn-hint').addEventListener('click', fShowHint);
 
@@ -1727,21 +1742,71 @@ async function fLoadGlobalAllTime() {
 
 function fStartSubmit(type) {
   if(!fFinalStats||fFinalStats.score===0){showToast('Play a game first!');return;}
-  const nameKey=type==='daily'?'daily':'free';
+  // 'all' submits to daily + alltime + all groups
+  const nameKey = 'free';
   const name=getPlayerName(nameKey);
-  if(name){fDoSubmit(type,name);}
-  else{fPendingSubmit={type};document.getElementById('f-input-player-name').value='';document.getElementById('f-lb-name-entry').classList.remove('hide');setTimeout(()=>document.getElementById('f-input-player-name').focus(),100);}
+  if(name){ fDoSubmitAll(name); }
+  else{ fPendingSubmit={type:'all'}; document.getElementById('f-input-player-name').value=''; document.getElementById('f-lb-name-entry').classList.remove('hide'); setTimeout(()=>document.getElementById('f-input-player-name').focus(),100); }
+}
+
+async function fDoSubmitAll(name) {
+  const submitBtn = document.getElementById('f-btn-submit-score');
+  if (submitBtn) { submitBtn.textContent = 'Submitting...'; submitBtn.disabled = true; }
+  showToast('Submitting to all leaderboards...');
+
+  const entry = { name, score: fFinalStats.score, found: fFinalStats.found, level: fFinalStats.level, date: Date.now() };
+  let submitted = 0;
+  let errors = 0;
+
+  // Daily
+  try {
+    const data = await jsonbinGet(DAILY_BIN_ID);
+    const today = pacificDayKey();
+    if (!data.boards[today]) data.boards[today] = [];
+    const ex = data.boards[today].findIndex(s => s.name === name);
+    if (ex >= 0) { if (entry.score > data.boards[today][ex].score) data.boards[today][ex] = entry; }
+    else data.boards[today].push(entry);
+    await jsonbinUpdate(DAILY_BIN_ID, data);
+    submitted++;
+  } catch(e) { errors++; }
+
+  // All-time
+  try {
+    const data = await jsonbinGet(ALLTIME_BIN_ID);
+    const ex = data.scores.findIndex(s => s.name === name);
+    if (ex >= 0) { if (entry.score > data.scores[ex].score) data.scores[ex] = entry; }
+    else data.scores.push(entry);
+    await jsonbinUpdate(ALLTIME_BIN_ID, data);
+    submitted++;
+  } catch(e) { errors++; }
+
+  // All groups silently
+  await fAutoSubmitToGroups();
+
+  if (errors === 0) {
+    showToast(`✓ Submitted to ${submitted} leaderboard${submitted !== 1 ? 's' : ''}!`);
+    if (submitBtn) { submitBtn.textContent = '✓ Submitted'; submitBtn.disabled = true; }
+  } else {
+    showToast('Some submissions failed — try again');
+    if (submitBtn) { submitBtn.textContent = 'Submit to all leaderboards'; submitBtn.disabled = false; }
+  }
 }
 function fNameSubmit() {
   const name=document.getElementById('f-input-player-name').value.trim();
   if(!name){showToast('Enter a name first');return;}
-  const nameKey=fPendingSubmit&&fPendingSubmit.type==='daily'?'daily':'free';
-  setPlayerName(nameKey,name);
+  setPlayerName('free', name);
   document.getElementById('f-lb-name-entry').classList.add('hide');
-  if(fPendingSubmit){fDoSubmit(fPendingSubmit.type,name);fPendingSubmit=null;}
+  if(fPendingSubmit){
+    fDoSubmitAll(name);
+    fPendingSubmit=null;
+  }
 }
 async function fDoSubmit(type,name) {
+  // Show loading state immediately so player knows it's working
   showToast('Submitting...');
+  const submitBtn = type === 'daily' ? document.getElementById('f-btn-submit-daily') : document.getElementById('f-btn-submit-alltime');
+  if (submitBtn) { submitBtn.textContent = 'Submitting...'; submitBtn.disabled = true; }
+
   const entry={name,score:fFinalStats.score,found:fFinalStats.found,level:fFinalStats.level,date:Date.now()};
   try {
     if(type==='daily'){
@@ -1749,19 +1814,26 @@ async function fDoSubmit(type,name) {
       const today=pacificDayKey();
       if(!data.boards[today]) data.boards[today]=[];
       const ex=data.boards[today].findIndex(s=>s.name===name);
-      if(ex>=0){if(entry.score>data.boards[today][ex].score)data.boards[today][ex]=entry;else{showToast('Not your best today!');return;}}
+      if(ex>=0){if(entry.score>data.boards[today][ex].score)data.boards[today][ex]=entry;else{showToast('Not your best today!');if(submitBtn){submitBtn.textContent='Submit my score';submitBtn.disabled=false;}return;}}
       else data.boards[today].push(entry);
       await jsonbinUpdate(DAILY_BIN_ID,data);
-      showToast('Score submitted!');fLoadGlobalDaily();
+      showToast('✓ Score submitted!');
+      if(submitBtn){submitBtn.textContent='✓ Submitted';submitBtn.disabled=true;}
+      fLoadGlobalDaily();
     } else {
       const data=await jsonbinGet(ALLTIME_BIN_ID);
       const ex=data.scores.findIndex(s=>s.name===name);
-      if(ex>=0){if(entry.score>data.scores[ex].score)data.scores[ex]=entry;else{showToast('Not your all-time best!');return;}}
+      if(ex>=0){if(entry.score>data.scores[ex].score)data.scores[ex]=entry;else{showToast('Not your all-time best!');if(submitBtn){submitBtn.textContent='Submit my score';submitBtn.disabled=false;}return;}}
       else data.scores.push(entry);
       await jsonbinUpdate(ALLTIME_BIN_ID,data);
-      showToast('Score submitted!');fLoadGlobalAllTime();
+      showToast('✓ Score submitted!');
+      if(submitBtn){submitBtn.textContent='✓ Submitted';submitBtn.disabled=true;}
+      fLoadGlobalAllTime();
     }
-  } catch(e){showToast('Submit failed — try again');}
+  } catch(e){
+    showToast('Submit failed — try again');
+    if(submitBtn){submitBtn.textContent='Submit my score';submitBtn.disabled=false;}
+  }
 }
 
 // ============================================================
@@ -1822,8 +1894,6 @@ async function fSearchGroups(query) {
 function fRenderGroupsHome() {
   document.getElementById('f-lb-groups-home').style.display = '';
   document.getElementById('f-lb-group-view').style.display = 'none';
-  document.getElementById('f-lb-join-results').innerHTML = '';
-  document.getElementById('f-input-join-query').value = '';
   document.getElementById('f-input-group-name').value = '';
 
   const groups = fGetMyGroups();
@@ -1935,24 +2005,6 @@ function checkDeepLink() {
 }
 
 // Group event listeners
-document.getElementById('f-btn-join-submit').addEventListener('click', async () => {
-  const query = document.getElementById('f-input-join-query').value.trim();
-  if (!query) { showToast('Enter a name or code'); return; }
-  document.getElementById('f-lb-join-results').innerHTML = '<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:10px;">Searching...</div>';
-  const results = await fSearchGroups(query);
-  if (!results.length) { document.getElementById('f-lb-join-results').innerHTML = '<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:10px;">No boards found. Check the name or code.</div>'; return; }
-  document.getElementById('f-lb-join-results').innerHTML = results.map((g,i) =>
-    `<div id="join-res-${i}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:10px;border:1px solid var(--line-soft);background:var(--bg-card);margin-bottom:6px;cursor:pointer;">
-      <div><div style="font-family:'Inter',sans-serif;font-weight:700;">${g.name}</div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);">${g.code}</div></div>
-      <div style="color:var(--accent);font-weight:700;">Join →</div>
-    </div>`).join('');
-  results.forEach((g,i) => document.getElementById(`join-res-${i}`).addEventListener('click', () => {
-    if (g.binId) { const ids=fGetBinIds(); ids[`group-${g.code}`]=g.binId; fSaveBinIds(ids); }
-    fAddMyGroup(g); showToast(`Joined "${g.name}"!`); fRenderGroupsHome(); fOpenGroupView(g.code, g.name);
-  }));
-});
-document.getElementById('f-input-join-query').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('f-btn-join-submit').click(); });
-
 document.getElementById('f-btn-create-submit').addEventListener('click', async () => {
   const name = document.getElementById('f-input-group-name').value.trim();
   if (!name) { showToast('Enter a board name'); return; }
