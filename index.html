@@ -501,10 +501,10 @@
       <div class="eq" id="d-missed-eq">—</div>
     </div>
     <div class="modal-buttons">
-      <button class="secondary" id="d-btn-share-result">📤 Share</button>
-      <button class="primary" id="d-btn-submit-score">Submit Score</button>
+      <button class="secondary" id="d-btn-share-result" style="background:var(--bg-deep);">📤 Share</button>
+      <button class="primary" id="d-btn-submit-score" style="background:linear-gradient(135deg,var(--accent),#f97316);box-shadow:0 4px 14px rgba(234,88,12,0.35);">Submit Score</button>
     </div>
-    <button class="secondary full" id="d-btn-go-free" style="margin-top:6px;">Try Free Play →</button>
+    <button class="primary full" id="d-btn-go-free" style="margin-top:6px;background:linear-gradient(135deg,#7c3aed,#d946ef);box-shadow:0 4px 14px rgba(124,58,237,0.3);">Try Free Play →</button>
     <button class="secondary full" id="d-btn-view-lb" style="margin-top:6px;">🏆 View leaderboard</button>
   </div>
 </div>
@@ -609,11 +609,12 @@
           <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.8);margin-top:2px;" id="f-group-view-code"></div>
         </div>
         <div class="lb-sub-tabs" style="margin-bottom:10px;">
-          <div class="lb-sub-tab active" data-grouptab="daily">Today</div>
-          <div class="lb-sub-tab" data-grouptab="alltime">All-Time</div>
+          <div class="lb-sub-tab active" data-grouptab="daily">📅 Daily</div>
+          <div class="lb-sub-tab" data-grouptab="freeplay">🎮 Free Play</div>
+          <div class="lb-sub-tab" data-grouptab="alltime">🏆 All-Time</div>
         </div>
         <div class="lb-list" id="f-group-list"></div>
-        <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--good);padding:8px 0;">✓ Your best score auto-submits after each game</div>
+        <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--good);padding:8px 0;">✓ Daily & Free Play scores auto-submit after each game</div>
         <button class="secondary full" id="f-btn-share-group" style="margin-top:8px;">📤 Invite friends</button>
         <button class="secondary full" id="f-btn-group-back" style="margin-top:6px;">← Back to boards</button>
       </div>
@@ -1327,6 +1328,7 @@ function dGameOver() {
   const diff = difficultyFor(dFoundCount);
   dFinalStats = { score: dScore, found: dFoundCount, level: diff.level, ops: {...dOpsFound}, dateKey: pacificDayKey() };
   saveDailyResult(dFinalStats);
+  dAutoSubmitToGroups();
   showDailyResults(dFinalStats);
 }
 
@@ -1863,7 +1865,12 @@ async function jsonbinCreate(name, data) {
 
 async function fCreateGroup(name) {
   const code = genGroupCode();
-  const binId = await jsonbinCreate(`trika-group-${code}`, { name, code, daily: {}, alltime: [] });
+  const binId = await jsonbinCreate(`trika-group-${code}`, {
+    name, code,
+    daily: {},        // daily puzzle scores by date
+    freeplay: {},     // free play scores by date
+    alltime: []       // all-time free play best scores
+  });
   const ids = fGetBinIds();
   ids[`group-${code}`] = binId;
   fSaveBinIds(ids);
@@ -1929,14 +1936,20 @@ async function fLoadGroupBoard(code, tab) {
   list.innerHTML = '<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:16px;">Loading...</div>';
   try {
     const data = await jsonbinGet(binId);
+    const today = pacificDayKey();
     let scores = [];
     if (tab === 'daily') {
-      const today = pacificDayKey();
-      scores = (data.daily[today] || []).sort((a,b) => b.score-a.score);
+      scores = (data.daily && data.daily[today] || []).sort((a,b) => b.score-a.score);
+    } else if (tab === 'freeplay') {
+      scores = (data.freeplay && data.freeplay[today] || []).sort((a,b) => b.score-a.score);
     } else {
       scores = (data.alltime || []).sort((a,b) => b.score-a.score);
     }
-    if (!scores.length) { list.innerHTML = '<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:16px;">No scores yet — be the first!</div>'; return; }
+    if (!scores.length) {
+      const labels = { daily: "Today's Daily", freeplay: "Today's Free Play", alltime: 'All-Time Free Play' };
+      list.innerHTML = `<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:16px;">No ${labels[tab]} scores yet — be the first!</div>`;
+      return;
+    }
     renderGlobalList('f-group-list', scores, getPlayerName('free'));
   } catch(e) { list.innerHTML = '<div style="text-align:center;color:var(--bad);font-size:13px;padding:16px;">Could not load — try again</div>'; }
 }
@@ -1953,28 +1966,54 @@ async function fShareGroup() {
 }
 
 async function fAutoSubmitToGroups() {
+  // Auto-submit free play score to all groups
   const name = getPlayerName('free');
   if (!name || !fFinalStats || fFinalStats.score === 0) return;
   const groups = fGetMyGroups();
   if (!groups.length) return;
   const entry = { name, score: fFinalStats.score, found: fFinalStats.found, level: fFinalStats.level, date: Date.now() };
-  await Promise.allSettled(groups.map(g => fSubmitToGroup(g.code, entry, true)));
+  await Promise.allSettled(groups.map(g => fSubmitToGroup(g.code, entry, 'freeplay', true)));
 }
 
-async function fSubmitToGroup(code, entry, silent = false) {
+async function dAutoSubmitToGroups() {
+  // Auto-submit daily score to all groups
+  const name = getPlayerName('daily') || getPlayerName('free');
+  if (!name || !dFinalStats || dFinalStats.score === 0) return;
+  const groups = fGetMyGroups();
+  if (!groups.length) return;
+  const entry = { name, score: dFinalStats.score, found: dFinalStats.found, level: dFinalStats.level, date: Date.now() };
+  await Promise.allSettled(groups.map(g => fSubmitToGroup(g.code, entry, 'daily', true)));
+}
+
+async function fSubmitToGroup(code, entry, mode = 'freeplay', silent = false) {
   const ids = fGetBinIds();
   const binId = ids[`group-${code}`];
   if (!binId) return;
   try {
     const data = await jsonbinGet(binId);
     const today = pacificDayKey();
-    if (!data.daily[today]) data.daily[today] = [];
-    const di = data.daily[today].findIndex(s => s.name === entry.name);
-    if (di >= 0) { if (entry.score > data.daily[today][di].score) data.daily[today][di] = entry; else if (silent) return; }
-    else data.daily[today].push(entry);
-    const ai = data.alltime.findIndex(s => s.name === entry.name);
-    if (ai >= 0) { if (entry.score > data.alltime[ai].score) data.alltime[ai] = entry; }
-    else data.alltime.push(entry);
+
+    if (mode === 'daily') {
+      // Submit to daily scores
+      if (!data.daily) data.daily = {};
+      if (!data.daily[today]) data.daily[today] = [];
+      const di = data.daily[today].findIndex(s => s.name === entry.name);
+      if (di >= 0) { if (entry.score > data.daily[today][di].score) data.daily[today][di] = entry; else if (silent) return; }
+      else data.daily[today].push(entry);
+    } else {
+      // Submit to freeplay today scores
+      if (!data.freeplay) data.freeplay = {};
+      if (!data.freeplay[today]) data.freeplay[today] = [];
+      const fi = data.freeplay[today].findIndex(s => s.name === entry.name);
+      if (fi >= 0) { if (entry.score > data.freeplay[today][fi].score) data.freeplay[today][fi] = entry; else if (silent) return; }
+      else data.freeplay[today].push(entry);
+      // Also update all-time
+      if (!data.alltime) data.alltime = [];
+      const ai = data.alltime.findIndex(s => s.name === entry.name);
+      if (ai >= 0) { if (entry.score > data.alltime[ai].score) data.alltime[ai] = entry; }
+      else data.alltime.push(entry);
+    }
+
     await jsonbinUpdate(binId, data);
     if (!silent) { showToast('Score submitted!'); fLoadGroupBoard(code, fGroupSubTab); }
   } catch(e) { if (!silent) showToast('Submit failed — try again'); }
