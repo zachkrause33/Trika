@@ -1640,15 +1640,22 @@ function fShowHint() {
   if(fBusy) return;
   if(fHints<=0){showToast('No hints left');return;}
   if(fTimer<=FREE_HINT_COST+1){showToast('Not enough time');return;}
-  fHints--;fTimer=Math.max(0,fTimer-FREE_HINT_COST);
-  const sol=fLastSolution||fEngine.findSolution(difficultyFor(fFoundCount).ops);
-  if(sol){
-    sol.cells.forEach(s=>{
-      const el=document.querySelector(`#f-grid .tile[data-r="${s.r}"][data-c="${s.c}"]`);
-      if(el){el.classList.add('hint-glow');setTimeout(()=>el.classList.remove('hint-glow'),1200);}
-    });
-  } else { showToast('No hint available'); }
+  fHints--;
+  fTimer=Math.max(0,fTimer-FREE_HINT_COST);
+  // Render first to update hint count and timer, THEN add glow
   fRender();
+  const sol = fLastSolution || fEngine.findSolution(difficultyFor(fFoundCount).ops);
+  if(sol){
+    // Only highlight the first tile as a hint — not all three
+    const s = sol.cells[0];
+    const el = document.querySelector(`#f-grid .tile[data-r="${s.r}"][data-c="${s.c}"]`);
+    if(el){
+      el.classList.add('hint-glow');
+      setTimeout(()=>el.classList.remove('hint-glow'),1400);
+    }
+  } else {
+    showToast('No hint available');
+  }
 }
 
 function fGameOver() {
