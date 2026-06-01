@@ -650,8 +650,9 @@
 // ============================================================
 const JSONBIN_KEY = '$2a$10$yDd21niqXkaX1MiteHDKOeYbzS7AlbeZ0MFdkSy34mEi0OiEf0N7C';
 const JSONBIN_BASE = 'https://api.jsonbin.io/v3';
-const DAILY_BIN_ID   = '6a18406fddf5aa59f76ff008';
-const ALLTIME_BIN_ID = '6a18407cddf5aa59f76ff039';
+const DAILY_BIN_ID        = '6a18406fddf5aa59f76ff008'; // Free Play daily leaderboard
+const DAILY_PUZZLE_BIN_ID = '6a1da135ddf5aa59f7807c46'; // Daily puzzle leaderboard (separate)
+const ALLTIME_BIN_ID      = '6a18407cddf5aa59f76ff039'; // Free Play all-time leaderboard
 
 async function jsonbinGet(binId) {
   const r = await fetch(`${JSONBIN_BASE}/b/${binId}/latest`, {
@@ -1396,7 +1397,7 @@ async function openDailyLeaderboard() {
   document.getElementById('d-lb-status').textContent = 'Loading...';
   document.getElementById('d-lb-list').innerHTML = '';
   try {
-    const data = await jsonbinGet(DAILY_BIN_ID);
+    const data = await jsonbinGet(DAILY_PUZZLE_BIN_ID);
     const today = pacificDayKey();
     const scores = (data.boards[today] || []).sort((a,b) => b.score-a.score);
     renderGlobalList('d-lb-list', scores, getPlayerName('daily'));
@@ -1427,7 +1428,7 @@ async function dDoSubmit(name) {
   [submitBtn, lbBtn].forEach(b => { if(b) { b.textContent = 'Submitting...'; b.disabled = true; }});
   const entry = { name, score: dFinalStats.score, found: dFinalStats.found, level: dFinalStats.level, date: Date.now() };
   try {
-    const data = await jsonbinGet(DAILY_BIN_ID);
+    const data = await jsonbinGet(DAILY_PUZZLE_BIN_ID);
     const today = pacificDayKey();
     if (!data.boards[today]) data.boards[today] = [];
     const existing = data.boards[today].findIndex(s => s.name===name);
@@ -1437,7 +1438,7 @@ async function dDoSubmit(name) {
     } else {
       data.boards[today].push(entry);
     }
-    await jsonbinUpdate(DAILY_BIN_ID, data);
+    await jsonbinUpdate(DAILY_PUZZLE_BIN_ID, data);
     showToast('✓ Score submitted!');
     [submitBtn,lbBtn].forEach(b => { if(b) { b.textContent = '✓ Submitted'; b.disabled = true; }});
     openDailyLeaderboard();
