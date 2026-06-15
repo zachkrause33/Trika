@@ -33,13 +33,13 @@
     --tile-11:#b91c1c;--tile-12:#9f1239;--tile-13:#86198f;--tile-14:#7c3aed;--tile-15:#4f46e5;
     --tile-16:#1d4ed8;--tile-17:#0369a1;--tile-18:#0f766e;--tile-19:#15803d;--tile-20:#166534;
   }
-  html,body{background:var(--bg);color:var(--ink);font-family:'Fraunces',Georgia,serif;min-height:100vh;min-height:100dvh;overflow-x:hidden;overscroll-behavior:none;-webkit-user-select:none;user-select:none;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--ink);font-family:'Fraunces',Georgia,serif;min-height:100%;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;-webkit-user-select:none;user-select:none;margin:0;padding:0;}
   body{padding:12px 12px 20px;box-sizing:border-box;}
   .app{max-width:480px;margin:0 auto;position:relative;z-index:2;}
   .hide{display:none!important;}
 
   /* ===== LANDING ===== */
-  #landing{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 0 40px;}
+  #landing{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 0 40px;}
   .landing-brand{text-align:center;margin-bottom:32px;}
   .landing-brand .logo{font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;font-weight:700;font-size:64px;line-height:1;background:linear-gradient(135deg,#ea580c,#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
   .landing-brand .dots{display:flex;gap:10px;justify-content:center;margin-bottom:10px;}
@@ -270,29 +270,8 @@
   .lb-row .date{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);}
   .lb-empty{text-align:center;color:var(--ink-soft);font-size:13px;padding:20px 0;}
 
-  /* Intro modal */
-  #intro-daily,#intro-free{background:#fef9f0;align-items:stretch;justify-content:flex-start;padding:0;}
-  #intro-daily .modal-card,#intro-free .modal-card{width:100%;max-width:480px;margin:0 auto;padding:40px 24px 32px;min-height:100dvh;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;background:transparent;box-shadow:none;}
-  .intro-top{display:flex;flex-direction:column;align-items:center;text-align:center;}
-  .intro-top h1{font-size:64px;margin-bottom:4px;line-height:1;}
-  .example-pair{display:flex;gap:10px;justify-content:center;margin:0;}
-  .example-board{background:var(--bg-card);border:1px solid var(--line);border-radius:12px;padding:10px;flex:1;max-width:155px;box-shadow:0 4px 16px rgba(26,26,26,0.06);}
-  .example-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
-  .example-tile{aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:22px;background:var(--tile-1);}
-  .example-tile.hi{border-color:var(--accent);box-shadow:0 0 0 2px rgba(234,88,12,0.3);animation:highlightPulse 2.4s ease infinite;}
   @keyframes highlightPulse{0%,100%{box-shadow:0 0 0 2px rgba(234,88,12,0.3);transform:scale(1)}50%{box-shadow:0 0 0 5px rgba(234,88,12,0);transform:scale(1.04)}}
-  .example-caption{text-align:center;margin-top:8px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;color:var(--good);letter-spacing:0.05em;}
-  .intro-steps{margin:0;text-align:left;}
-  .intro-step{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}
-  .intro-step .num{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#d946ef);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-  .intro-step .text{font-family:'Inter',sans-serif;font-size:14px;color:var(--ink);line-height:1.45;}
-  .intro-step .text strong{color:var(--ink);}
-  .intro-step .ops{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
-  .intro-step .op-chip{padding:2px 8px;border-radius:4px;font-weight:700;font-size:12px;color:#fff;}
 
-  /* Mobile */
-  @media(max-width:430px){.intro-top h1{font-size:52px;}.example-board{max-width:130px;}.example-tile{font-size:19px;}}
-  @media(max-width:380px){.intro-top h1{font-size:40px;}.example-board{max-width:110px;padding:7px;}.example-tile{font-size:16px;}}
   @media(max-height:800px){body{padding:8px 10px 16px;}.strip .cell .v{font-size:18px;}}
 </style>
 </head>
@@ -726,15 +705,22 @@ function magnitudeClass(value) {
 }
 
 // Equation logic — shared between both modes
-function checkOrdered(a, b, c, ops) {
-  if (ops.includes('plus')  && a + b === c) return { eq: `${a} + ${b} = ${c}`, op: 'plus' };
-  if (ops.includes('minus') && a - b === c && c >= 0) return { eq: `${a} − ${b} = ${c}`, op: 'minus' };
-  if (ops.includes('mult')  && a * b === c) return { eq: `${a} × ${b} = ${c}`, op: 'mult' };
-  if (ops.includes('div')   && b !== 0 && b > 1 && Number.isInteger(a / b) && a / b === c) return { eq: `${a} ÷ ${b} = ${c}`, op: 'div' };
-  return null;
+// Checks both directions and all operations, returns the HIGHEST-VALUE valid match
+// (division > multiplication > subtraction > addition) so e.g. 2,2,4 resolves to
+// the multiplication/division reading rather than always defaulting to addition.
+function checkOrientation(a, b, c, ops) {
+  const matches = [];
+  if (ops.includes('div')   && b !== 0 && b > 1 && Number.isInteger(a / b) && a / b === c) matches.push({ eq: `${a} ÷ ${b} = ${c}`, op: 'div', priority: 4 });
+  if (ops.includes('mult')  && a * b === c) matches.push({ eq: `${a} × ${b} = ${c}`, op: 'mult', priority: 3 });
+  if (ops.includes('minus') && a - b === c && c >= 0) matches.push({ eq: `${a} − ${b} = ${c}`, op: 'minus', priority: 2 });
+  if (ops.includes('plus')  && a + b === c) matches.push({ eq: `${a} + ${b} = ${c}`, op: 'plus', priority: 1 });
+  return matches;
 }
 function checkEquation(p, q, r, ops) {
-  return checkOrdered(p, q, r, ops) || checkOrdered(r, q, p, ops);
+  const all = [...checkOrientation(p, q, r, ops), ...checkOrientation(r, q, p, ops)];
+  if (!all.length) return null;
+  all.sort((a, b) => b.priority - a.priority);
+  return { eq: all[0].eq, op: all[0].op };
 }
 
 function generateEquationTriple(ops, maxNum, rngFn) {
