@@ -3,31 +3,27 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Trika — three in a row, beat the clock</title>
+<title>Trika Numbers — spot hidden equations in a grid</title>
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://playtrika.com" />
-<meta property="og:title" content="Trika — three in a row, beat the clock" />
-<meta property="og:description" content="Spot equations hidden in the grid. Daily puzzle + free play. Free math puzzle game." />
+<meta property="og:url" content="https://playtrika.com/numbers" />
+<meta property="og:title" content="Trika Numbers — spot hidden equations in a grid" />
+<meta property="og:description" content="Scan the grid, find equations, beat the clock. Free math puzzle game." />
 <meta property="og:image" content="https://playtrika.com/og-image.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://playtrika.com/og-image.png" />
-<meta name="description" content="Spot equations hidden in the grid. Tap three tiles in a row or column, beat the clock. Free daily math puzzle." />
-<link rel="canonical" href="https://playtrika.com" />
+<meta name="description" content="Spot hidden equations in a number grid. Build your streak, beat the clock. Free, no account needed." />
+<link rel="canonical" href="https://playtrika.com/numbers" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%23ea580c'/><stop offset='100%25' stop-color='%23d946ef'/></linearGradient></defs><rect width='32' height='32' rx='6' fill='%23fef9f0'/><circle cx='16' cy='9' r='3.8' fill='url(%23g)'/><circle cx='9' cy='22' r='3.8' fill='url(%23g)'/><circle cx='23' cy='22' r='3.8' fill='url(%23g)'/></svg>" />
 <script async src="https://plausible.io/js/pa-r8dPXidL_Ce4WzoyxV94s.js"></script>
-<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,700&family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #fef9f0; --bg-deep: #f5ecd9; --bg-card: #ffffff;
-    --bg-tile: #ffffff; --bg-tile-hi: #fff4d6;
-    --line: #e8dcc1; --line-soft: #f0e8d4;
-    --ink: #1a1a1a; --ink-soft: #6b6558;
-    --accent: #ea580c; --accent-light: #fed7aa;
-    --good: #16a34a; --good-light: #bbf7d0; --bad: #dc2626; --warn: #ea580c;
-    --op-plus: #16a34a; --op-minus: #0284c7; --op-mult: #d946ef; --op-div: #f59e0b;
+    --bg:#fef9f0;--bg-deep:#f5ecd9;--bg-card:#ffffff;--bg-tile:#ffffff;
+    --line:#e8dcc1;--line-soft:#f0e8d4;--ink:#1a1a1a;--ink-soft:#6b6558;
+    --accent:#ea580c;--accent-light:#fed7aa;
+    --good:#16a34a;--bad:#dc2626;--warn:#ea580c;
+    --op-plus:#16a34a;--op-minus:#0284c7;--op-mult:#d946ef;--op-div:#f59e0b;
     --tile-1:#fffbed;--tile-2:#fef3c7;--tile-3:#fde8b8;--tile-4:#fed7aa;--tile-5:#fdba74;
     --tile-6:#fb923c;--tile-7:#f97316;--tile-8:#ea580c;--tile-9:#c2410c;--tile-10:#dc2626;
     --tile-11:#b91c1c;--tile-12:#9f1239;--tile-13:#86198f;--tile-14:#7c3aed;--tile-15:#4f46e5;
@@ -39,54 +35,53 @@
   .hide{display:none!important;}
 
   /* ===== LANDING ===== */
-  #landing{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 0 40px;}
-  .landing-brand{text-align:center;margin-bottom:32px;}
-  .landing-brand .logo{font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;font-weight:700;font-size:64px;line-height:1;background:linear-gradient(135deg,#ea580c,#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-  .landing-brand .dots{display:flex;gap:10px;justify-content:center;margin-bottom:10px;}
-  .landing-brand .dot{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#d946ef);}
-  .landing-brand .tagline{font-style:italic;font-size:16px;color:var(--ink-soft);}
-  .landing-cards{width:100%;display:flex;flex-direction:column;gap:12px;}
-  .landing-card{background:var(--bg-card);border:1.5px solid var(--line);border-radius:20px;padding:24px 20px;cursor:pointer;transition:all 0.2s;text-align:left;position:relative;overflow:hidden;}
-  .landing-card:active{transform:scale(0.98);}
-  .landing-card.daily{border-color:var(--accent);box-shadow:0 4px 20px rgba(234,88,12,0.12);}
-  .landing-card .card-badge{position:absolute;top:16px;right:16px;background:linear-gradient(135deg,var(--accent),#d946ef);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.1em;padding:4px 10px;border-radius:20px;}
-  .landing-card .card-badge.free{background:var(--bg-deep);color:var(--ink-soft);}
-  .landing-card .card-title{font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;font-weight:700;font-size:28px;line-height:1;margin-bottom:6px;background:linear-gradient(135deg,#ea580c,#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-  .landing-card .card-sub{font-style:italic;font-size:13px;color:var(--ink-soft);margin-bottom:12px;}
-  .landing-card .card-desc{font-family:'Inter',sans-serif;font-size:13px;color:var(--ink-soft);line-height:1.5;margin-bottom:14px;}
-  .landing-card .card-features{display:flex;gap:6px;flex-wrap:wrap;}
-  .landing-card .feat{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-soft);letter-spacing:0.05em;}
-  .landing-card .card-cta{margin-top:14px;width:100%;padding:14px;border-radius:12px;border:none;font-family:'Inter',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;}
-  .landing-card.daily .card-cta{background:linear-gradient(135deg,var(--accent),#f97316);color:#fff;box-shadow:0 4px 14px rgba(234,88,12,0.35);}
-  .landing-card.free .card-cta{background:var(--bg-deep);color:var(--ink);}
-  .daily-streak-note{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--good);letter-spacing:0.1em;margin-top:8px;text-align:center;}
-  .daily-played-note{text-align:center;padding:10px;background:var(--bg);border-radius:10px;margin-bottom:10px;}
-  .daily-played-note .score-big{font-family:'Fraunces',serif;font-weight:700;font-size:28px;color:var(--accent);}
-  .daily-played-note .sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-soft);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;}
+  #landing{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 0 40px;gap:24px;}
+  .landing-brand{text-align:center;}
+  .landing-dots{display:flex;gap:10px;justify-content:center;margin-bottom:12px;}
+  .landing-dot{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#d946ef);}
+  .landing-title{font-family:'Fraunces',serif;font-weight:700;font-size:56px;line-height:1;background:linear-gradient(135deg,#ea580c,#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+  .landing-sub{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--ink-soft);margin-bottom:6px;}
+  .landing-tagline{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);letter-spacing:0.1em;text-transform:uppercase;}
+  .landing-play{width:100%;}
+  .landing-play button{width:100%;padding:18px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--accent),#f97316);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:16px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 20px rgba(234,88,12,0.4);transition:all 0.2s;}
+  .landing-play button:active{transform:scale(0.97);}
+  .landing-how{width:100%;background:var(--bg-card);border:1px solid var(--line);border-radius:16px;padding:20px 16px;}
+  .how-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-soft);text-align:center;margin-bottom:16px;}
+  .how-examples{display:flex;gap:10px;justify-content:center;margin-bottom:16px;}
+  .how-board{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px;flex:1;max-width:150px;box-shadow:0 4px 12px rgba(26,26,26,0.06);}
+  .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+  .how-tile{aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;}
+  .how-tile.hi{border-color:var(--accent);box-shadow:0 0 0 2px rgba(234,88,12,0.3);animation:hiPulse 2.4s ease infinite;}
+  @keyframes hiPulse{0%,100%{box-shadow:0 0 0 2px rgba(234,88,12,0.3);transform:scale(1)}50%{box-shadow:0 0 0 5px rgba(234,88,12,0);transform:scale(1.04)}}
+  .how-caption{text-align:center;margin-top:8px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:var(--good);}
+  .how-steps{display:flex;flex-direction:column;gap:8px;}
+  .how-step{display:flex;gap:10px;align-items:flex-start;}
+  .how-num{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#d946ef);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .how-text{font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);line-height:1.45;}
+  .how-ops{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
+  .how-op{padding:2px 8px;border-radius:4px;font-weight:700;font-size:12px;color:#fff;}
+  .back-link{font-family:'Inter',sans-serif;font-size:13px;color:var(--ink-soft);text-align:center;cursor:pointer;text-decoration:underline;}
 
-  /* ===== SHARED GAME CHROME ===== */
+  /* ===== GAME ===== */
+  #game{display:none;}
   header{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--line);}
-  .brand{font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;font-weight:700;font-size:28px;line-height:1;background:linear-gradient(135deg,#ea580c,#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:flex;flex-direction:column;}
-  .brand em{font-style:italic;font-size:11px;font-weight:400;color:var(--ink-soft);-webkit-text-fill-color:var(--ink-soft);margin-top:2px;letter-spacing:0.02em;}
-  .brand .mode-badge{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:3px 8px;border-radius:10px;margin-top:4px;display:inline-block;width:fit-content;}
-  .brand .mode-badge.daily{background:linear-gradient(135deg,var(--accent),#d946ef);color:#fff;-webkit-text-fill-color:#fff;}
-  .brand .mode-badge.free{background:var(--bg-deep);color:var(--ink-soft);-webkit-text-fill-color:var(--ink-soft);}
+  .brand{display:flex;flex-direction:column;}
+  .brand-name{font-family:'Fraunces',serif;font-weight:700;font-size:26px;line-height:1;background:linear-gradient(135deg,#ea580c,#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .brand-tag{font-style:italic;font-size:11px;color:var(--ink-soft);margin-top:2px;}
   .stats{text-align:right;}
-  .stats .score{font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;font-weight:700;font-size:28px;line-height:1;color:var(--ink);}
-  .stats .score.bump{animation:scoreBump 0.5s ease;}
+  .score{font-family:'Fraunces',serif;font-weight:700;font-size:28px;line-height:1;color:var(--ink);}
+  .score.bump{animation:scoreBump 0.5s ease;}
   @keyframes scoreBump{0%{transform:scale(1)}40%{transform:scale(1.25);color:var(--accent)}100%{transform:scale(1)}}
-  .stats .label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--good);letter-spacing:0.15em;text-transform:uppercase;margin-top:3px;}
+  .score-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--good);letter-spacing:0.15em;text-transform:uppercase;margin-top:3px;}
 
-  /* Strip */
   .strip{display:flex;gap:6px;margin-bottom:8px;}
   .strip .cell{flex:1;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:8px;padding:10px 4px;text-align:center;transition:all 0.2s;}
-  .strip .cell .v{display:block;font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;font-weight:700;font-size:22px;color:var(--ink);line-height:1;margin-bottom:4px;transition:all 0.3s;}
+  .strip .cell .v{display:block;font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:var(--ink);line-height:1;margin-bottom:4px;transition:all 0.3s;}
   .strip .cell .l{color:var(--ink-soft);font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;}
   .strip .cell.combo .v{color:var(--accent);}
   .strip .cell.hot{animation:hotPulse 0.6s ease;}
   @keyframes hotPulse{0%{background:var(--bg-card)}30%{background:#fff7ed;border-color:var(--accent)}100%{background:var(--bg-card)}}
 
-  /* Op row */
   .op-row{display:flex;gap:4px;margin-bottom:8px;}
   .op-pill{flex:1;text-align:center;padding:7px 4px;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:7px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;color:var(--ink-soft);transition:all 0.3s;}
   .op-pill.active-plus{background:var(--op-plus);color:#fff;border-color:var(--op-plus);}
@@ -96,7 +91,6 @@
   .op-pill.just-unlocked{animation:pillPop 0.7s cubic-bezier(.4,1.4,.5,1);}
   @keyframes pillPop{0%{transform:scale(0.8)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
 
-  /* Timer */
   .timer-wrap{margin-bottom:8px;}
   .timer-bar-bg{width:100%;height:8px;background:var(--line);border-radius:4px;overflow:hidden;}
   .timer-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--good),#4ade80);transition:width 0.1s linear,background 0.5s;}
@@ -104,19 +98,14 @@
   .timer-text{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink-soft);letter-spacing:0.05em;margin-top:4px;}
   .timer-text .seconds{color:var(--ink);font-weight:700;}
   .timer-text .seconds.danger{color:var(--bad);}
-  .timer-text .gained{color:var(--good);font-weight:700;opacity:0;display:inline-block;}
-  .timer-text .gained.show{animation:gainedFloat 1.2s ease;}
+  .gained{color:var(--good);font-weight:700;opacity:0;display:inline-block;}
+  .gained.show{animation:gainedFloat 1.2s ease;}
   @keyframes gainedFloat{0%{transform:translateY(0);opacity:0}20%{transform:translateY(-4px);opacity:1}80%{transform:translateY(-4px);opacity:1}100%{transform:translateY(-12px);opacity:0}}
 
-  /* Equation display */
   .eq-display{text-align:center;min-height:28px;margin-bottom:6px;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--ink-soft);letter-spacing:0.1em;transition:all 0.2s;}
   .eq-display .placeholder{font-style:italic;font-size:13px;font-weight:400;letter-spacing:0.05em;font-family:'Fraunces',serif;}
-  .eq-display.plus{color:var(--op-plus);}
-  .eq-display.minus{color:var(--op-minus);}
-  .eq-display.mult{color:var(--op-mult);}
-  .eq-display.div{color:var(--op-div);}
+  .eq-display.plus{color:var(--op-plus);}.eq-display.minus{color:var(--op-minus);}.eq-display.mult{color:var(--op-mult);}.eq-display.div{color:var(--op-div);}
 
-  /* Board */
   .board-wrap{position:relative;margin-bottom:10px;}
   .board{background:var(--bg-card);border:1.5px solid var(--line);border-radius:16px;padding:10px;box-shadow:0 4px 20px rgba(26,26,26,0.06);}
   .grid{display:grid;gap:6px;}
@@ -124,7 +113,6 @@
   .grid.size-4{grid-template-columns:repeat(4,1fr);}
   .grid.size-5{grid-template-columns:repeat(5,1fr);}
 
-  /* Tiles */
   .tile{aspect-ratio:1;border:2px solid var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;cursor:pointer;position:relative;transition:transform 0.1s,border-color 0.15s,box-shadow 0.15s;background:var(--bg-tile);-webkit-user-select:none;user-select:none;color:var(--ink);}
   .grid.size-3 .tile{font-size:46px;}
   .grid.size-4 .tile{font-size:34px;}
@@ -139,67 +127,44 @@
   @keyframes hintPulse{0%,100%{border-color:var(--op-minus);box-shadow:0 0 0 2px rgba(2,132,199,0.2)}50%{border-color:var(--op-minus);box-shadow:0 0 0 8px rgba(2,132,199,0.4),0 0 20px rgba(2,132,199,0.3)}}
   .tile.answer-reveal{animation:answerReveal 2s ease forwards;z-index:4;}
   @keyframes answerReveal{0%{transform:scale(1);border-color:var(--line)}20%{transform:scale(1.15);border-color:var(--good);background:var(--good);color:#fff;box-shadow:0 0 0 6px rgba(22,163,74,0.3)}100%{transform:scale(1.08);border-color:var(--good);background:var(--good);color:#fff}}
-
-  /* Magnitude colors */
   .tile.mag-1{background:var(--tile-1);}.tile.mag-2{background:var(--tile-2);}.tile.mag-3{background:var(--tile-3);}.tile.mag-4{background:var(--tile-4);}.tile.mag-5{background:var(--tile-5);}
   .tile.mag-6{background:var(--tile-6);color:#fff;}.tile.mag-7{background:var(--tile-7);color:#fff;}.tile.mag-8{background:var(--tile-8);color:#fff;}.tile.mag-9{background:var(--tile-9);color:#fff;}.tile.mag-10{background:var(--tile-10);color:#fff;}
   .tile.mag-11{background:var(--tile-11);color:#fff;}.tile.mag-12{background:var(--tile-12);color:#fff;}.tile.mag-13{background:var(--tile-13);color:#fff;}.tile.mag-14{background:var(--tile-14);color:#fff;}.tile.mag-15{background:var(--tile-15);color:#fff;}
   .tile.mag-16{background:var(--tile-16);color:#fff;}.tile.mag-17{background:var(--tile-17);color:#fff;}.tile.mag-18{background:var(--tile-18);color:#fff;}.tile.mag-19{background:var(--tile-19);color:#fff;}.tile.mag-20{background:var(--tile-20);color:#fff;}
 
-  /* Flash / particles */
   .flash-overlay{position:fixed;inset:0;pointer-events:none;z-index:100;opacity:0;}
-  .flash-good{animation:flashGood 0.5s ease;} .flash-bad{animation:flashBad 0.4s ease;} .flash-streak{animation:flashStreak 0.5s ease;}
+  .flash-good{animation:flashGood 0.5s ease;}.flash-bad{animation:flashBad 0.4s ease;}.flash-streak{animation:flashStreak 0.5s ease;}
   @keyframes flashGood{0%{opacity:0;background:rgba(22,163,74,0.12)}40%{opacity:1}100%{opacity:0}}
   @keyframes flashBad{0%{opacity:0;background:rgba(220,38,38,0.12)}40%{opacity:1}100%{opacity:0}}
   @keyframes flashStreak{0%{opacity:0;background:rgba(234,88,12,0.15)}40%{opacity:1}100%{opacity:0}}
-  .particle{position:fixed;pointer-events:none;z-index:99;width:8px;height:8px;border-radius:50%;animation:particleBurst 0.8s ease forwards;}
-  @keyframes particleBurst{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--px),var(--py)) scale(0);opacity:0}}
 
-  /* Equation popup */
   .equation-popup{position:fixed;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;border-radius:10px;padding:8px 16px;pointer-events:none;z-index:50;box-shadow:0 6px 20px rgba(22,163,74,0.5);animation:eqPopup 1.4s ease forwards;white-space:nowrap;letter-spacing:0.05em;}
-  .equation-popup.plus{background:var(--op-plus);color:#fff;}
-  .equation-popup.minus{background:var(--op-minus);color:#fff;}
-  .equation-popup.mult{background:var(--op-mult);color:#fff;}
-  .equation-popup.div{background:var(--op-div);color:#fff;}
-  .equation-popup.streak{background:linear-gradient(135deg,var(--accent),#d946ef);color:#fff;}
+  .equation-popup.plus{background:var(--op-plus);color:#fff;}.equation-popup.minus{background:var(--op-minus);color:#fff;}.equation-popup.mult{background:var(--op-mult);color:#fff;}.equation-popup.div{background:var(--op-div);color:#fff;}.equation-popup.streak{background:linear-gradient(135deg,var(--accent),#d946ef);color:#fff;}
   @keyframes eqPopup{0%{transform:translate(-50%,-50%) scale(0.4);opacity:0}20%{transform:translate(-50%,-120%) scale(1.1);opacity:1}100%{transform:translate(-50%,-120%) scale(1);opacity:0}}
   .score-popup{position:fixed;pointer-events:none;z-index:50;font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:var(--accent);animation:scoreFloat 1.2s ease forwards;}
   @keyframes scoreFloat{0%{transform:translate(-50%,-50%) scale(0.8);opacity:0}20%{opacity:1;transform:translate(-50%,-70%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-120%) scale(1)}}
 
-  /* Actions */
   .actions{margin-bottom:10px;}
-  .actions button{width:100%;padding:16px;border-radius:14px;font-family:'Inter',sans-serif;font-weight:800;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.2s;}
-  .primary{background:linear-gradient(135deg,var(--accent),#f97316);color:#fff;box-shadow:0 4px 14px rgba(234,88,12,0.35);}
+  .primary{background:linear-gradient(135deg,var(--accent),#f97316);color:#fff;box-shadow:0 4px 14px rgba(234,88,12,0.35);width:100%;padding:16px;border-radius:14px;font-family:'Inter',sans-serif;font-weight:800;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.2s;}
+  .secondary{background:var(--bg-card);color:var(--ink);border:1.5px solid var(--line)!important;width:100%;padding:16px;border-radius:14px;font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all 0.2s;}
   .primary:active,.secondary:active{transform:scale(0.97);}
-  .secondary{background:var(--bg-card);color:var(--ink);border:1.5px solid var(--line)!important;}
-  .primary.full{width:100%;display:block;border-radius:14px;padding:16px;font-family:'Inter',sans-serif;font-weight:800;font-size:14px;letter-spacing:0.05em;cursor:pointer;border:none;transition:all 0.2s;color:#fff;}
-  .secondary.full{width:100%;display:block;border-radius:14px;padding:16px;font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all 0.2s;background:var(--bg-card);color:var(--ink);border:1.5px solid var(--line)!important;}
   .footer-actions{display:flex;gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
   .footer-actions button{font-size:12px;padding:14px 8px;flex:1;border-radius:12px;font-family:'Inter',sans-serif;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;}
-  .modal-buttons{display:flex;gap:8px;margin-bottom:10px;}
-  .modal-buttons button{flex:1;padding:16px;font-size:14px;border-radius:14px;font-family:'Inter',sans-serif;font-weight:800;cursor:pointer;border:none;transition:all 0.2s;}
 
-
-
-
-  /* Unlock banner */
   .unlock-banner{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,var(--accent),#d946ef);color:#fff;padding:24px 36px;border-radius:16px;font-family:'Inter',sans-serif;font-weight:800;font-size:18px;letter-spacing:0.04em;text-align:center;box-shadow:0 12px 40px rgba(234,88,12,0.4);z-index:150;opacity:0;pointer-events:none;}
   .unlock-banner.show{animation:unlockBanner 1.8s ease forwards;}
   .unlock-banner .sym{font-size:36px;display:block;margin-bottom:6px;line-height:1;}
   @keyframes unlockBanner{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}25%{transform:translate(-50%,-50%) scale(1)}75%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.95)}}
 
-  /* Toast */
-  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:24px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;z-index:300;pointer-events:none;}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:24px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;z-index:300;pointer-events:none;white-space:nowrap;}
   .toast.show{animation:toastFlash 2.2s ease forwards;}
   @keyframes toastFlash{0%{opacity:0;transform:translate(-50%,20px)}15%{opacity:1;transform:translate(-50%,0)}85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-10px)}}
 
   /* ===== MODALS ===== */
-  .modal{position:fixed;inset:0;background:#fef9f0;display:flex;align-items:flex-start;justify-content:center;z-index:200;padding:0;overflow-y:auto;}
+  .modal{position:fixed;inset:0;background:#fef9f0;display:flex;align-items:flex-start;justify-content:center;z-index:200;overflow-y:auto;}
   .modal-card{background:var(--bg-card);border-radius:20px;padding:28px 24px 24px;width:100%;max-width:420px;margin:16px;box-shadow:0 8px 40px rgba(26,26,26,0.1);text-align:center;position:relative;}
-  .modal-card h1{font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;font-weight:700;font-size:52px;line-height:1;margin-bottom:6px;background:linear-gradient(135deg,#ea580c,#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-  .modal-card h2{font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;font-weight:700;font-size:28px;margin:0 0 10px;color:var(--bad);}
-  .tagline{font-style:italic;font-size:15px;color:var(--ink-soft);margin-bottom:20px;}
-  .reached{font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;font-weight:700;font-size:72px;line-height:1;margin:8px 0 4px;background:linear-gradient(135deg,var(--accent),#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .modal-card h2{font-family:'Fraunces',serif;font-weight:700;font-size:28px;margin:0 0 10px;color:var(--bad);}
+  .reached{font-family:'Fraunces',serif;font-weight:700;font-size:72px;line-height:1;margin:8px 0 4px;background:linear-gradient(135deg,var(--accent),#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
   .reached-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-soft);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;}
   .summary{display:flex;gap:8px;background:var(--bg);border-radius:12px;padding:12px;margin-bottom:14px;}
   .summary .stat{flex:1;text-align:center;}
@@ -214,405 +179,263 @@
   @keyframes badgePop{0%{transform:scale(0.5);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
   .level-reached-badge{background:var(--bg-card);border:1.5px solid var(--accent);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;flex-direction:column;align-items:center;gap:4px;animation:badgePop 0.5s ease 0.2s backwards;}
   .level-reached-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;color:var(--ink-soft);text-transform:uppercase;}
-  .level-reached-name{font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;font-weight:700;font-size:22px;background:linear-gradient(135deg,var(--accent),#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-
-  /* Daily share card style */
-  .daily-share-card{background:var(--bg);border-radius:12px;padding:14px;margin-bottom:14px;text-align:center;border:1.5px solid var(--accent-light);}
-  .daily-share-card .date-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-soft);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;}
-  .daily-share-card .share-score{font-family:'Fraunces',serif;font-weight:700;font-size:36px;color:var(--ink);line-height:1;}
-  .daily-share-card .share-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:4px;}
-  .daily-share-card .share-ops{font-size:20px;margin-top:6px;letter-spacing:4px;}
+  .level-reached-name{font-family:'Fraunces',serif;font-weight:700;font-size:22px;background:linear-gradient(135deg,var(--accent),#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
 
   /* Leaderboard */
   .lb-tabs{display:flex;gap:6px;margin-bottom:12px;}
-  .lb-tab{flex:1;text-align:center;padding:8px 4px;border-radius:8px;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;line-height:1.2;border:none;}
+  .lb-tab{flex:1;text-align:center;padding:10px 4px;border-radius:8px;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;line-height:1.2;border:none;}
   .lb-tab[data-tab="mine"]{background:#e8e4de;color:#6b6558;}
-  .lb-tab[data-tab="daily"]{background:#fde8d8;color:#c2410c;}
   .lb-tab[data-tab="alltime"]{background:#ede9fe;color:#7c3aed;}
   .lb-tab[data-tab="groups"]{background:#dcfce7;color:#15803d;}
   .lb-tab[data-tab="mine"].active{background:var(--ink);color:#fff;}
-  .lb-tab[data-tab="daily"].active{background:linear-gradient(135deg,var(--accent),#f97316);color:#fff;}
   .lb-tab[data-tab="alltime"].active{background:linear-gradient(135deg,#7c3aed,#d946ef);color:#fff;}
   .lb-tab[data-tab="groups"].active{background:linear-gradient(135deg,var(--good),#0284c7);color:#fff;}
-  .lb-panel{} .lb-panel.hide{display:none;}
+  .lb-panel.hide{display:none;}
   .lb-list{max-height:320px;overflow-y:auto;}
   .lb-row-global{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px;background:var(--bg-card);border:1px solid var(--line-soft);}
+  .lb-row-global.top1{border-color:#f59e0b;background:#fffbeb;}.lb-row-global.top2{border-color:#94a3b8;}.lb-row-global.top3{border-color:#cd7c3a;}
   .lb-row-global .rank{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--ink-soft);min-width:28px;text-align:center;}
-  .lb-row-global.top1{border-color:#f59e0b;background:#fffbeb;}
-  .lb-row-global.top2{border-color:#94a3b8;}
-  .lb-row-global.top3{border-color:#cd7c3a;}
   .lb-row-global .player-info{flex:1;text-align:left;}
   .lb-row-global .player-name{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;color:var(--ink);}
   .lb-row-global .player-meta{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:0.05em;margin-top:2px;}
   .lb-row-global .player-score{font-family:'Fraunces',serif;font-weight:700;font-size:20px;color:var(--ink);}
   .lb-empty-global{text-align:center;color:var(--ink-soft);font-size:13px;padding:20px 0;}
-  .lb-your-rank{text-align:center;font-size:12px;color:var(--ink-soft);padding:6px 0;font-family:'JetBrains Mono',monospace;}
   .lb-global-status{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-soft);letter-spacing:0.1em;text-align:center;margin-bottom:8px;}
-  .lb-overlay{position:absolute;inset:0;background:rgba(254,249,240,0.97);border-radius:20px;display:flex;align-items:center;justify-content:center;z-index:10;}
-  .lb-overlay.hide{display:none;}
-  .lb-overlay-card{background:var(--bg-card);border-radius:16px;padding:24px;width:100%;max-width:320px;box-shadow:0 8px 30px rgba(26,26,26,0.1);}
-  .lb-form-title{font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;font-weight:700;font-size:22px;margin-bottom:4px;}
-  .lb-form-sub{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
-  .lb-overlay-card input{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-family:'Inter',sans-serif;font-size:16px;background:var(--bg);color:var(--ink);box-sizing:border-box;}
-
-  /* My runs local LB */
   .lb-sub-tabs{display:flex;gap:6px;margin-bottom:10px;}
   .lb-sub-tab{flex:1;text-align:center;padding:10px 6px;border-radius:10px;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--ink-soft);background:var(--bg);border:1px solid var(--line);cursor:pointer;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;}
   .lb-sub-tab.active{background:var(--ink);color:#fff;border-color:var(--ink);}
   .lb-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px;background:var(--bg-card);border:1px solid var(--line-soft);}
+  .lb-row.top1{border-color:#f59e0b;background:#fffbeb;}.lb-row.top2{border-color:#94a3b8;}.lb-row.top3{border-color:#cd7c3a;}
   .lb-row .rank{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--ink-soft);min-width:22px;text-align:center;}
-  .lb-row.top1{border-color:#f59e0b;background:#fffbeb;} .lb-row.top1 .rank{color:#f59e0b;}
-  .lb-row.top2{border-color:#94a3b8;} .lb-row.top2 .rank{color:#94a3b8;}
-  .lb-row.top3{border-color:#cd7c3a;} .lb-row.top3 .rank{color:#cd7c3a;}
   .lb-row .info{flex:1;}
   .lb-row .score-big{font-family:'Fraunces',serif;font-weight:700;font-size:20px;color:var(--ink);}
   .lb-row .meta{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:0.05em;margin-top:2px;}
   .lb-row .date{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);}
   .lb-empty{text-align:center;color:var(--ink-soft);font-size:13px;padding:20px 0;}
+  .lb-overlay{position:absolute;inset:0;background:rgba(254,249,240,0.97);border-radius:20px;display:flex;align-items:center;justify-content:center;z-index:10;}
+  .lb-overlay.hide{display:none;}
+  .lb-overlay-card{background:var(--bg-card);border-radius:16px;padding:24px;width:100%;max-width:320px;box-shadow:0 8px 30px rgba(26,26,26,0.1);}
+  .lb-overlay-card input{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-family:'Inter',sans-serif;font-size:16px;background:var(--bg);color:var(--ink);box-sizing:border-box;}
 
-  @keyframes highlightPulse{0%,100%{box-shadow:0 0 0 2px rgba(234,88,12,0.3);transform:scale(1)}50%{box-shadow:0 0 0 5px rgba(234,88,12,0);transform:scale(1.04)}}
-
-  @media(max-height:800px){body{padding:8px 10px 16px;}.strip .cell .v{font-size:18px;}}
+  /* Groups */
+  .group-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:10px;border:1px solid var(--line-soft);background:var(--bg-card);margin-bottom:6px;cursor:pointer;}
+  .group-row-name{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;}
+  .group-row-code{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);margin-top:2px;}
+  .group-chevron{color:var(--accent);font-weight:700;font-size:18px;}
 </style>
 </head>
 <body>
 <div class="app">
 
-<!-- ===== LANDING PAGE ===== -->
+<!-- ===== LANDING ===== -->
 <div id="landing">
   <div class="landing-brand">
-    <div class="dots">
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="landing-dots">
+      <div class="landing-dot"></div>
+      <div class="landing-dot"></div>
+      <div class="landing-dot"></div>
     </div>
-    <div class="logo">Trika</div>
-    <div class="tagline">three in a row, beat the clock</div>
+    <div class="landing-title">Trika Numbers</div>
+    <div class="landing-sub">three in a row, beat the clock</div>
+    <div class="landing-tagline">free · no account · no ads</div>
   </div>
-  <div class="landing-cards">
-    <!-- Daily -->
-    <div class="landing-card daily" id="landing-daily-card">
-      <div class="card-badge">DAILY</div>
-      <div class="card-title">Trika Daily</div>
-      <div class="card-desc">Same board for everyone today. One shot to set your score. No multipliers — pure skill.</div>
-      <div class="card-features">
-        <span class="feat">Once per day</span>
-        <span class="feat">Global leaderboard</span>
-        <span class="feat">New puzzle midnight PT</span>
+  <div class="landing-play">
+    <button id="btn-play">Play</button>
+  </div>
+  <div class="landing-how">
+    <div class="how-title">How to play</div>
+    <div class="how-examples">
+      <div class="how-board">
+        <div class="how-grid">
+          <div class="how-tile hi" style="background:var(--tile-4)">4</div>
+          <div class="how-tile hi" style="background:var(--tile-3)">3</div>
+          <div class="how-tile hi" style="background:var(--tile-7);color:#fff">7</div>
+          <div class="how-tile" style="background:var(--tile-2)">2</div>
+          <div class="how-tile" style="background:var(--tile-9);color:#fff">9</div>
+          <div class="how-tile" style="background:var(--tile-5)">5</div>
+          <div class="how-tile" style="background:var(--tile-6);color:#fff">6</div>
+          <div class="how-tile" style="background:var(--tile-1)">1</div>
+          <div class="how-tile" style="background:var(--tile-8);color:#fff">8</div>
+        </div>
+        <div class="how-caption">4 + 3 = 7 ✓</div>
       </div>
-      <div id="daily-played-preview"></div>
-      <button class="card-cta" id="btn-play-daily">Play Today's Puzzle</button>
+      <div class="how-board">
+        <div class="how-grid">
+          <div class="how-tile" style="background:var(--tile-3)">3</div>
+          <div class="how-tile hi" style="background:var(--tile-9);color:#fff">9</div>
+          <div class="how-tile" style="background:var(--tile-2)">2</div>
+          <div class="how-tile" style="background:var(--tile-5)">5</div>
+          <div class="how-tile hi" style="background:var(--tile-6);color:#fff">6</div>
+          <div class="how-tile" style="background:var(--tile-4)">4</div>
+          <div class="how-tile" style="background:var(--tile-7);color:#fff">7</div>
+          <div class="how-tile hi" style="background:var(--tile-3)">3</div>
+          <div class="how-tile" style="background:var(--tile-1)">1</div>
+        </div>
+        <div class="how-caption">9 − 6 = 3 ✓</div>
+      </div>
     </div>
-    <!-- Free Play -->
-    <div class="landing-card free" id="landing-free-card" style="border-color:var(--accent);border-width:1.5px;">
-      <div class="card-badge free">FREE PLAY</div>
-      <div class="card-title">Trika</div>
-      <div class="card-sub">practice, explore, go deep</div>
-      <div class="card-desc">Random boards, streak multipliers, hints, and unlimited runs. Play as much as you want.</div>
-      <div class="card-features">
-        <span class="feat">Unlimited plays</span>
-        <span class="feat">Streak multiplier</span>
-        <span class="feat">Hints</span>
-        <span class="feat">Personal records</span>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <div class="how-text">Tap three tiles in a <strong>row or column</strong> that form a valid equation — any direction.</div>
       </div>
-      <button class="card-cta" id="btn-play-free" style="background:linear-gradient(135deg,#7c3aed,#d946ef);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,0.35);">Play Free</button>
-    </div>
-
-    <!-- How to play -->
-    <div style="background:var(--bg-card);border:1px solid var(--line);border-radius:16px;padding:20px 16px;">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-soft);text-align:center;margin-bottom:16px;">How to play</div>
-
-      <!-- Example boards -->
-      <div style="display:flex;gap:10px;justify-content:center;margin-bottom:16px;">
-        <!-- Example 1: horizontal row -->
-        <div style="background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px;flex:1;max-width:150px;box-shadow:0 4px 12px rgba(26,26,26,0.06);">
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
-            <div style="aspect-ratio:1;border:3px solid var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-4);animation:highlightPulse 2.4s ease infinite;">4</div>
-            <div style="aspect-ratio:1;border:3px solid var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-3);animation:highlightPulse 2.4s ease infinite 0.2s;">3</div>
-            <div style="aspect-ratio:1;border:3px solid var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-7);color:#fff;animation:highlightPulse 2.4s ease infinite 0.4s;">7</div>
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-2);">2</div>
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-9);color:#fff;">9</div>
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-5);">5</div>
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-6);color:#fff;">6</div>
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-1);">1</div>
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-8);color:#fff;">8</div>
-          </div>
-          <div style="text-align:center;margin-top:8px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:var(--good);">4 + 3 = 7 ✓</div>
-        </div>
-        <!-- Example 2: vertical column -->
-        <div style="background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px;flex:1;max-width:150px;box-shadow:0 4px 12px rgba(26,26,26,0.06);">
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-3);">3</div>
-            <div style="aspect-ratio:1;border:3px solid var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-9);color:#fff;animation:highlightPulse 2.4s ease infinite;">9</div>
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-2);">2</div>
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-5);">5</div>
-            <div style="aspect-ratio:1;border:3px solid var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-6);color:#fff;animation:highlightPulse 2.4s ease infinite 0.2s;">6</div>
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-4);">4</div>
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-7);color:#fff;">7</div>
-            <div style="aspect-ratio:1;border:3px solid var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-3);animation:highlightPulse 2.4s ease infinite 0.4s;">3</div>
-            <div style="aspect-ratio:1;border:2px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:20px;background:var(--tile-1);">1</div>
-          </div>
-          <div style="text-align:center;margin-top:8px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:var(--good);">9 − 6 = 3 ✓</div>
-        </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <div class="how-text">Result must be at one end. <span style="color:var(--good);font-weight:700;">9−6=3 ✓</span> &nbsp;<span style="color:var(--bad);font-weight:700;">4 8 4 ✗</span></div>
       </div>
-
-      <!-- Steps -->
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;gap:10px;align-items:flex-start;">
-          <div style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#d946ef);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
-          <div style="font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);line-height:1.45;">Tap three tiles in a <strong>row or column</strong> that form a valid equation — any direction.</div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:flex-start;">
-          <div style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#d946ef);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-          <div style="font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);line-height:1.45;">Result must be at one end. <span style="color:var(--good);font-weight:700;">9−6=3 ✓</span> &nbsp;<span style="color:var(--bad);font-weight:700;">4 8 4 ✗</span></div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:flex-start;">
-          <div style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#d946ef);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
-          <div style="font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);line-height:1.45;">Every correct equation <strong>adds time.</strong> Operations unlock as you progress: <span style="color:var(--op-plus);font-weight:700;">+</span> then <span style="color:var(--op-minus);font-weight:700;">−</span> then <span style="color:var(--op-mult);font-weight:700;">×</span> then <span style="color:var(--op-div);font-weight:700;">÷</span></div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <div class="how-text">Every correct equation <strong>adds time.</strong> Operations unlock as you progress:
+          <div class="how-ops">
+            <span class="how-op" style="background:var(--op-plus)">+ 100pts</span>
+            <span class="how-op" style="background:var(--op-minus)">− 100pts</span>
+            <span class="how-op" style="background:var(--op-mult)">× 200pts</span>
+            <span class="how-op" style="background:var(--op-div)">÷ 300pts</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <div class="back-link" id="btn-home">← Back to Trika</div>
 </div>
 
-<!-- ===== DAILY GAME ===== -->
-<div id="game-daily" class="hide">
+<!-- ===== GAME ===== -->
+<div id="game">
   <header>
     <div class="brand">
-      Trika<em>three in a row, beat the clock</em>
-      <span class="mode-badge daily">Daily</span>
+      <div class="brand-name">Trika Numbers</div>
+      <div class="brand-tag">three in a row, beat the clock</div>
     </div>
     <div class="stats">
-      <span class="score" id="d-score">0</span>
-      <span class="label"><span id="d-found-count">0</span> found</span>
+      <div class="score" id="score">0</div>
+      <div class="score-label"><span id="found-count">0</span> found</div>
     </div>
   </header>
   <div class="strip">
-    <div class="cell" id="d-cell-found"><span class="v" id="d-found">0</span><span class="l">found</span></div>
-    <div class="cell" id="d-cell-level"><span class="v" id="d-level">1</span><span class="l">level</span></div>
-    <div class="cell" id="d-cell-pts"><span class="v" id="d-pts-label">100</span><span class="l">pts each</span></div>
+    <div class="cell" id="cell-streak"><span class="v" id="streak">0</span><span class="l">streak</span></div>
+    <div class="cell combo" id="cell-mult"><span class="v" id="multiplier">×1</span><span class="l">multiplier</span></div>
+    <div class="cell" id="cell-level"><span class="v" id="level">1</span><span class="l">level</span></div>
   </div>
   <div class="op-row">
-    <div class="op-pill" id="d-op-plus">+</div>
-    <div class="op-pill" id="d-op-minus">−</div>
-    <div class="op-pill" id="d-op-mult">×</div>
-    <div class="op-pill" id="d-op-div">÷</div>
+    <div class="op-pill" id="op-plus">+</div>
+    <div class="op-pill" id="op-minus">−</div>
+    <div class="op-pill" id="op-mult">×</div>
+    <div class="op-pill" id="op-div">÷</div>
   </div>
   <div class="timer-wrap">
-    <div class="timer-bar-bg"><div class="timer-bar" id="d-timer-bar"></div></div>
+    <div class="timer-bar-bg"><div class="timer-bar" id="timer-bar"></div></div>
     <div class="timer-text">
-      <span id="d-find-label">find an equation</span>
-      <span><span class="gained" id="d-gained-label"></span> <span class="seconds" id="d-seconds-label">45.0s</span></span>
+      <span id="find-label">find an equation</span>
+      <span><span class="gained" id="gained-label"></span> <span class="seconds" id="seconds-label">30.0s</span></span>
     </div>
   </div>
-  <div class="eq-display" id="d-eq-display"><span class="placeholder">select three tiles</span></div>
+  <div class="eq-display" id="eq-display"><span class="placeholder">select three tiles</span></div>
   <div class="board-wrap">
-    <div class="board"><div class="grid size-3" id="d-grid"></div></div>
-    <div class="flash-overlay" id="d-flash"></div>
-  </div>
-  <div class="footer-actions">
-    <button class="secondary" id="d-btn-back">← Home</button>
-    <button class="secondary" id="d-btn-leaderboard">🏆 Leaderboard</button>
-  </div>
-</div>
-
-<!-- ===== FREE PLAY GAME ===== -->
-<div id="game-free" class="hide">
-  <header>
-    <div class="brand">
-      Trika<em>three in a row, beat the clock</em>
-      <span class="mode-badge free">Free Play</span>
-    </div>
-    <div class="stats">
-      <span class="score" id="f-score">0</span>
-      <span class="label"><span id="f-found-count">0</span> found</span>
-    </div>
-  </header>
-  <div class="strip">
-    <div class="cell" id="f-cell-streak"><span class="v" id="f-streak">0</span><span class="l">streak</span></div>
-    <div class="cell combo" id="f-cell-mult"><span class="v" id="f-multiplier">×1</span><span class="l">multiplier</span></div>
-    <div class="cell" id="f-cell-level"><span class="v" id="f-level">1</span><span class="l">level</span></div>
-  </div>
-  <div class="op-row">
-    <div class="op-pill" id="f-op-plus">+</div>
-    <div class="op-pill" id="f-op-minus">−</div>
-    <div class="op-pill" id="f-op-mult">×</div>
-    <div class="op-pill" id="f-op-div">÷</div>
-  </div>
-  <div class="timer-wrap">
-    <div class="timer-bar-bg"><div class="timer-bar" id="f-timer-bar"></div></div>
-    <div class="timer-text">
-      <span id="f-find-label">find an equation</span>
-      <span><span class="gained" id="f-gained-label"></span> <span class="seconds" id="f-seconds-label">30.0s</span></span>
-    </div>
-  </div>
-  <div class="eq-display" id="f-eq-display"><span class="placeholder">select three tiles</span></div>
-  <div class="board-wrap">
-    <div class="board"><div class="grid size-3" id="f-grid"></div></div>
-    <div class="flash-overlay" id="f-flash"></div>
+    <div class="board"><div class="grid size-3" id="grid"></div></div>
+    <div class="flash-overlay" id="flash"></div>
   </div>
   <div class="actions">
-    <button id="f-btn-hint" class="primary">Hint 3/3 (−3s)</button>
+    <button id="btn-hint" class="primary">Hint 3/3 (−3s)</button>
   </div>
   <div class="footer-actions">
-    <button class="secondary" id="f-btn-back">← Home</button>
-    <button class="secondary" id="f-btn-leaderboard">🏆 Best Runs</button>
-    <button class="secondary" id="f-btn-share-quick">📤 Share</button>
+    <button class="secondary" id="btn-back">← Home</button>
+    <button class="secondary" id="btn-leaderboard">🏆 Best Runs</button>
+    <button class="secondary" id="btn-share-quick">📤 Share</button>
   </div>
 </div>
 
 </div><!-- .app -->
 
-<!-- ===== DAILY GAME OVER ===== -->
-<div class="modal hide" id="gameover-daily">
+<!-- ===== GAME OVER ===== -->
+<div class="modal hide" id="gameover">
   <div class="modal-card">
-    <h2 id="d-gameover-title">time's up</h2>
-    <div id="d-new-best-wrap"></div>
+    <h2 id="gameover-title">time's up</h2>
+    <div id="new-best-wrap"></div>
     <div class="level-reached-badge">
       <span class="level-reached-label">reached</span>
-      <span class="level-reached-name" id="d-level-reached-name">Level 1</span>
+      <span class="level-reached-name" id="level-reached-name">Level 1</span>
     </div>
-    <div class="daily-share-card">
-      <div class="date-label" id="d-share-date">Trika Daily · Today</div>
-      <div class="share-score" id="d-share-score">0</div>
-      <div class="share-sub" id="d-share-sub">0 found · Level 1</div>
-      <div class="share-ops" id="d-share-ops">➕</div>
-    </div>
-    <div class="summary">
-      <div class="stat"><span class="v" id="d-final-found">0</span><span class="l">found</span></div>
-      <div class="stat"><span class="v" id="d-final-pts">100</span><span class="l">pts each</span></div>
-      <div class="stat"><span class="v" id="d-final-level">1</span><span class="l">level</span></div>
-    </div>
-    <div class="eq-was" id="d-eq-was-wrap">
-      <div class="label">a missed equation</div>
-      <div class="eq" id="d-missed-eq">—</div>
-    </div>
-    <div class="modal-buttons">
-      <button class="secondary" id="d-btn-share-result" style="background:var(--bg-deep);">📤 Share</button>
-      <button class="primary" id="d-btn-submit-score" style="background:linear-gradient(135deg,var(--accent),#f97316);box-shadow:0 4px 14px rgba(234,88,12,0.35);">Submit Score</button>
-    </div>
-    <button class="primary full" id="d-btn-go-free" style="margin-top:6px;background:linear-gradient(135deg,#7c3aed,#d946ef);box-shadow:0 4px 14px rgba(124,58,237,0.3);">Try Free Play →</button>
-    <button class="secondary full" id="d-btn-view-lb" style="margin-top:6px;">🏆 View leaderboard</button>
-  </div>
-</div>
-
-<!-- ===== FREE PLAY GAME OVER ===== -->
-<div class="modal hide" id="gameover-free">
-  <div class="modal-card">
-    <h2 id="f-gameover-title">time's up</h2>
-    <div id="f-new-best-wrap"></div>
-    <div class="level-reached-badge">
-      <span class="level-reached-label">reached</span>
-      <span class="level-reached-name" id="f-level-reached-name">Level 1</span>
-    </div>
-    <div class="reached" id="f-final-score">0</div>
+    <div class="reached" id="final-score">0</div>
     <div class="reached-label">final score</div>
     <div class="summary">
-      <div class="stat"><span class="v" id="f-final-found">0</span><span class="l">found</span></div>
-      <div class="stat"><span class="v" id="f-final-streak">0</span><span class="l">best streak</span></div>
-      <div class="stat"><span class="v" id="f-final-level">1</span><span class="l">level</span></div>
+      <div class="stat"><span class="v" id="final-found">0</span><span class="l">found</span></div>
+      <div class="stat"><span class="v" id="final-streak">0</span><span class="l">best streak</span></div>
+      <div class="stat"><span class="v" id="final-level">1</span><span class="l">level</span></div>
     </div>
-    <div class="eq-was" id="f-eq-was-wrap">
+    <div class="eq-was" id="eq-was-wrap">
       <div class="label">a missed equation</div>
-      <div class="eq" id="f-missed-eq">—</div>
+      <div class="eq" id="missed-eq">—</div>
     </div>
     <div class="modal-buttons">
-      <button class="secondary" id="f-btn-share-result" style="background:var(--bg-deep);">📤 Share</button>
-      <button class="primary" id="f-btn-again">Play again</button>
+      <button class="secondary" id="btn-share-result" style="background:var(--bg-deep);">📤 Share</button>
+      <button class="primary" id="btn-again">Play again</button>
     </div>
-    <button class="primary full" id="f-btn-submit-score" style="margin-top:6px;background:linear-gradient(135deg,#7c3aed,#d946ef);box-shadow:0 4px 14px rgba(124,58,237,0.35);">Submit to all leaderboards</button>
-    <button class="secondary full" id="f-btn-view-leaderboard" style="margin-top:6px;">🏆 View best runs</button>
+    <button class="primary" id="btn-submit-score" style="margin-top:6px;background:linear-gradient(135deg,#7c3aed,#d946ef);box-shadow:0 4px 14px rgba(124,58,237,0.35);">Submit to all leaderboards</button>
+    <button class="secondary" id="btn-view-leaderboard" style="margin-top:6px;">🏆 View best runs</button>
   </div>
 </div>
 
-<!-- ===== DAILY LEADERBOARD ===== -->
-<div class="modal hide" id="leaderboard-daily">
-  <div class="modal-card">
-    <h1 style="font-size:32px;margin-bottom:4px;">Daily Board</h1>
-    <div class="tagline" style="margin-bottom:14px;">today's competition</div>
-    <div class="lb-global-status" id="d-lb-status">Loading...</div>
-    <div class="lb-list" id="d-lb-list"></div>
-    <button class="primary full" id="d-btn-lb-submit" style="margin-top:10px;">Submit my score</button>
-    <button class="secondary full" id="d-btn-lb-close" style="margin-top:8px;">Back</button>
-  </div>
-  <div id="d-lb-name-entry" class="lb-overlay hide">
-    <div class="lb-overlay-card">
-      <div class="lb-form-title">Your display name</div>
-      <div class="lb-form-sub">Shows on the leaderboard</div>
-      <input type="text" id="d-input-player-name" placeholder="Enter your name" maxlength="20" />
-      <button class="primary full" id="d-btn-name-submit" style="margin-top:10px;">Submit score</button>
-      <button class="secondary full" id="d-btn-name-cancel" style="margin-top:6px;">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== FREE PLAY LEADERBOARD ===== -->
-<div class="modal hide" id="leaderboard-free">
-  <div class="modal-card">
-    <h1 style="font-size:32px;margin-bottom:4px;">Leaderboards</h1>
-    <div class="tagline" style="margin-bottom:14px;">daily & all-time rankings</div>
-    <div class="lb-tabs" id="f-lb-tabs">
+<!-- ===== LEADERBOARD ===== -->
+<div class="modal hide" id="leaderboard">
+  <div class="modal-card" style="position:relative;">
+    <div style="font-family:'Fraunces',serif;font-weight:700;font-size:32px;margin-bottom:4px;background:linear-gradient(135deg,var(--accent),#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Leaderboards</div>
+    <div style="font-style:italic;font-size:14px;color:var(--ink-soft);margin-bottom:14px;">all-time rankings</div>
+    <div class="lb-tabs">
       <div class="lb-tab active" data-tab="mine">My Runs</div>
-      <div class="lb-tab" data-tab="daily">Daily</div>
       <div class="lb-tab" data-tab="alltime">All-Time</div>
       <div class="lb-tab" data-tab="groups">Groups</div>
     </div>
-    <div id="f-lb-panel-mine" class="lb-panel">
+    <!-- My Runs -->
+    <div id="lb-panel-mine" class="lb-panel">
       <div class="lb-sub-tabs">
         <div class="lb-sub-tab active" data-subtab="all">All time</div>
         <div class="lb-sub-tab" data-subtab="today">Today</div>
       </div>
-      <div class="lb-list" id="f-lb-list-mine"></div>
+      <div class="lb-list" id="lb-list-mine"></div>
     </div>
-    <div id="f-lb-panel-daily" class="lb-panel hide">
-      <div class="lb-global-status" id="f-lb-daily-status">Loading...</div>
-      <div class="lb-list" id="f-lb-list-daily"></div>
-      <button class="primary full" id="f-btn-submit-daily" style="margin-top:10px;">Submit my score</button>
+    <!-- All-Time -->
+    <div id="lb-panel-alltime" class="lb-panel hide">
+      <div class="lb-global-status" id="lb-alltime-status">Loading...</div>
+      <div class="lb-list" id="lb-list-alltime"></div>
+      <button class="primary" id="lb-btn-submit-alltime" style="margin-top:10px;">Submit my score</button>
     </div>
-    <div id="f-lb-panel-alltime" class="lb-panel hide">
-      <div class="lb-global-status" id="f-lb-alltime-status">Loading...</div>
-      <div class="lb-list" id="f-lb-list-alltime"></div>
-      <button class="primary full" id="f-btn-submit-alltime" style="margin-top:10px;">Submit my score</button>
-    </div>
-
-    <!-- Groups panel -->
-    <div id="f-lb-panel-groups" class="lb-panel hide">
-      <div id="f-lb-groups-home">
-        <div id="f-lb-my-groups" style="margin-bottom:12px;"></div>
-
-        <!-- Join via invite -->
+    <!-- Groups -->
+    <div id="lb-panel-groups" class="lb-panel hide">
+      <div id="groups-home">
+        <div id="my-groups-list" style="margin-bottom:12px;"></div>
         <div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:16px;border:1px solid var(--line-soft);">
           <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:var(--ink);margin-bottom:6px;">📨 Joining a board</div>
-          <div style="font-family:'Inter',sans-serif;font-size:13px;color:var(--ink-soft);line-height:1.5;">You need an invite link from the board creator. Ask them to open their board and tap <strong style="color:var(--ink);">📤 Invite friends</strong> — clicking the link will auto-join you instantly.</div>
+          <div style="font-family:'Inter',sans-serif;font-size:13px;color:var(--ink-soft);line-height:1.5;">Ask the board creator to tap <strong style="color:var(--ink);">📤 Invite friends</strong> — clicking the link will auto-join you instantly.</div>
         </div>
         <div style="font-family:'Fraunces',serif;font-weight:700;font-size:18px;margin-bottom:8px;">Create a board</div>
-        <input type="text" id="f-input-group-name" placeholder="Board name (e.g. Game Night)" maxlength="30" style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-family:'Inter',sans-serif;font-size:16px;background:var(--bg);color:var(--ink);box-sizing:border-box;" />
-        <button class="primary full" id="f-btn-create-submit" style="margin-top:8px;">Create</button>
+        <input type="text" id="input-group-name" placeholder="Board name (e.g. Game Night)" maxlength="30" style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-family:'Inter',sans-serif;font-size:16px;background:var(--bg);color:var(--ink);box-sizing:border-box;" />
+        <button class="primary" id="btn-create-group" style="margin-top:8px;">Create</button>
       </div>
-      <!-- Group board view -->
-      <div id="f-lb-group-view" style="display:none;">
+      <div id="group-view" style="display:none;">
         <div style="background:linear-gradient(135deg,var(--accent),#d946ef);border-radius:12px;padding:14px;text-align:center;margin-bottom:12px;">
-          <div style="font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:#fff;" id="f-group-view-name"></div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.8);margin-top:2px;" id="f-group-view-code"></div>
+          <div style="font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:#fff;" id="group-view-name"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.8);margin-top:2px;" id="group-view-code"></div>
         </div>
-        <div class="lb-sub-tabs" style="margin-bottom:10px;">
-          <div class="lb-sub-tab active" data-grouptab="daily">📅 Daily</div>
-          <div class="lb-sub-tab" data-grouptab="freeplay">🎮 Free Play</div>
+        <div class="lb-sub-tabs">
+          <div class="lb-sub-tab active" data-grouptab="freeplay">🎮 Free Play</div>
           <div class="lb-sub-tab" data-grouptab="alltime">🏆 All-Time</div>
         </div>
-        <div class="lb-list" id="f-group-list"></div>
-        <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--good);padding:8px 0;">✓ Daily & Free Play scores auto-submit after each game</div>
-        <button class="secondary full" id="f-btn-share-group" style="margin-top:8px;">📤 Invite friends</button>
-        <button class="secondary full" id="f-btn-group-back" style="margin-top:6px;">← Back to boards</button>
+        <div class="lb-list" id="group-list"></div>
+        <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--good);padding:8px 0;">✓ Scores auto-submit after each game</div>
+        <button class="secondary" id="btn-share-group" style="margin-top:8px;">📤 Invite friends</button>
+        <button class="secondary" id="btn-group-back" style="margin-top:6px;">← Back to boards</button>
       </div>
     </div>
-    <button class="secondary full" id="f-btn-lb-close" style="margin-top:12px;">Back</button>
-  </div>
-  <div id="f-lb-name-entry" class="lb-overlay hide">
-    <div class="lb-overlay-card">
-      <div class="lb-form-title">Your display name</div>
-      <div class="lb-form-sub">Shows on the leaderboard</div>
-      <input type="text" id="f-input-player-name" placeholder="Enter your name" maxlength="20" />
-      <button class="primary full" id="f-btn-name-submit" style="margin-top:10px;">Submit score</button>
-      <button class="secondary full" id="f-btn-name-cancel" style="margin-top:6px;">Cancel</button>
+    <button class="secondary" id="btn-lb-close" style="margin-top:12px;">Back</button>
+    <!-- Name entry overlay -->
+    <div id="lb-name-entry" class="lb-overlay hide">
+      <div class="lb-overlay-card">
+        <div style="font-family:'Fraunces',serif;font-weight:700;font-size:22px;margin-bottom:4px;">Your display name</div>
+        <div style="font-size:13px;color:var(--ink-soft);margin-bottom:14px;">Shows on the leaderboard</div>
+        <input type="text" id="input-player-name" placeholder="Enter your name" maxlength="20" style="margin-bottom:10px;" />
+        <button class="primary" id="btn-name-submit" style="margin-bottom:6px;">Submit score</button>
+        <button class="secondary" id="btn-name-cancel">Cancel</button>
+      </div>
     </div>
   </div>
 </div>
@@ -621,968 +444,382 @@
   <span class="sym" id="unlock-sym">−</span>
   <span id="unlock-text">SUBTRACTION UNLOCKED</span>
 </div>
-<div class="toast" id="toast">Copied!</div>
+<div class="toast" id="toast"></div>
 
 <script>
 // ============================================================
-// SHARED UTILITIES
+// CONSTANTS
 // ============================================================
-const JSONBIN_KEY = '$2a$10$yDd21niqXkaX1MiteHDKOeYbzS7AlbeZ0MFdkSy34mEi0OiEf0N7C';
+const JSONBIN_KEY  = '$2a$10$yDd21niqXkaX1MiteHDKOeYbzS7AlbeZ0MFdkSy34mEi0OiEf0N7C';
 const JSONBIN_BASE = 'https://api.jsonbin.io/v3';
-const DAILY_BIN_ID        = '6a18406fddf5aa59f76ff008'; // Free Play daily leaderboard
-const DAILY_PUZZLE_BIN_ID = '6a1da135ddf5aa59f7807c46'; // Daily puzzle leaderboard (separate)
-const ALLTIME_BIN_ID      = '6a18407cddf5aa59f76ff039'; // Free Play all-time leaderboard
+const ALLTIME_BIN  = '6a18407cddf5aa59f76ff039';
+const FREE_STORE_KEY = 'sum-game-v1';
+const START_TIME = 30;
+const MAX_TIME   = 40;
+const HINT_COST  = 3;
+const MAX_HINTS  = 3;
 
-async function jsonbinGet(binId) {
-  const r = await fetch(`${JSONBIN_BASE}/b/${binId}/latest`, {
-    headers: { 'X-Master-Key': JSONBIN_KEY, 'X-Bin-Meta': 'false' }
-  });
-  if (!r.ok) throw new Error('jsonbin get failed');
+// ============================================================
+// UTILITIES
+// ============================================================
+const $ = id => document.getElementById(id);
+function showToast(msg){const el=$('toast');el.textContent=msg;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+function rnd(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+
+async function jsonbinGet(id){
+  const r=await fetch(`${JSONBIN_BASE}/b/${id}/latest`,{headers:{'X-Master-Key':JSONBIN_KEY,'X-Bin-Meta':'false'}});
+  if(!r.ok) throw new Error('get failed');
   return await r.json();
 }
-async function jsonbinUpdate(binId, data) {
-  const r = await fetch(`${JSONBIN_BASE}/b/${binId}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
-    body: JSON.stringify(data)
-  });
-  if (!r.ok) throw new Error('jsonbin update failed');
+async function jsonbinUpdate(id,data){
+  const r=await fetch(`${JSONBIN_BASE}/b/${id}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},body:JSON.stringify(data)});
+  if(!r.ok) throw new Error('update failed');
   return await r.json();
 }
-
-function showToast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.remove('show');
-  void el.offsetWidth;
-  el.classList.add('show');
+async function jsonbinCreate(name,data){
+  const r=await fetch(`${JSONBIN_BASE}/b`,{method:'POST',headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY,'X-Bin-Name':name,'X-Bin-Private':'false'},body:JSON.stringify(data)});
+  if(!r.ok) throw new Error('create failed');
+  const d=await r.json();return d.metadata.id;
 }
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-function rnd(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function getPlayerName(){return localStorage.getItem('trika-player-name-free')||'';}
+function setPlayerName(n){localStorage.setItem('trika-player-name-free',n);}
+function fLoadStore(){try{const r=localStorage.getItem(FREE_STORE_KEY);if(!r)return{runs:[]};const p=JSON.parse(r);return p&&Array.isArray(p.runs)?p:{runs:[]};}catch{return{runs:[]};}}
+function fSaveStore(s){try{localStorage.setItem(FREE_STORE_KEY,JSON.stringify(s));}catch(e){}}
+function fGetBinIds(){try{return JSON.parse(localStorage.getItem('trika-bin-ids')||'{}');}catch{return{};}}
+function fSaveBinIds(ids){localStorage.setItem('trika-bin-ids',JSON.stringify(ids));}
+function fGetMyGroups(){try{return JSON.parse(localStorage.getItem('trika-my-groups')||'[]');}catch{return[];}}
+function fSaveMyGroups(g){localStorage.setItem('trika-my-groups',JSON.stringify(g));}
+function fAddMyGroup(g){const groups=fGetMyGroups();if(!groups.find(x=>x.code===g.code)){groups.push(g);fSaveMyGroups(groups);}}
 
-// Pacific midnight key — puzzle resets at midnight PT
-function pacificDayKey() {
-  const now = new Date();
-  // PT offset: UTC-8 standard, UTC-7 daylight
-  const ptOffset = isDST(now) ? -7 : -8;
-  const pt = new Date(now.getTime() + ptOffset * 3600000);
-  return `${pt.getUTCFullYear()}-${String(pt.getUTCMonth()+1).padStart(2,'0')}-${String(pt.getUTCDate()).padStart(2,'0')}`;
-}
-function isDST(date) {
-  const jan = new Date(date.getFullYear(), 0, 1).getTimezoneOffset();
-  const jul = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
-  return date.getTimezoneOffset() < Math.max(jan, jul);
-}
-function todayLabel() {
-  const key = pacificDayKey();
-  const [y, m, d] = key.split('-');
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return `${months[parseInt(m)-1]} ${parseInt(d)}, ${y}`;
-}
-
-// Seeded random for daily board — same board for everyone on same PT day
-function seededRng(seed) {
-  let s = seed;
-  return function() {
-    s = (s * 1664525 + 1013904223) & 0xffffffff;
-    return (s >>> 0) / 0xffffffff;
-  };
-}
-function dailySeed() {
-  const key = pacificDayKey();
-  let hash = 0;
-  for (let i = 0; i < key.length; i++) {
-    hash = ((hash << 5) - hash) + key.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
+// ============================================================
+// GAME LOGIC
+// ============================================================
+function difficultyFor(found){
+  let size,maxNum,ops,lvl;
+  if(found<5)size=3;else if(found<15)size=4;else size=5;
+  if(found<4){ops=['plus'];lvl=1;}
+  else if(found<10){ops=['plus','minus'];lvl=2;}
+  else if(found<18){ops=['plus','minus','mult'];lvl=3;}
+  else{ops=['plus','minus','mult','div'];lvl=4;}
+  if(found<4)maxNum=9;
+  else if(found<10)maxNum=9;
+  else if(found<18)maxNum=12;
+  else if(found<30)maxNum=15;
+  else maxNum=20;
+  return{size,maxNum,ops,level:lvl};
 }
 
-function magnitudeClass(value) {
-  const clamped = Math.max(1, Math.min(20, value));
-  return `mag-${clamped}`;
+function streakMultiplier(s){
+  if(s<3)return 1;if(s<5)return 2;if(s<7)return 3;
+  if(s<10)return 4;if(s<15)return 5;if(s<20)return 7;
+  if(s<25)return 10;return Math.floor(s/2);
 }
 
-// Equation logic — shared between both modes
-// Checks both directions and all operations, returns the HIGHEST-VALUE valid match
-// (division > multiplication > subtraction > addition) so e.g. 2,2,4 resolves to
-// the multiplication/division reading rather than always defaulting to addition.
-function checkOrientation(a, b, c, ops) {
-  const matches = [];
-  if (ops.includes('div')   && b !== 0 && b > 1 && Number.isInteger(a / b) && a / b === c) matches.push({ eq: `${a} ÷ ${b} = ${c}`, op: 'div', priority: 4 });
-  if (ops.includes('mult')  && a * b === c) matches.push({ eq: `${a} × ${b} = ${c}`, op: 'mult', priority: 3 });
-  if (ops.includes('minus') && a - b === c && c >= 0) matches.push({ eq: `${a} − ${b} = ${c}`, op: 'minus', priority: 2 });
-  if (ops.includes('plus')  && a + b === c) matches.push({ eq: `${a} + ${b} = ${c}`, op: 'plus', priority: 1 });
+function checkOrientation(a,b,c,ops){
+  const matches=[];
+  if(ops.includes('div')&&b!==0&&b>1&&Number.isInteger(a/b)&&a/b===c)matches.push({eq:`${a} ÷ ${b} = ${c}`,op:'div',priority:4});
+  if(ops.includes('mult')&&a*b===c)matches.push({eq:`${a} × ${b} = ${c}`,op:'mult',priority:3});
+  if(ops.includes('minus')&&a-b===c&&c>=0)matches.push({eq:`${a} − ${b} = ${c}`,op:'minus',priority:2});
+  if(ops.includes('plus')&&a+b===c)matches.push({eq:`${a} + ${b} = ${c}`,op:'plus',priority:1});
   return matches;
 }
-function checkEquation(p, q, r, ops) {
-  const all = [...checkOrientation(p, q, r, ops), ...checkOrientation(r, q, p, ops)];
-  if (!all.length) return null;
-  all.sort((a, b) => b.priority - a.priority);
-  return { eq: all[0].eq, op: all[0].op };
+function checkEquation(p,q,r,ops){
+  const all=[...checkOrientation(p,q,r,ops),...checkOrientation(r,q,p,ops)];
+  if(!all.length)return null;
+  all.sort((a,b)=>b.priority-a.priority);
+  return{eq:all[0].eq,op:all[0].op};
 }
 
-function generateEquationTriple(ops, maxNum, rngFn) {
-  const rand = rngFn || Math.random;
-  for (let attempt = 0; attempt < 200; attempt++) {
-    const op = ops[Math.floor(rand() * ops.length)];
-    let a, b, c;
-    if (op === 'plus') {
-      a = Math.floor(rand() * (maxNum - 1)) + 1;
-      b = Math.floor(rand() * (maxNum - a)) + 1;
-      c = a + b;
-    } else if (op === 'minus') {
-      c = Math.floor(rand() * (maxNum - 2)) + 1;
-      b = Math.floor(rand() * (maxNum - c - 1)) + 1;
-      a = b + c;
-    } else if (op === 'mult') {
-      const factors = [];
-      for (let i = 2; i <= Math.min(maxNum, 9); i++) {
-        for (let j = 2; j <= Math.min(maxNum, Math.floor(maxNum / i)); j++) {
-          if (i * j <= maxNum) factors.push([i, j]);
-        }
-      }
-      if (!factors.length) continue;
-      const [fa, fb] = factors[Math.floor(rand() * factors.length)];
-      a = fa; b = fb; c = fa * fb;
-    } else {
-      const pairs = [];
-      for (let i = 2; i <= maxNum; i++) {
-        for (let j = 2; j <= Math.min(maxNum, Math.floor(i / 2)); j++) {
-          if (i % j === 0 && i / j <= maxNum) pairs.push([i, j, i / j]);
-        }
-      }
-      if (!pairs.length) continue;
-      const [pa, pb, pc] = pairs[Math.floor(rand() * pairs.length)];
-      a = pa; b = pb; c = pc;
-    }
-    if (a >= 1 && b >= 1 && c >= 1 && a <= maxNum && b <= maxNum && c <= maxNum) {
-      return [a, b, c];
-    }
-  }
-  return [1, 2, 3];
-}
+function magnitudeClass(v){return `mag-${Math.max(1,Math.min(20,v))}`;}
 
-function difficultyFor(found) {
-  let size, maxNum, ops, lvl;
-  if (found < 5) size = 3; else if (found < 15) size = 4; else size = 5;
-  if (found < 4)       { ops = ['plus']; lvl = 1; }
-  else if (found < 10) { ops = ['plus', 'minus']; lvl = 2; }
-  else if (found < 18) { ops = ['plus', 'minus', 'mult']; lvl = 3; }
-  else                 { ops = ['plus', 'minus', 'mult', 'div']; lvl = 4; }
-  if (found < 4)       maxNum = 9;
-  else if (found < 10) maxNum = 9;
-  else if (found < 18) maxNum = 12;
-  else if (found < 30) maxNum = 15;
-  else                 maxNum = 20;
-  return { size, maxNum, ops, level: lvl };
-}
+function timePerFind(level){if(level>=4)return 10;if(level>=3)return 8;return 5;}
+function opTimeBonus(op){if(op==='div')return 4;if(op==='mult')return 3;return 0;}
 
-function streakMultiplier(s) {
-  if (s < 3) return 1; if (s < 5) return 2; if (s < 7) return 3;
-  if (s < 10) return 4; if (s < 15) return 5; if (s < 20) return 7;
-  if (s < 25) return 10; return Math.floor(s / 2);
-}
-
-// Daily scoring — no multiplier, points by operation
-function dailyPointsForOp(op) {
-  if (op === 'div')  return 300;
-  if (op === 'mult') return 200;
-  return 100; // plus and minus same score
-}
-function dailyCurrentPoints(found) {
-  const diff = difficultyFor(found);
-  const ops = diff.ops;
-  if (ops.includes('div'))  return 300;
-  if (ops.includes('mult')) return 200;
-  return 100;
-}
-
-function timePerFind(level) {
-  if (level >= 4) return 10; if (level >= 3) return 8; return 5;
-}
-function opTimeBonus(op) {
-  if (op === 'div') return 4; if (op === 'mult') return 3; return 0;
-}
-
-const MILESTONES = [
-  { at: 5,   name: 'Sharpening',      emoji: '✏️' },
-  { at: 10,  name: 'Apprentice',      emoji: '🎯' },
-  { at: 15,  name: 'Calculator',      emoji: '🧮' },
-  { at: 20,  name: 'Mathlete',        emoji: '🏃' },
-  { at: 30,  name: 'Number Whisperer',emoji: '🔮' },
-  { at: 50,  name: 'Pi Master',       emoji: '🥧' },
-  { at: 75,  name: 'Euler',           emoji: '👑' },
-  { at: 100, name: 'Infinite',        emoji: '∞' },
-];
-function highestMilestoneReached(finds) {
-  let best = null;
-  for (const m of MILESTONES) { if (finds >= m.at) best = m; }
-  return best;
-}
-
-// Player name storage
-function getPlayerName(prefix) {
-  return localStorage.getItem(`trika-player-name-${prefix}`) || '';
-}
-function setPlayerName(prefix, name) {
-  localStorage.setItem(`trika-player-name-${prefix}`, name);
-}
-
-// Op pill update helper
-function updateOpPills(prefix, ops) {
-  const opMap = { plus: 'plus', minus: 'minus', mult: 'mult', div: 'div' };
-  Object.keys(opMap).forEach(op => {
-    const el = document.getElementById(`${prefix}-op-${op}`);
-    if (!el) return;
-    el.className = 'op-pill' + (ops.includes(op) ? ` active-${op}` : '');
-  });
-}
-
-function flashBg(flashId, type) {
-  const el = document.getElementById(flashId);
-  el.className = 'flash-overlay';
-  void el.offsetWidth;
-  el.className = `flash-overlay flash-${type}`;
-}
-
-function spawnParticles() {
-  const colors = ['#ea580c','#f97316','#d946ef','#16a34a','#0284c7'];
-  for (let i = 0; i < 8; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const angle = (i / 8) * Math.PI * 2;
-    const dist = 60 + Math.random() * 40;
-    p.style.setProperty('--px', `${Math.cos(angle) * dist}px`);
-    p.style.setProperty('--py', `${Math.sin(angle) * dist}px`);
-    p.style.background = colors[i % colors.length];
-    p.style.left = '50%'; p.style.top = '40%';
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 900);
-  }
-}
-
-function showUnlockBanner(sym, text) {
-  document.getElementById('unlock-sym').textContent = sym;
-  document.getElementById('unlock-text').textContent = text;
-  const b = document.getElementById('unlock-banner');
-  b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
-}
-
-function isInLine(cells) {
-  if (cells.length !== 3) return false;
-  const sorted = [...cells].sort((a,b) => (a.r-b.r)||(a.c-b.c));
-  const sameRow = sorted.every(s => s.r === sorted[0].r);
-  const sameCol = sorted.every(s => s.c === sorted[0].c);
-  if (sameRow) return sorted[1].c === sorted[0].c+1 && sorted[2].c === sorted[1].c+1;
-  if (sameCol) return sorted[1].r === sorted[0].r+1 && sorted[2].r === sorted[1].r+1;
+function isInLine(cells){
+  if(cells.length!==3)return false;
+  const s=[...cells].sort((a,b)=>(a.r-b.r)||(a.c-b.c));
+  const sameRow=s.every(x=>x.r===s[0].r);
+  const sameCol=s.every(x=>x.c===s[0].c);
+  if(sameRow)return s[1].c===s[0].c+1&&s[2].c===s[1].c+1;
+  if(sameCol)return s[1].r===s[0].r+1&&s[2].r===s[1].r+1;
   return false;
 }
 
-function renderGlobalList(listId, scores, playerName) {
-  const list = document.getElementById(listId);
-  if (!scores.length) {
-    list.innerHTML = '<div class="lb-empty-global">No scores yet — be the first!</div>';
-    return;
-  }
-  const top25 = scores.slice(0, 25);
-  list.innerHTML = top25.map((s, i) => {
-    const rankClass = i===0?'top1':i===1?'top2':i===2?'top3':'';
-    const isYou = s.name === playerName && playerName;
-    const milestone = highestMilestoneReached(s.found || 0);
-    const milestoneStr = milestone ? `${milestone.emoji} ` : '';
-    const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1;
-    return `<div class="lb-row-global ${rankClass}">
-      <div class="rank">${medal}</div>
-      <div class="player-info">
-        <div class="player-name">${isYou?'⭐ ':''}${milestoneStr}${s.name}</div>
-        <div class="player-meta">${s.found||0} found · Level ${s.level||1}</div>
-      </div>
-      <div class="player-score">${s.score.toLocaleString()}</div>
-    </div>`;
-  }).join('');
-  if (playerName) {
-    const yourIdx = scores.findIndex(s => s.name === playerName);
-    if (yourIdx >= 25) {
-      list.innerHTML += `<div class="lb-your-rank">You're #${yourIdx+1} of ${scores.length}</div>`;
-    }
-  }
-}
+// Board engine
+function createEngine(){
+  let board=[],gridSize=3,tileId=0,lastSolution=null;
+  const rndR=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
 
-// Board engine — shared, takes optional rng for daily seeding
-function createBoardEngine(rngFn) {
-  const rand = rngFn || Math.random;
-  let board = [], gridSize = 3, tileIdCounter = 0, lastSolution = null;
-
-  function rndR(min, max) { return Math.floor(rand() * (max - min + 1)) + min; }
-
-  function fillEmpty(tiers_unused, diff) {
-    for (let r = 0; r < gridSize; r++) {
-      for (let c = 0; c < gridSize; c++) {
-        if (!board[r][c]) board[r][c] = { id: tileIdCounter++, value: rndR(1, diff.maxNum) };
+  function findSolution(ops){
+    for(let r=0;r<gridSize;r++){
+      for(let c=0;c<=gridSize-3;c++){
+        const a=board[r][c].value,b=board[r][c+1].value,cc=board[r][c+2].value;
+        const res=checkEquation(a,b,cc,ops);
+        if(res)return{result:res,cells:[{r,c},{r,c:c+1},{r,c:c+2}]};
       }
     }
-  }
-
-  function findSolution(ops) {
-    for (let r = 0; r < gridSize; r++) {
-      for (let c = 0; c <= gridSize-3; c++) {
-        const a=board[r][c].value, b=board[r][c+1].value, cc=board[r][c+2].value;
-        const res = checkEquation(a,b,cc,ops);
-        if (res) return { result: res, cells: [{r,c},{r,c:c+1},{r,c:c+2}] };
-      }
-    }
-    for (let c = 0; c < gridSize; c++) {
-      for (let r = 0; r <= gridSize-3; r++) {
-        const a=board[r][c].value, b=board[r+1][c].value, cc=board[r+2][c].value;
-        const res = checkEquation(a,b,cc,ops);
-        if (res) return { result: res, cells: [{r,c},{r:r+1,c},{r:r+2,c}] };
+    for(let c=0;c<gridSize;c++){
+      for(let r=0;r<=gridSize-3;r++){
+        const a=board[r][c].value,b=board[r+1][c].value,cc=board[r+2][c].value;
+        const res=checkEquation(a,b,cc,ops);
+        if(res)return{result:res,cells:[{r,c},{r:r+1,c},{r:r+2,c}]};
       }
     }
     return null;
   }
 
-  function seedEquations(diff, count) {
-    let seeded = 0, attempts = 0;
-    while (seeded < count && attempts < 60) {
+  function fillEmpty(diff){
+    for(let r=0;r<gridSize;r++){
+      for(let c=0;c<gridSize;c++){
+        if(!board[r][c])board[r][c]={id:tileId++,value:rndR(1,diff.maxNum)};
+      }
+    }
+  }
+
+  function generateTriple(ops,maxNum){
+    for(let attempt=0;attempt<200;attempt++){
+      const op=ops[Math.floor(Math.random()*ops.length)];
+      let a,b,c;
+      if(op==='plus'){a=rndR(1,maxNum-1);b=rndR(1,maxNum-a);c=a+b;}
+      else if(op==='minus'){c=rndR(1,maxNum-2);b=rndR(1,maxNum-c-1);a=b+c;}
+      else if(op==='mult'){
+        const factors=[];
+        for(let i=2;i<=Math.min(maxNum,9);i++)for(let j=2;j<=Math.min(maxNum,Math.floor(maxNum/i));j++)if(i*j<=maxNum)factors.push([i,j]);
+        if(!factors.length)continue;
+        const[fa,fb]=factors[Math.floor(Math.random()*factors.length)];a=fa;b=fb;c=fa*fb;
+      }else{
+        const pairs=[];
+        for(let i=2;i<=maxNum;i++)for(let j=2;j<=Math.min(maxNum,Math.floor(i/2));j++)if(i%j===0&&i/j<=maxNum)pairs.push([i,j,i/j]);
+        if(!pairs.length)continue;
+        const[pa,pb,pc]=pairs[Math.floor(Math.random()*pairs.length)];a=pa;b=pb;c=pc;
+      }
+      if(a>=1&&b>=1&&c>=1&&a<=maxNum&&b<=maxNum&&c<=maxNum)return[a,b,c];
+    }
+    return[1,2,3];
+  }
+
+  function seedEquations(diff,count){
+    let seeded=0,attempts=0;
+    while(seeded<count&&attempts<60){
       attempts++;
-      const triple = generateEquationTriple(diff.ops, diff.maxNum, () => rand());
-      const horizontal = rand() < 0.5;
-      const row = horizontal ? rndR(0, gridSize-1) : rndR(0, gridSize-3);
-      const col = horizontal ? rndR(0, gridSize-3) : rndR(0, gridSize-1);
-      // Only reverse for commutative ops
-      const op = diff.ops[Math.floor(rand() * diff.ops.length)];
-      const canReverse = op === 'plus' || op === 'mult';
-      const letters = (canReverse && rand() < 0.5) ? [...triple].reverse() : triple;
-      for (let i = 0; i < 3; i++) {
-        const r = horizontal ? row : row+i;
-        const c = horizontal ? col+i : col;
-        board[r][c] = { id: tileIdCounter++, value: letters[i] };
+      const triple=generateTriple(diff.ops,diff.maxNum);
+      const horiz=Math.random()<0.5;
+      const row=horiz?rndR(0,gridSize-1):rndR(0,gridSize-3);
+      const col=horiz?rndR(0,gridSize-3):rndR(0,gridSize-1);
+      const op=diff.ops[Math.floor(Math.random()*diff.ops.length)];
+      const canRev=op==='plus'||op==='mult';
+      const letters=(canRev&&Math.random()<0.5)?[...triple].reverse():triple;
+      for(let i=0;i<3;i++){
+        const r=horiz?row:row+i,c=horiz?col+i:col;
+        board[r][c]={id:tileId++,value:letters[i]};
       }
       seeded++;
     }
   }
 
-  function ensureSolvable(diff) {
-    let safety = 40;
-    while (!findSolution(diff.ops) && safety-- > 0) {
-      const triple = generateEquationTriple(diff.ops, diff.maxNum, () => rand());
-      const horizontal = rand() < 0.5;
-      const row = horizontal ? rndR(0, gridSize-1) : rndR(0, gridSize-3);
-      const col = horizontal ? rndR(0, gridSize-3) : rndR(0, gridSize-1);
-      const op = diff.ops[Math.floor(rand() * diff.ops.length)];
-      const canReverse = op === 'plus' || op === 'mult';
-      const letters = (canReverse && rand() < 0.5) ? [...triple].reverse() : triple;
-      for (let i = 0; i < 3; i++) {
-        const r = horizontal ? row : row+i;
-        const c = horizontal ? col+i : col;
-        board[r][c] = { id: tileIdCounter++, value: letters[i] };
+  function ensureSolvable(diff){
+    let safety=40;
+    while(!findSolution(diff.ops)&&safety-->0){
+      const triple=generateTriple(diff.ops,diff.maxNum);
+      const horiz=Math.random()<0.5;
+      const row=horiz?rndR(0,gridSize-1):rndR(0,gridSize-3);
+      const col=horiz?rndR(0,gridSize-3):rndR(0,gridSize-1);
+      const op=diff.ops[Math.floor(Math.random()*diff.ops.length)];
+      const canRev=op==='plus'||op==='mult';
+      const letters=(canRev&&Math.random()<0.5)?[...triple].reverse():triple;
+      for(let i=0;i<3;i++){
+        const r=horiz?row:row+i,c=horiz?col+i:col;
+        board[r][c]={id:tileId++,value:letters[i]};
       }
     }
   }
 
-  function applyGravity() {
-    for (let c = 0; c < gridSize; c++) {
-      let writePtr = gridSize-1;
-      for (let r = gridSize-1; r >= 0; r--) {
-        if (board[r][c] != null) {
-          board[writePtr][c] = board[r][c];
-          if (writePtr !== r) board[r][c] = null;
-          writePtr--;
-        }
+  function applyGravity(){
+    for(let c=0;c<gridSize;c++){
+      let ptr=gridSize-1;
+      for(let r=gridSize-1;r>=0;r--){
+        if(board[r][c]!=null){board[ptr][c]=board[r][c];if(ptr!==r)board[r][c]=null;ptr--;}
       }
     }
   }
 
-  function init(found) {
-    const diff = difficultyFor(found);
-    gridSize = diff.size;
-    board = [];
-    for (let r = 0; r < gridSize; r++) {
-      board[r] = [];
-      for (let c = 0; c < gridSize; c++) board[r][c] = null;
-    }
-    const seedCount = found < 2 ? 3 : found < 5 ? 2 : 1;
-    seedEquations(diff, seedCount);
-    fillEmpty(null, diff);
-    ensureSolvable(diff);
-    lastSolution = findSolution(diff.ops);
-    return { board, gridSize, lastSolution };
+  function init(found){
+    const diff=difficultyFor(found);
+    gridSize=diff.size;board=[];
+    for(let r=0;r<gridSize;r++){board[r]=[];for(let c=0;c<gridSize;c++)board[r][c]=null;}
+    seedEquations(diff,found<2?3:found<5?2:1);
+    fillEmpty(diff);ensureSolvable(diff);
+    lastSolution=findSolution(diff.ops);
+    return{board,gridSize,lastSolution};
   }
 
-  function afterFind(cells, found) {
-    cells.forEach(s => { board[s.r][s.c] = null; });
-    const prevDiff = difficultyFor(found - 1);
-    const newDiff  = difficultyFor(found);
-    if (newDiff.size !== prevDiff.size) {
-      const oldSize = gridSize;
-      gridSize = newDiff.size;
-      const newBoard = [];
-      for (let r = 0; r < gridSize; r++) {
-        newBoard[r] = [];
-        for (let c = 0; c < gridSize; c++) {
-          newBoard[r][c] = (r < oldSize && c < oldSize) ? board[r][c] : null;
-        }
-      }
-      board = newBoard;
+  function afterFind(cells,found){
+    cells.forEach(s=>{board[s.r][s.c]=null;});
+    const prevDiff=difficultyFor(found-1),newDiff=difficultyFor(found);
+    if(newDiff.size!==prevDiff.size){
+      const oldSize=gridSize;gridSize=newDiff.size;
+      const nb=[];
+      for(let r=0;r<gridSize;r++){nb[r]=[];for(let c=0;c<gridSize;c++)nb[r][c]=(r<oldSize&&c<oldSize)?board[r][c]:null;}
+      board=nb;
     }
-    applyGravity();
-    fillEmpty(null, newDiff);
-    ensureSolvable(newDiff);
-    lastSolution = findSolution(newDiff.ops);
-    return { board, gridSize, lastSolution, prevDiff, newDiff };
+    applyGravity();fillEmpty(newDiff);ensureSolvable(newDiff);
+    lastSolution=findSolution(newDiff.ops);
+    return{board,gridSize,lastSolution,prevDiff,newDiff};
   }
 
-  function getState() { return { board, gridSize, lastSolution }; }
-  function getLastSolution() { return lastSolution; }
-
-  return { init, afterFind, getState, getLastSolution, findSolution: (ops) => findSolution(ops) };
+  return{init,afterFind,getLastSolution:()=>lastSolution,findSolution:(ops)=>findSolution(ops)};
 }
 
-function renderBoard(gridId, board, gridSize, selected) {
-  const grid = document.getElementById(gridId);
-  grid.className = `grid size-${gridSize}`;
-  grid.innerHTML = '';
-  for (let r = 0; r < gridSize; r++) {
-    for (let c = 0; c < gridSize; c++) {
-      const tile = board[r][c];
-      if (!tile) {
-        const ph = document.createElement('div');
-        ph.className = 'tile'; ph.style.visibility = 'hidden';
-        grid.appendChild(ph); continue;
-      }
-      const el = document.createElement('div');
-      el.dataset.r = r; el.dataset.c = c; el.dataset.id = tile.id;
-      const isSelected = selected.some(s => s.r===r && s.c===c);
-      el.className = `tile ${magnitudeClass(tile.value)}${isSelected?' selected':''}`;
-      el.textContent = tile.value;
+// ============================================================
+// RENDER BOARD
+// ============================================================
+function renderBoard(board,gridSize,selected){
+  const grid=$('grid');
+  grid.className=`grid size-${gridSize}`;
+  grid.innerHTML='';
+  for(let r=0;r<gridSize;r++){
+    for(let c=0;c<gridSize;c++){
+      const tile=board[r][c];
+      if(!tile){const ph=document.createElement('div');ph.className='tile';ph.style.visibility='hidden';grid.appendChild(ph);continue;}
+      const el=document.createElement('div');
+      el.dataset.r=r;el.dataset.c=c;el.dataset.id=tile.id;
+      const isSel=selected.some(s=>s.r===r&&s.c===c);
+      el.className=`tile ${magnitudeClass(tile.value)}${isSel?' selected':''}`;
+      el.textContent=tile.value;
       grid.appendChild(el);
     }
   }
 }
 
 // ============================================================
-// VIEW MANAGER
+// GAME STATE
 // ============================================================
-const VIEWS = ['landing','game-daily','game-free'];
-const MODALS = ['gameover-daily','gameover-free','leaderboard-daily','leaderboard-free'];
+let engine=null,board=[],gridSize=3,lastSolution=null;
+let selected=[],score=0,foundCount=0,streak=0,bestStreak=0;
+let timer=START_TIME,timerInterval=null,busy=false;
+let hints=MAX_HINTS,finalStats=null;
+let lbActiveTab='mine',lbMineSubTab='all',lbGroupSubTab='freeplay';
+let currentGroup=null,pendingSubmit=null;
 
-function showView(id) {
-  VIEWS.forEach(v => document.getElementById(v).classList.toggle('hide', v!==id));
-  MODALS.forEach(m => document.getElementById(m).classList.add('hide'));
-}
-function showModal(id) {
-  MODALS.forEach(m => document.getElementById(m).classList.toggle('hide', m!==id));
-}
-function hideModal(id) { const el = document.getElementById(id); if (el) el.classList.add('hide'); }
-
-// ============================================================
-// LANDING PAGE
-// ============================================================
-function updateLanding() {
-  const key = pacificDayKey();
-  const dailyStore = JSON.parse(localStorage.getItem('trika-daily-v1') || '{}');
-  const preview = document.getElementById('daily-played-preview');
-  if (dailyStore.dateKey === key && dailyStore.score !== undefined) {
-    // Already played today
-    preview.innerHTML = `
-      <div class="daily-played-note" style="margin-top:10px;">
-        <div class="sub">Today's score</div>
-        <div class="score-big">${dailyStore.score.toLocaleString()}</div>
-        <div class="sub">${dailyStore.found} found · Level ${dailyStore.level}</div>
-      </div>`;
-    document.getElementById('btn-play-daily').textContent = 'View Today\'s Results';
-  } else {
-    preview.innerHTML = '';
-    document.getElementById('btn-play-daily').textContent = 'Play Today\'s Puzzle';
-  }
-}
-
-document.getElementById('btn-play-daily').addEventListener('click', () => {
-  const key = pacificDayKey();
-  const dailyStore = JSON.parse(localStorage.getItem('trika-daily-v1') || '{}');
-  if (dailyStore.dateKey === key && dailyStore.score !== undefined) {
-    showView('game-daily');
-    showDailyResults(dailyStore, true);
-  } else {
-    showView('game-daily');
-    startDailyGame();
-  }
-});
-
-document.getElementById('btn-play-free').addEventListener('click', () => {
-  showView('game-free');
-  startFreeGame();
-});
-
-// ============================================================
-// DAILY GAME
-// ============================================================
-const DAILY_START_TIME = 45;
-const DAILY_MAX_TIME   = 60;
-
-let dEngine = null;
-let dBoard = [], dGridSize = 3, dLastSolution = null;
-let dSelected = [], dScore = 0, dFoundCount = 0;
-let dTimer = DAILY_START_TIME, dTimerInterval = null, dBusy = false;
-let dOpsFound = { plus:0, minus:0, mult:0, div:0 };
-let dFinalStats = null;
-
-function dailyStorageKey() { return 'trika-daily-v1'; }
-function saveDailyResult(stats) {
-  localStorage.setItem(dailyStorageKey(), JSON.stringify({
-    dateKey: pacificDayKey(), ...stats
-  }));
-}
-function getDailyResult() {
-  const raw = localStorage.getItem(dailyStorageKey());
-  if (!raw) return null;
-  const parsed = JSON.parse(raw);
-  if (parsed.dateKey !== pacificDayKey()) return null;
-  return parsed;
-}
-
-document.getElementById('d-btn-back').addEventListener('click', () => { stopDailyTimer(); showView('landing'); updateLanding(); });
-document.getElementById('d-btn-leaderboard').addEventListener('click', openDailyLeaderboard);
-document.getElementById('d-btn-go-free').addEventListener('click', () => {
-  hideModal('gameover-daily');
-  showView('game-free');
-  startFreeGame();
-});
-document.getElementById('d-btn-view-lb').addEventListener('click', () => { hideModal('gameover-daily'); openDailyLeaderboard(); });
-document.getElementById('d-btn-share-result').addEventListener('click', () => shareDailyResult(dFinalStats));
-document.getElementById('d-btn-submit-score').addEventListener('click', () => startDailySubmit());
-document.getElementById('d-btn-lb-close').addEventListener('click', () => hideModal('leaderboard-daily'));
-document.getElementById('d-btn-lb-submit').addEventListener('click', () => startDailySubmit());
-document.getElementById('d-btn-name-submit').addEventListener('click', dNameSubmit);
-document.getElementById('d-btn-name-cancel').addEventListener('click', () => document.getElementById('d-lb-name-entry').classList.add('hide'));
-document.getElementById('d-input-player-name').addEventListener('keydown', e => { if (e.key==='Enter') dNameSubmit(); });
-
-document.getElementById('d-grid').addEventListener('click', e => {
-  const t = e.target.closest('.tile');
-  if (!t || dBusy) return;
-  const r = parseInt(t.dataset.r), c = parseInt(t.dataset.c);
-  if (isNaN(r)||isNaN(c)) return;
-  const pos = dSelected.findIndex(s => s.r===r&&s.c===c);
-  if (pos >= 0) { dSelected.splice(pos,1); dRender(); dUpdateEqDisplay(); return; }
-  if (dSelected.length >= 3) return;
-  dSelected.push({r,c});
-  dRender(); dUpdateEqDisplay();
-  if (dSelected.length === 3) dCheckEquation();
-});
-
-function startDailyGame() {
-  dEngine = createBoardEngine(seededRng(dailySeed()));
-  const state = dEngine.init(0);
-  dBoard = state.board; dGridSize = state.gridSize; dLastSolution = state.lastSolution;
-  dSelected = []; dScore = 0; dFoundCount = 0; dTimer = DAILY_START_TIME; dBusy = false;
-  dOpsFound = { plus:0, minus:0, mult:0, div:0 };
-  setTimeout(() => {
-    dRender(); dUpdateTimerUI(); dUpdateEqDisplay();
-    document.getElementById('d-eq-display').innerHTML = '<span class="placeholder">select three tiles</span>';
-    stopDailyTimer();
-    dTimerInterval = setInterval(() => {
-      dTimer = Math.max(0, dTimer - 0.1);
-      dUpdateTimerUI();
-      if (dTimer <= 0) { clearInterval(dTimerInterval); dTimerInterval = null; dGameOver(); }
-    }, 100);
-  }, 50);
-}
-
-function stopDailyTimer() { if (dTimerInterval) { clearInterval(dTimerInterval); dTimerInterval = null; } }
-
-function dRender() {
-  renderBoard('d-grid', dBoard, dGridSize, dSelected);
-  const diff = difficultyFor(dFoundCount);
-  document.getElementById('d-score').textContent = dScore.toLocaleString();
-  document.getElementById('d-found-count').textContent = dFoundCount;
-  document.getElementById('d-found').textContent = dFoundCount;
-  document.getElementById('d-level').textContent = diff.level;
-  document.getElementById('d-pts-label').textContent = dailyCurrentPoints(dFoundCount);
-  updateOpPills('d', diff.ops);
-}
-
-function dUpdateTimerUI() {
-  const pct = (dTimer / DAILY_MAX_TIME) * 100;
-  const bar = document.getElementById('d-timer-bar');
-  bar.style.width = `${Math.max(0, pct)}%`;
-  bar.classList.toggle('danger', dTimer < 8);
-  const sec = document.getElementById('d-seconds-label');
-  sec.textContent = `${dTimer.toFixed(1)}s`;
-  sec.classList.toggle('danger', dTimer < 8);
-}
-
-function dUpdateEqDisplay() {
-  const el = document.getElementById('d-eq-display');
-  el.className = 'eq-display';
-  if (dSelected.length === 0) {
-    el.innerHTML = '<span class="placeholder">select three tiles</span>';
-  } else {
-    el.textContent = dSelected.map(s => dBoard[s.r][s.c].value).join(' − ');
-  }
-}
-
-async function dCheckEquation() {
-  if (dSelected.length !== 3) return;
-  if (!isInLine(dSelected)) { showToast('Tiles must be in a row or column'); dSelected=[]; dRender(); dUpdateEqDisplay(); return; }
-  const sortedCells = [...dSelected].sort((a,b)=>(a.r-b.r)||(a.c-b.c));
-  const vals = sortedCells.map(s => dBoard[s.r][s.c].value);
-  const diff = difficultyFor(dFoundCount);
-  const result = checkEquation(vals[0], vals[1], vals[2], diff.ops);
-  if (result) {
-    await dHandleCorrect(result, sortedCells);
-  } else {
-    dSelected=[]; dRender(); dUpdateEqDisplay();
-    flashBg('d-flash','bad');
-  }
-}
-
-async function dHandleCorrect(result, cells) {
-  dBusy = true;
-  const pts = dailyPointsForOp(result.op);
-  dScore += pts;
-  dFoundCount++;
-  dOpsFound[result.op] = (dOpsFound[result.op]||0) + 1;
-  const diff = difficultyFor(dFoundCount);
-  const timeBonus = timePerFind(diff.level) + opTimeBonus(result.op);
-  dTimer = Math.min(DAILY_MAX_TIME, dTimer + timeBonus);
-
-  // Gained label
-  const gainedEl = document.getElementById('d-gained-label');
-  gainedEl.textContent = `+${timeBonus}s`;
-  gainedEl.classList.remove('show'); void gainedEl.offsetWidth; gainedEl.classList.add('show');
-
-  // Animate tiles
-  cells.forEach(s => {
-    const el = document.querySelector(`#d-grid .tile[data-r="${s.r}"][data-c="${s.c}"]`);
-    if (el) el.classList.add('found');
-  });
-
-  // Popup
-  const midEl = document.querySelector(`#d-grid .tile[data-r="${cells[1].r}"][data-c="${cells[1].c}"]`);
-  if (midEl) {
-    const rect = midEl.getBoundingClientRect();
-    const popup = document.createElement('div');
-    popup.className = `equation-popup ${result.op}`;
-    popup.textContent = result.eq;
-    popup.style.left = (rect.left+rect.width/2)+'px';
-    popup.style.top  = (rect.top+rect.height/2)+'px';
-    document.body.appendChild(popup);
-    setTimeout(() => popup.remove(), 1500);
-  }
-
-  // Score popup
-  const sp = document.createElement('div');
-  sp.className = 'score-popup';
-  sp.textContent = `+${pts}`;
-  sp.style.left='50%'; sp.style.top='35%';
-  document.body.appendChild(sp);
-  setTimeout(() => sp.remove(), 1300);
-
-  flashBg('d-flash', result.op);
-  spawnParticles();
-
-  const scoreEl = document.getElementById('d-score');
-  scoreEl.classList.remove('bump'); void scoreEl.offsetWidth; scoreEl.classList.add('bump');
-
-  // Eq display success
-  const wd = document.getElementById('d-eq-display');
-  wd.className = `eq-display ${result.op}`;
-  wd.textContent = `${result.eq} ✓`;
-
-  await sleep(300);
-  wd.className = 'eq-display';
-  wd.innerHTML = '<span class="placeholder">select three tiles</span>';
-
-  // Check level up for unlock banner
-  const prevDiff = difficultyFor(dFoundCount - 1);
-  const newDiff = difficultyFor(dFoundCount);
-  const state = dEngine.afterFind(cells, dFoundCount);
-  dBoard = state.board; dGridSize = state.gridSize; dLastSolution = state.lastSolution;
-
-  if (newDiff.level > prevDiff.level) {
-    const banners = { 2:['−','SUBTRACTION UNLOCKED'], 3:['×','MULTIPLICATION UNLOCKED'], 4:['÷','DIVISION UNLOCKED'] };
-    if (banners[newDiff.level]) showUnlockBanner(...banners[newDiff.level]);
-  }
-
-  dSelected = [];
-  dRender();
-  document.querySelectorAll('#d-grid .tile').forEach(el => {
-    el.classList.add('dropping'); setTimeout(() => el.classList.remove('dropping'), 450);
-  });
-  await sleep(250);
-  dBusy = false;
-}
-
-function dGameOver() {
-  dBusy = true;
-  stopDailyTimer();
-  const diff = difficultyFor(dFoundCount);
-  dFinalStats = { score: dScore, found: dFoundCount, level: diff.level, ops: {...dOpsFound}, dateKey: pacificDayKey() };
-  saveDailyResult(dFinalStats);
-  dAutoSubmitToGroups();
-  showDailyResults(dFinalStats);
-}
-
-function showDailyResults(stats, immediate = false) {
-  // Reveal missed equation only if board is active
-  if (!immediate && dLastSolution) {
-    dLastSolution.cells.forEach((s,i) => {
-      const el = document.querySelector(`#d-grid .tile[data-r="${s.r}"][data-c="${s.c}"]`);
-      if (el) setTimeout(() => el.classList.add('answer-reveal'), i*200);
-    });
-    document.getElementById('d-missed-eq').textContent = dLastSolution.result ? dLastSolution.result.eq : '—';
-    document.getElementById('d-eq-was-wrap').style.display = '';
-  } else {
-    document.getElementById('d-eq-was-wrap').style.display = 'none';
-  }
-
-  document.getElementById('d-gameover-title').textContent = "time's up";
-  document.getElementById('d-level-reached-name').textContent = `Level ${stats.level}`;
-  document.getElementById('d-final-found').textContent = stats.found;
-  document.getElementById('d-final-pts').textContent = dailyCurrentPoints(stats.found);
-  document.getElementById('d-final-level').textContent = stats.level;
-
-  // Share card
-  document.getElementById('d-share-date').textContent = `Trika Daily · ${todayLabel()}`;
-  document.getElementById('d-share-score').textContent = stats.score.toLocaleString();
-  document.getElementById('d-share-sub').textContent = `${stats.found} found · Level ${stats.level}`;
-  const ops = stats.ops || {};
-  let opEmoji = '';
-  if ((ops.plus||0)+(ops.minus||0) > 0) opEmoji += '➕';
-  if ((ops.minus||0) > 0) opEmoji += '➖';
-  if ((ops.mult||0) > 0) opEmoji += '✖️';
-  if ((ops.div||0) > 0) opEmoji += '➗';
-  document.getElementById('d-share-ops').textContent = opEmoji || '➕';
-
-  setTimeout(() => showModal('gameover-daily'), immediate ? 0 : 2400);
-}
-
-function buildDailyShareText(stats) {
-  const ops = stats.ops || {};
-  let opEmoji = '';
-  if ((ops.plus||0)+(ops.minus||0) > 0) opEmoji += '➕';
-  if ((ops.minus||0) > 0) opEmoji += '➖';
-  if ((ops.mult||0) > 0) opEmoji += '✖️';
-  if ((ops.div||0) > 0) opEmoji += '➗';
-  return `Trika Daily · ${todayLabel()}\n${stats.score.toLocaleString()} pts · ${stats.found} found · Level ${stats.level}\n${opEmoji}\nplaytrika.com`;
-}
-
-async function shareDailyResult(stats) {
-  if (!stats) return;
-  const text = buildDailyShareText(stats);
-  if (navigator.share) {
-    try { await navigator.share({ title:'Trika Daily', text, url:'https://playtrika.com' }); return; } catch(e){}
-  }
-  try { await navigator.clipboard.writeText(text); showToast('Result copied!'); } catch(e) { window.prompt('Copy:', text); }
-}
-
-async function openDailyLeaderboard() {
-  showModal('leaderboard-daily');
-  document.getElementById('d-lb-status').textContent = 'Loading...';
-  document.getElementById('d-lb-list').innerHTML = '';
-  try {
-    const data = await jsonbinGet(DAILY_PUZZLE_BIN_ID);
-    const today = pacificDayKey();
-    const scores = (data.boards[today] || []).sort((a,b) => b.score-a.score);
-    renderGlobalList('d-lb-list', scores, getPlayerName('daily'));
-    document.getElementById('d-lb-status').textContent = `Today · ${scores.length} submission${scores.length!==1?'s':''}`;
-  } catch(e) {
-    document.getElementById('d-lb-status').textContent = 'Could not load — try again';
-  }
-}
-
-let dPendingSubmit = false;
-function startDailySubmit() {
-  if (!dFinalStats || dFinalStats.score === 0) { showToast('Play first!'); return; }
-  const name = getPlayerName('daily');
-  if (name) { dDoSubmit(name); }
-  else { dPendingSubmit = true; document.getElementById('d-input-player-name').value=''; document.getElementById('d-lb-name-entry').classList.remove('hide'); setTimeout(() => document.getElementById('d-input-player-name').focus(), 100); }
-}
-function dNameSubmit() {
-  const name = document.getElementById('d-input-player-name').value.trim();
-  if (!name) { showToast('Enter a name first'); return; }
-  setPlayerName('daily', name);
-  document.getElementById('d-lb-name-entry').classList.add('hide');
-  if (dPendingSubmit) { dPendingSubmit = false; dDoSubmit(name); }
-}
-async function dDoSubmit(name) {
-  showToast('Submitting...');
-  const submitBtn = document.getElementById('d-btn-submit-score');
-  const lbBtn = document.getElementById('d-btn-lb-submit');
-  [submitBtn, lbBtn].forEach(b => { if(b) { b.textContent = 'Submitting...'; b.disabled = true; }});
-  const entry = { name, score: dFinalStats.score, found: dFinalStats.found, level: dFinalStats.level, date: Date.now() };
-  try {
-    const data = await jsonbinGet(DAILY_PUZZLE_BIN_ID);
-    const today = pacificDayKey();
-    if (!data.boards[today]) data.boards[today] = [];
-    const existing = data.boards[today].findIndex(s => s.name===name);
-    if (existing >= 0) {
-      if (entry.score > data.boards[today][existing].score) data.boards[today][existing] = entry;
-      else { showToast('Not your best today — keep playing!'); [submitBtn,lbBtn].forEach(b=>{if(b){b.textContent='Submit Score';b.disabled=false;}}); return; }
-    } else {
-      data.boards[today].push(entry);
-    }
-    await jsonbinUpdate(DAILY_PUZZLE_BIN_ID, data);
-    showToast('✓ Score submitted!');
-    [submitBtn,lbBtn].forEach(b => { if(b) { b.textContent = '✓ Submitted'; b.disabled = true; }});
-    openDailyLeaderboard();
-  } catch(e) {
-    showToast('Submit failed — try again');
-    [submitBtn,lbBtn].forEach(b => { if(b) { b.textContent = 'Submit Score'; b.disabled = false; }});
-  }
-}
-
-// ============================================================
-// FREE PLAY GAME
-// ============================================================
-const FREE_START_TIME = 30;
-const FREE_MAX_TIME   = 40;
-const FREE_HINT_COST  = 3;
-const FREE_MAX_HINTS  = 3;
-
-let fEngine = null;
-let fBoard = [], fGridSize = 3, fLastSolution = null;
-let fSelected = [], fScore = 0, fFoundCount = 0, fStreak = 0, fBestStreak = 0;
-let fTimer = FREE_START_TIME, fTimerInterval = null, fBusy = false;
-let fHints = FREE_MAX_HINTS, fOpsFound = {}, fFinalStats = null;
-let fLbActiveTab = 'mine', fLbMineSubTab = 'all', fPendingSubmit = null;
-
-const FREE_STORE_KEY = 'sum-game-v1';
-function fLoadStore() { try { const r=localStorage.getItem(FREE_STORE_KEY); if(!r) return {runs:[]}; const p=JSON.parse(r); return p&&Array.isArray(p.runs)?p:{runs:[]}; } catch{return{runs:[]};} }
-function fSaveStore(s) { try{localStorage.setItem(FREE_STORE_KEY,JSON.stringify(s));}catch(e){} }
-function fRecordRun(stats) { const s=fLoadStore(); s.runs.unshift({score:stats.score,found:stats.found,bestStreak:stats.bestStreak,level:stats.level,date:Date.now()}); s.runs=s.runs.slice(0,50); fSaveStore(s); }
-function fTodayStart() { const d=new Date(); d.setHours(0,0,0,0); return d.getTime(); }
-
-document.getElementById('f-btn-again').addEventListener('click', startFreeGame);
-document.getElementById('f-btn-back').addEventListener('click', () => { stopFreeTimer(); showView('landing'); updateLanding(); });
-document.getElementById('f-btn-leaderboard').addEventListener('click', openFreeLeaderboard);
-document.getElementById('f-btn-view-leaderboard').addEventListener('click', () => { hideModal('gameover-free'); openFreeLeaderboard(); });
-document.getElementById('f-btn-share-result').addEventListener('click', () => fShareResult(fFinalStats));
-document.getElementById('f-btn-share-quick').addEventListener('click', () => { const s=fLoadStore(); const best=s.runs.reduce((b,r)=>r.score>b.score?r:b,{score:0,found:0,level:1}); if(!best.score){showToast('Play first!');return;} fShareResult(best); });
-document.getElementById('f-btn-submit-score').addEventListener('click', () => fStartSubmit('all'));
-document.getElementById('f-btn-lb-close').addEventListener('click', () => hideModal('leaderboard-free'));
-document.getElementById('f-btn-hint').addEventListener('click', fShowHint);
-
-document.querySelectorAll('#f-lb-tabs .lb-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('#f-lb-tabs .lb-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    fLbActiveTab = tab.dataset.tab;
-    fRenderLbPanel();
-  });
-});
-document.querySelectorAll('#f-lb-panel-mine .lb-sub-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('#f-lb-panel-mine .lb-sub-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    fLbMineSubTab = tab.dataset.subtab;
-    fRenderMinePanel();
-  });
-});
-document.getElementById('f-btn-submit-daily').addEventListener('click', () => fStartSubmit('daily'));
-document.getElementById('f-btn-submit-alltime').addEventListener('click', () => fStartSubmit('alltime'));
-document.getElementById('f-btn-name-submit').addEventListener('click', fNameSubmit);
-document.getElementById('f-btn-name-cancel').addEventListener('click', () => { document.getElementById('f-lb-name-entry').classList.add('hide'); fPendingSubmit=null; });
-document.getElementById('f-input-player-name').addEventListener('keydown', e => { if(e.key==='Enter') fNameSubmit(); });
-
-document.getElementById('f-grid').addEventListener('click', e => {
-  const t = e.target.closest('.tile');
-  if (!t||fBusy) return;
-  const r=parseInt(t.dataset.r), c=parseInt(t.dataset.c);
-  if(isNaN(r)||isNaN(c)) return;
-  const pos=fSelected.findIndex(s=>s.r===r&&s.c===c);
-  if(pos>=0){fSelected.splice(pos,1);fRender();fUpdateEqDisplay();return;}
-  if(fSelected.length>=3) return;
-  fSelected.push({r,c}); fRender(); fUpdateEqDisplay();
-  if(fSelected.length===3) fCheckEquation();
-});
-
-function startFreeGame() {
-  hideModal('gameover-free');
-  fEngine = createBoardEngine();
-  const state = fEngine.init(0);
-  fBoard=state.board; fGridSize=state.gridSize; fLastSolution=state.lastSolution;
-  fSelected=[]; fScore=0; fFoundCount=0; fStreak=0; fBestStreak=0;
-  fTimer=FREE_START_TIME; fBusy=false; fHints=FREE_MAX_HINTS; fFinalStats=null; fOpsFound={};
-  // Use setTimeout to ensure DOM is visible before rendering
-  setTimeout(() => {
-    fRender(); fUpdateTimerUI(); fUpdateEqDisplay();
-    document.getElementById('f-eq-display').innerHTML='<span class="placeholder">select three tiles</span>';
-    stopFreeTimer();
-    fTimerInterval = setInterval(() => {
-      fTimer=Math.max(0,fTimer-0.1); fUpdateTimerUI();
-      if(fTimer<=0){clearInterval(fTimerInterval);fTimerInterval=null;fGameOver();}
+function startGame(){
+  hideModal('gameover');hideModal('leaderboard');
+  engine=createEngine();
+  const state=engine.init(0);
+  board=state.board;gridSize=state.gridSize;lastSolution=state.lastSolution;
+  selected=[];score=0;foundCount=0;streak=0;bestStreak=0;
+  timer=START_TIME;busy=false;hints=MAX_HINTS;finalStats=null;
+  setTimeout(()=>{
+    renderGame();updateTimerUI();
+    $('eq-display').innerHTML='<span class="placeholder">select three tiles</span>';
+    stopTimer();
+    timerInterval=setInterval(()=>{
+      timer=Math.max(0,timer-0.1);updateTimerUI();
+      if(timer<=0){stopTimer();gameOver();}
     },100);
-  }, 50);
+  },50);
 }
 
-function stopFreeTimer() { if(fTimerInterval){clearInterval(fTimerInterval);fTimerInterval=null;} }
+function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
 
-function fRender() {
-  renderBoard('f-grid', fBoard, fGridSize, fSelected);
-  const diff = difficultyFor(fFoundCount);
-  const mult = streakMultiplier(fStreak);
-  document.getElementById('f-score').textContent = fScore.toLocaleString();
-  document.getElementById('f-found-count').textContent = fFoundCount;
-  document.getElementById('f-streak').textContent = fStreak;
-  document.getElementById('f-multiplier').textContent = `×${mult}`;
-  document.getElementById('f-level').textContent = diff.level;
-  document.getElementById('f-btn-hint').textContent = `Hint ${fHints}/${FREE_MAX_HINTS} (−3s)`;
-  updateOpPills('f', diff.ops);
+function renderGame(){
+  renderBoard(board,gridSize,selected);
+  const diff=difficultyFor(foundCount);
+  const mult=streakMultiplier(streak);
+  $('score').textContent=score.toLocaleString();
+  $('found-count').textContent=foundCount;
+  $('streak').textContent=streak;
+  $('multiplier').textContent=`×${mult}`;
+  $('level').textContent=diff.level;
+  $('btn-hint').textContent=`Hint ${hints}/${MAX_HINTS} (−3s)`;
+  ['plus','minus','mult','div'].forEach(op=>{
+    const el=$(`op-${op}`);
+    el.className='op-pill'+(diff.ops.includes(op)?` active-${op}`:'');
+  });
 }
 
-function fUpdateTimerUI() {
-  const pct=(fTimer/FREE_MAX_TIME)*100;
-  const bar=document.getElementById('f-timer-bar');
+function updateTimerUI(){
+  const pct=(timer/MAX_TIME)*100;
+  const bar=$('timer-bar');
   bar.style.width=`${Math.max(0,pct)}%`;
-  bar.classList.toggle('danger',fTimer<8);
-  const sec=document.getElementById('f-seconds-label');
-  sec.textContent=`${fTimer.toFixed(1)}s`;
-  sec.classList.toggle('danger',fTimer<8);
+  bar.classList.toggle('danger',timer<8);
+  const sec=$('seconds-label');
+  sec.textContent=`${timer.toFixed(1)}s`;
+  sec.classList.toggle('danger',timer<8);
 }
 
-function fUpdateEqDisplay() {
-  const el=document.getElementById('f-eq-display');
+// ============================================================
+// TILE INTERACTION
+// ============================================================
+$('grid').addEventListener('click',e=>{
+  const t=e.target.closest('.tile');
+  if(!t||busy)return;
+  const r=parseInt(t.dataset.r),c=parseInt(t.dataset.c);
+  if(isNaN(r)||isNaN(c))return;
+  const pos=selected.findIndex(s=>s.r===r&&s.c===c);
+  if(pos>=0){selected.splice(pos,1);renderGame();updateEqDisplay();return;}
+  if(selected.length>=3)return;
+  selected.push({r,c});renderGame();updateEqDisplay();
+  if(selected.length===3)checkEquationTap();
+});
+
+function updateEqDisplay(){
+  const el=$('eq-display');
   el.className='eq-display';
-  if(fSelected.length===0){ el.innerHTML='<span class="placeholder">select three tiles</span>'; }
-  else{ el.textContent=fSelected.map(s=>fBoard[s.r][s.c].value).join(' − '); }
+  if(!selected.length){el.innerHTML='<span class="placeholder">select three tiles</span>';}
+  else{el.textContent=selected.map(s=>board[s.r][s.c].value).join(' − ');}
 }
 
-async function fCheckEquation() {
-  if(fSelected.length!==3) return;
-  if(!isInLine(fSelected)){showToast('Tiles must be in a row or column');fSelected=[];fRender();fUpdateEqDisplay();return;}
-  const sortedCells=[...fSelected].sort((a,b)=>(a.r-b.r)||(a.c-b.c));
-  const vals=sortedCells.map(s=>fBoard[s.r][s.c].value);
-  const diff=difficultyFor(fFoundCount);
+async function checkEquationTap(){
+  if(selected.length!==3)return;
+  if(!isInLine(selected)){showToast('Tiles must be in a row or column');selected=[];renderGame();updateEqDisplay();return;}
+  const sorted=[...selected].sort((a,b)=>(a.r-b.r)||(a.c-b.c));
+  const vals=sorted.map(s=>board[s.r][s.c].value);
+  const diff=difficultyFor(foundCount);
   const result=checkEquation(vals[0],vals[1],vals[2],diff.ops);
-  if(result){ await fHandleCorrect(result,sortedCells); }
-  else { fSelected=[];fRender();fUpdateEqDisplay();flashBg('f-flash','bad'); fStreak=0; fRender(); }
+  if(result){await handleCorrect(result,sorted);}
+  else{selected=[];renderGame();updateEqDisplay();flashBg('bad');streak=0;renderGame();}
 }
 
-async function fHandleCorrect(result, cells) {
-  fBusy=true;
-  const mult=streakMultiplier(fStreak);
-  const diff=difficultyFor(fFoundCount);
+function flashBg(type){const el=$('flash');el.className='flash-overlay';void el.offsetWidth;el.className=`flash-overlay flash-${type}`;}
+
+function spawnParticles(){
+  const colors=['#ea580c','#f97316','#d946ef','#16a34a','#0284c7'];
+  for(let i=0;i<8;i++){
+    const p=document.createElement('div');
+    p.style.cssText=`position:fixed;pointer-events:none;z-index:99;width:8px;height:8px;border-radius:50%;animation:particleBurst 0.8s ease forwards;`;
+    const angle=(i/8)*Math.PI*2,dist=60+Math.random()*40;
+    p.style.setProperty('--px',`${Math.cos(angle)*dist}px`);
+    p.style.setProperty('--py',`${Math.sin(angle)*dist}px`);
+    p.style.background=colors[i%colors.length];
+    p.style.left='50%';p.style.top='40%';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),900);
+  }
+}
+
+async function handleCorrect(result,cells){
+  busy=true;
+  const mult=streakMultiplier(streak);
+  const diff=difficultyFor(foundCount);
   const baseScore=100*(diff.level>2?diff.level:1);
   const gained=baseScore*mult;
-  fScore+=gained; fFoundCount++; fStreak++; fBestStreak=Math.max(fBestStreak,fStreak);
-  fOpsFound[result.op]=(fOpsFound[result.op]||0)+1;
+  score+=gained;foundCount++;streak++;bestStreak=Math.max(bestStreak,streak);
   const timeBonus=timePerFind(diff.level)+opTimeBonus(result.op);
-  fTimer=Math.min(FREE_MAX_TIME,fTimer+timeBonus);
+  timer=Math.min(MAX_TIME,timer+timeBonus);
 
-  const gainedEl=document.getElementById('f-gained-label');
+  const gainedEl=$('gained-label');
   gainedEl.textContent=`+${timeBonus}s`;
   gainedEl.classList.remove('show');void gainedEl.offsetWidth;gainedEl.classList.add('show');
 
-  cells.forEach(s=>{const el=document.querySelector(`#f-grid .tile[data-r="${s.r}"][data-c="${s.c}"]`);if(el)el.classList.add('found');});
+  cells.forEach(s=>{const el=document.querySelector(`#grid .tile[data-r="${s.r}"][data-c="${s.c}"]`);if(el)el.classList.add('found');});
 
-  const midEl=document.querySelector(`#f-grid .tile[data-r="${cells[1].r}"][data-c="${cells[1].c}"]`);
+  const midEl=document.querySelector(`#grid .tile[data-r="${cells[1].r}"][data-c="${cells[1].c}"]`);
   if(midEl){
     const rect=midEl.getBoundingClientRect();
     const popup=document.createElement('div');
-    popup.className=`equation-popup ${fStreak>2?'streak':result.op}`;
+    popup.className=`equation-popup ${streak>2?'streak':result.op}`;
     popup.textContent=result.eq;
     popup.style.left=(rect.left+rect.width/2)+'px';
     popup.style.top=(rect.top+rect.height/2)+'px';
@@ -1594,481 +831,386 @@ async function fHandleCorrect(result, cells) {
   sp.className='score-popup';sp.textContent=`+${gained}`;sp.style.left='50%';sp.style.top='35%';
   document.body.appendChild(sp);setTimeout(()=>sp.remove(),1300);
 
-  flashBg('f-flash',fStreak>2?'streak':result.op);
-  spawnParticles();
-  const scoreEl=document.getElementById('f-score');
-  scoreEl.classList.remove('bump');void scoreEl.offsetWidth;scoreEl.classList.add('bump');
-  if(fStreak>=3){const mc=document.getElementById('f-cell-mult');mc.classList.remove('hot');void mc.offsetWidth;mc.classList.add('hot');}
+  flashBg(streak>2?'streak':result.op);spawnParticles();
+  const scoreEl=$('score');scoreEl.classList.remove('bump');void scoreEl.offsetWidth;scoreEl.classList.add('bump');
+  if(streak>=3){const mc=$('cell-mult');mc.classList.remove('hot');void mc.offsetWidth;mc.classList.add('hot');}
 
-  const wd=document.getElementById('f-eq-display');
+  const wd=$('eq-display');
   wd.className=`eq-display ${result.op}`;
   wd.textContent=`${result.eq} ✓`;
   await sleep(300);
   wd.className='eq-display';
   wd.innerHTML='<span class="placeholder">select three tiles</span>';
 
-  const prevDiff=difficultyFor(fFoundCount-1);
-  const newDiff=difficultyFor(fFoundCount);
-  const state=fEngine.afterFind(cells,fFoundCount);
-  fBoard=state.board;fGridSize=state.gridSize;fLastSolution=state.lastSolution;
+  const prevDiff=difficultyFor(foundCount-1),newDiff=difficultyFor(foundCount);
+  const state=engine.afterFind(cells,foundCount);
+  board=state.board;gridSize=state.gridSize;lastSolution=state.lastSolution;
 
   if(newDiff.level>prevDiff.level){
-    fHints=Math.min(FREE_MAX_HINTS,fHints+1);
+    hints=Math.min(MAX_HINTS,hints+1);
     const banners={2:['−','SUBTRACTION UNLOCKED'],3:['×','MULTIPLICATION UNLOCKED'],4:['÷','DIVISION UNLOCKED']};
-    if(banners[newDiff.level]) showUnlockBanner(...banners[newDiff.level]);
-  }
-
-  fSelected=[];fRender();
-  document.querySelectorAll('#f-grid .tile').forEach(el=>{el.classList.add('dropping');setTimeout(()=>el.classList.remove('dropping'),450);});
-  await sleep(250);fBusy=false;
-}
-
-function fShowHint() {
-  if(fBusy) return;
-  if(fHints<=0){showToast('No hints left');return;}
-  if(fTimer<=FREE_HINT_COST+1){showToast('Not enough time');return;}
-  fHints--;
-  fTimer=Math.max(0,fTimer-FREE_HINT_COST);
-  // Render first to update hint count and timer, THEN add glow
-  fRender();
-  const sol = fLastSolution || fEngine.findSolution(difficultyFor(fFoundCount).ops);
-  if(sol){
-    // Only highlight the first tile as a hint — not all three
-    const s = sol.cells[0];
-    const el = document.querySelector(`#f-grid .tile[data-r="${s.r}"][data-c="${s.c}"]`);
-    if(el){
-      el.classList.add('hint-glow');
-      setTimeout(()=>el.classList.remove('hint-glow'),1400);
+    if(banners[newDiff.level]){
+      $('unlock-sym').textContent=banners[newDiff.level][0];
+      $('unlock-text').textContent=banners[newDiff.level][1];
+      const b=$('unlock-banner');b.classList.remove('show');void b.offsetWidth;b.classList.add('show');
     }
-  } else {
-    showToast('No hint available');
   }
+
+  selected=[];renderGame();
+  document.querySelectorAll('#grid .tile').forEach(el=>{el.classList.add('dropping');setTimeout(()=>el.classList.remove('dropping'),450);});
+  await sleep(250);busy=false;
 }
 
-function fGameOver() {
-  fBusy=true; stopFreeTimer();
-  const diff=difficultyFor(fFoundCount);
-  fFinalStats={score:fScore,found:fFoundCount,bestStreak:fBestStreak,level:diff.level};
-  fRecordRun(fFinalStats);
-  fAutoSubmitToGroups();
-  const runs=fLoadStore().runs;
-  const isNewBest=fScore>0&&runs.filter(r=>r.score>=fScore).length<=1;
+// Hint
+$('btn-hint').addEventListener('click',()=>{
+  if(busy)return;
+  if(hints<=0){showToast('No hints left');return;}
+  if(timer<=HINT_COST+1){showToast('Not enough time');return;}
+  hints--;timer=Math.max(0,timer-HINT_COST);
+  renderGame();
+  const sol=lastSolution||engine.findSolution(difficultyFor(foundCount).ops);
+  if(sol){
+    const s=sol.cells[0];
+    const el=document.querySelector(`#grid .tile[data-r="${s.r}"][data-c="${s.c}"]`);
+    if(el){el.classList.add('hint-glow');setTimeout(()=>el.classList.remove('hint-glow'),1400);}
+  } else {showToast('No hint available');}
+});
 
-  document.getElementById('f-gameover-title').textContent="time's up";
-  document.getElementById('f-level-reached-name').textContent=`Level ${diff.level}`;
-  document.getElementById('f-final-score').textContent=fScore.toLocaleString();
-  document.getElementById('f-final-found').textContent=fFoundCount;
-  document.getElementById('f-final-streak').textContent=fBestStreak;
-  document.getElementById('f-final-level').textContent=diff.level;
+// ============================================================
+// GAME OVER
+// ============================================================
+function gameOver(){
+  busy=true;stopTimer();
+  const diff=difficultyFor(foundCount);
+  finalStats={score,found:foundCount,bestStreak,level:diff.level};
 
-  const wrap=document.getElementById('f-new-best-wrap');
-  wrap.innerHTML='';
-  if(isNewBest&&fScore>0){const b=document.createElement('div');b.className='new-best-badge';b.textContent='🎉 NEW BEST';wrap.appendChild(b);}
+  const store=fLoadStore();
+  store.runs.unshift({score,found:foundCount,bestStreak,level:diff.level,date:Date.now()});
+  store.runs=store.runs.slice(0,50);
+  fSaveStore(store);
 
-  if(fLastSolution){
-    fLastSolution.cells.forEach((s,i)=>{const el=document.querySelector(`#f-grid .tile[data-r="${s.r}"][data-c="${s.c}"]`);if(el)setTimeout(()=>el.classList.add('answer-reveal'),i*200);});
-    document.getElementById('f-missed-eq').textContent=fLastSolution.result?fLastSolution.result.eq:'—';
-    document.getElementById('f-eq-was-wrap').style.display='';
-  } else { document.getElementById('f-eq-was-wrap').style.display='none'; }
+  const isNewBest=score>0&&store.runs.filter(r=>r.score>=score).length<=1;
 
-  setTimeout(()=>showModal('gameover-free'),2400);
+  $('gameover-title').textContent="time's up";
+  $('level-reached-name').textContent=`Level ${diff.level}`;
+  $('final-score').textContent=score.toLocaleString();
+  $('final-found').textContent=foundCount;
+  $('final-streak').textContent=bestStreak;
+  $('final-level').textContent=diff.level;
+
+  const wrap=$('new-best-wrap');wrap.innerHTML='';
+  if(isNewBest&&score>0){const b=document.createElement('div');b.className='new-best-badge';b.textContent='🎉 NEW BEST';wrap.appendChild(b);}
+
+  if(lastSolution){
+    lastSolution.cells.forEach((s,i)=>{const el=document.querySelector(`#grid .tile[data-r="${s.r}"][data-c="${s.c}"]`);if(el)setTimeout(()=>el.classList.add('answer-reveal'),i*200);});
+    $('missed-eq').textContent=lastSolution.result?lastSolution.result.eq:'—';
+    $('eq-was-wrap').style.display='';
+  } else {$('eq-was-wrap').style.display='none';}
+
+  autoSubmitToGroups();
+  setTimeout(()=>showModal('gameover'),2400);
 }
 
-async function fShareResult(stats) {
-  if(!stats) return;
-  const text=`Trika Free Play\n${stats.score.toLocaleString()} pts · ${stats.found} found · Level ${stats.level}\nplaytrika.com`;
-  if(navigator.share){try{await navigator.share({title:'Trika',text,url:'https://playtrika.com'});return;}catch(e){}}
+// ============================================================
+// SHARE
+// ============================================================
+async function shareResult(stats){
+  if(!stats)return;
+  const text=`Trika Numbers\n${stats.score.toLocaleString()} pts · ${stats.found} found · Level ${stats.level}\nplaytrika.com`;
+  if(navigator.share){try{await navigator.share({title:'Trika Numbers',text,url:'https://playtrika.com'});return;}catch(e){}}
   try{await navigator.clipboard.writeText(text);showToast('Result copied!');}catch(e){window.prompt('Copy:',text);}
 }
 
-function openFreeLeaderboard() {
-  showModal('leaderboard-free');
-  fLbActiveTab='mine';
-  document.querySelectorAll('#f-lb-tabs .lb-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab==='mine'));
-  ['mine','daily','alltime'].forEach(p=>document.getElementById(`f-lb-panel-${p}`).classList.toggle('hide',p!=='mine'));
-  fRenderMinePanel();
-}
-
-function fRenderLbPanel() {
-  ['mine','daily','alltime','groups'].forEach(p => document.getElementById(`f-lb-panel-${p}`).classList.toggle('hide', p!==fLbActiveTab));
-  if(fLbActiveTab==='mine') fRenderMinePanel();
-  if(fLbActiveTab==='daily') fLoadGlobalDaily();
-  if(fLbActiveTab==='alltime') fLoadGlobalAllTime();
-  if(fLbActiveTab==='groups') fRenderGroupsHome();
-}
-
-function fRenderMinePanel() {
+$('btn-share-result').addEventListener('click',()=>shareResult(finalStats));
+$('btn-share-quick').addEventListener('click',()=>{
   const store=fLoadStore();
-  const todayStart=fTodayStart();
+  const best=store.runs.reduce((b,r)=>r.score>b.score?r:b,{score:0,found:0,level:1});
+  if(!best.score){showToast('Play first!');return;}
+  shareResult(best);
+});
+
+// ============================================================
+// LEADERBOARD
+// ============================================================
+function showModal(id){document.getElementById(id).classList.remove('hide');}
+function hideModal(id){const el=document.getElementById(id);if(el)el.classList.add('hide');}
+
+$('btn-again').addEventListener('click',startGame);
+$('btn-back').addEventListener('click',()=>{stopTimer();showView('landing');});
+$('btn-leaderboard').addEventListener('click',openLeaderboard);
+$('btn-view-leaderboard').addEventListener('click',()=>{hideModal('gameover');openLeaderboard();});
+$('btn-lb-close').addEventListener('click',()=>hideModal('leaderboard'));
+$('btn-submit-score').addEventListener('click',()=>startSubmit('alltime'));
+$('btn-name-submit').addEventListener('click',nameSubmit);
+$('btn-name-cancel').addEventListener('click',()=>{$('lb-name-entry').classList.add('hide');pendingSubmit=null;});
+$('input-player-name').addEventListener('keydown',e=>{if(e.key==='Enter')nameSubmit();});
+
+document.querySelectorAll('.lb-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.lb-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    lbActiveTab=tab.dataset.tab;
+    renderLbPanel();
+  });
+});
+
+document.querySelectorAll('.lb-sub-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    const siblings=tab.parentElement.querySelectorAll('.lb-sub-tab');
+    siblings.forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    lbMineSubTab=tab.dataset.subtab;
+    renderMinePanel();
+  });
+});
+
+document.querySelectorAll('[data-grouptab]').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('[data-grouptab]').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    lbGroupSubTab=tab.dataset.grouptab;
+    if(currentGroup)loadGroupBoard(currentGroup.code,lbGroupSubTab);
+  });
+});
+
+function openLeaderboard(){
+  showModal('leaderboard');
+  lbActiveTab='mine';
+  document.querySelectorAll('.lb-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab==='mine'));
+  ['mine','alltime','groups'].forEach(p=>document.getElementById(`lb-panel-${p}`).classList.toggle('hide',p!=='mine'));
+  renderMinePanel();
+}
+
+function renderLbPanel(){
+  ['mine','alltime','groups'].forEach(p=>document.getElementById(`lb-panel-${p}`).classList.toggle('hide',p!==lbActiveTab));
+  if(lbActiveTab==='mine')renderMinePanel();
+  if(lbActiveTab==='alltime')loadAllTime();
+  if(lbActiveTab==='groups')renderGroupsHome();
+}
+
+function renderMinePanel(){
+  const store=fLoadStore();
+  const todayStart=new Date();todayStart.setHours(0,0,0,0);
   let runs=[...store.runs];
-  if(fLbMineSubTab==='today') runs=runs.filter(r=>r.date>=todayStart);
-  runs.sort((a,b)=>b.score-a.score);
-  runs=runs.slice(0,25);
-  const list=document.getElementById('f-lb-list-mine');
-  if(!runs.length){list.innerHTML=`<div class="lb-empty">${fLbMineSubTab==='today'?'No runs today!':'No runs yet — play first!'}</div>`;return;}
+  if(lbMineSubTab==='today')runs=runs.filter(r=>r.date>=todayStart.getTime());
+  runs.sort((a,b)=>b.score-a.score);runs=runs.slice(0,25);
+  const list=$('lb-list-mine');
+  if(!runs.length){list.innerHTML=`<div class="lb-empty">${lbMineSubTab==='today'?'No runs today!':'No runs yet — play first!'}</div>`;return;}
   list.innerHTML=runs.map((r,i)=>{
-    const rankClass=i===0?'top1':i===1?'top2':i===2?'top3':'';
+    const rc=i===0?'top1':i===1?'top2':i===2?'top3':'';
     const date=new Date(r.date);
-    const dateStr=r.date>=todayStart?date.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):date.toLocaleDateString([],{month:'short',day:'numeric'});
-    return `<div class="lb-row ${rankClass}"><div class="rank">${i+1}</div><div class="info"><div class="score-big">${r.score.toLocaleString()}</div><div class="meta">${r.found} found · streak ${r.bestStreak} · L${r.level}</div></div><div class="date">${dateStr}</div></div>`;
+    const ds=r.date>=todayStart.getTime()?date.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):date.toLocaleDateString([],{month:'short',day:'numeric'});
+    return `<div class="lb-row ${rc}"><div class="rank">${i+1}</div><div class="info"><div class="score-big">${r.score.toLocaleString()}</div><div class="meta">${r.found} found · streak ${r.bestStreak} · L${r.level}</div></div><div class="date">${ds}</div></div>`;
   }).join('');
 }
 
-async function fLoadGlobalDaily() {
-  document.getElementById('f-lb-daily-status').textContent='Loading...';
-  document.getElementById('f-lb-list-daily').innerHTML='';
-  try {
-    const data = await jsonbinGet(DAILY_BIN_ID);
-    const today = pacificDayKey();
-    // Support both Pacific key and local key for backwards compatibility
-    const localKey = (() => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })();
-    const scores = ((data.boards && (data.boards[today] || data.boards[localKey])) || []).sort((a,b)=>b.score-a.score);
-    renderGlobalList('f-lb-list-daily', scores, getPlayerName('daily'));
-    document.getElementById('f-lb-daily-status').textContent = `Today · ${scores.length} submission${scores.length!==1?'s':''}`;
-  } catch(e) {
-    document.getElementById('f-lb-daily-status').textContent = 'Could not load — try again';
-    console.error('Daily load error:', e);
-  }
+function renderGlobalList(listId,scores,playerName){
+  const list=document.getElementById(listId);
+  if(!scores.length){list.innerHTML='<div class="lb-empty-global">No scores yet — be the first!</div>';return;}
+  list.innerHTML=scores.slice(0,25).map((s,i)=>{
+    const rc=i===0?'top1':i===1?'top2':i===2?'top3':'';
+    const isYou=s.name===playerName&&playerName;
+    const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1;
+    return `<div class="lb-row-global ${rc}"><div class="rank">${medal}</div><div class="player-info"><div class="player-name">${isYou?'⭐ ':''}${s.name}</div><div class="player-meta">${s.found||0} found · Level ${s.level||1}</div></div><div class="player-score">${s.score.toLocaleString()}</div></div>`;
+  }).join('');
 }
 
-async function fLoadGlobalAllTime() {
-  document.getElementById('f-lb-alltime-status').textContent='Loading...';
-  document.getElementById('f-lb-list-alltime').innerHTML='';
-  try {
-    const data=await jsonbinGet(ALLTIME_BIN_ID);
+async function loadAllTime(){
+  $('lb-alltime-status').textContent='Loading...';
+  $('lb-list-alltime').innerHTML='';
+  try{
+    const data=await jsonbinGet(ALLTIME_BIN);
     const scores=(data.scores||[]).sort((a,b)=>b.score-a.score);
-    renderGlobalList('f-lb-list-alltime',scores,getPlayerName('free'));
-    document.getElementById('f-lb-alltime-status').textContent=`All-time · ${scores.length} player${scores.length!==1?'s':''}`;
-  } catch(e){document.getElementById('f-lb-alltime-status').textContent='Could not load — try again';}
+    renderGlobalList('lb-list-alltime',scores,getPlayerName());
+    $('lb-alltime-status').textContent=`All-time · ${scores.length} player${scores.length!==1?'s':''}`;
+  }catch(e){$('lb-alltime-status').textContent='Could not load — try again';}
 }
 
-function fStartSubmit(type) {
-  if(!fFinalStats||fFinalStats.score===0){showToast('Play a game first!');return;}
-  // 'all' submits to daily + alltime + all groups
-  const nameKey = 'free';
-  const name=getPlayerName(nameKey);
-  if(name){ fDoSubmitAll(name); }
-  else{ fPendingSubmit={type:'all'}; document.getElementById('f-input-player-name').value=''; document.getElementById('f-lb-name-entry').classList.remove('hide'); setTimeout(()=>document.getElementById('f-input-player-name').focus(),100); }
+// Submit
+function startSubmit(type){
+  if(!finalStats||finalStats.score===0){showToast('Play a game first!');return;}
+  const name=getPlayerName();
+  if(name){doSubmitAll(name);}
+  else{pendingSubmit={type};$('input-player-name').value='';$('lb-name-entry').classList.remove('hide');setTimeout(()=>$('input-player-name').focus(),100);}
 }
 
-async function fDoSubmitAll(name) {
-  const submitBtn = document.getElementById('f-btn-submit-score');
-  if (submitBtn) { submitBtn.textContent = 'Submitting...'; submitBtn.disabled = true; }
-  showToast('Submitting to all leaderboards...');
-
-  const entry = { name, score: fFinalStats.score, found: fFinalStats.found, level: fFinalStats.level, date: Date.now() };
-  let submitted = 0;
-  let errors = 0;
-
-  // Daily
-  try {
-    const data = await jsonbinGet(DAILY_BIN_ID);
-    const today = pacificDayKey();
-    if (!data.boards[today]) data.boards[today] = [];
-    const ex = data.boards[today].findIndex(s => s.name === name);
-    if (ex >= 0) { if (entry.score > data.boards[today][ex].score) data.boards[today][ex] = entry; }
-    else data.boards[today].push(entry);
-    await jsonbinUpdate(DAILY_BIN_ID, data);
-    submitted++;
-  } catch(e) { errors++; }
-
-  // All-time
-  try {
-    const data = await jsonbinGet(ALLTIME_BIN_ID);
-    const ex = data.scores.findIndex(s => s.name === name);
-    if (ex >= 0) { if (entry.score > data.scores[ex].score) data.scores[ex] = entry; }
-    else data.scores.push(entry);
-    await jsonbinUpdate(ALLTIME_BIN_ID, data);
-    submitted++;
-  } catch(e) { errors++; }
-
-  // All groups silently
-  await fAutoSubmitToGroups();
-
-  if (errors === 0) {
-    showToast(`✓ Submitted to ${submitted} leaderboard${submitted !== 1 ? 's' : ''}!`);
-    if (submitBtn) { submitBtn.textContent = '✓ Submitted'; submitBtn.disabled = true; }
-  } else {
-    showToast('Some submissions failed — try again');
-    if (submitBtn) { submitBtn.textContent = 'Submit to all leaderboards'; submitBtn.disabled = false; }
-  }
-}
-function fNameSubmit() {
-  const name=document.getElementById('f-input-player-name').value.trim();
+function nameSubmit(){
+  const name=$('input-player-name').value.trim();
   if(!name){showToast('Enter a name first');return;}
-  setPlayerName('free', name);
-  document.getElementById('f-lb-name-entry').classList.add('hide');
-  if(fPendingSubmit){
-    fDoSubmitAll(name);
-    fPendingSubmit=null;
-  }
+  setPlayerName(name);
+  $('lb-name-entry').classList.add('hide');
+  if(pendingSubmit){doSubmitAll(name);pendingSubmit=null;}
 }
-async function fDoSubmit(type,name) {
-  // Show loading state immediately so player knows it's working
+
+async function doSubmitAll(name){
+  const btn=$('btn-submit-score');
+  if(btn){btn.textContent='Submitting...';btn.disabled=true;}
   showToast('Submitting...');
-  const submitBtn = type === 'daily' ? document.getElementById('f-btn-submit-daily') : document.getElementById('f-btn-submit-alltime');
-  if (submitBtn) { submitBtn.textContent = 'Submitting...'; submitBtn.disabled = true; }
-
-  const entry={name,score:fFinalStats.score,found:fFinalStats.found,level:fFinalStats.level,date:Date.now()};
-  try {
-    if(type==='daily'){
-      const data=await jsonbinGet(DAILY_BIN_ID);
-      const today=pacificDayKey();
-      if(!data.boards[today]) data.boards[today]=[];
-      const ex=data.boards[today].findIndex(s=>s.name===name);
-      if(ex>=0){if(entry.score>data.boards[today][ex].score)data.boards[today][ex]=entry;else{showToast('Not your best today!');if(submitBtn){submitBtn.textContent='Submit my score';submitBtn.disabled=false;}return;}}
-      else data.boards[today].push(entry);
-      await jsonbinUpdate(DAILY_BIN_ID,data);
-      showToast('✓ Score submitted!');
-      if(submitBtn){submitBtn.textContent='✓ Submitted';submitBtn.disabled=true;}
-      fLoadGlobalDaily();
-    } else {
-      const data=await jsonbinGet(ALLTIME_BIN_ID);
-      const ex=data.scores.findIndex(s=>s.name===name);
-      if(ex>=0){if(entry.score>data.scores[ex].score)data.scores[ex]=entry;else{showToast('Not your all-time best!');if(submitBtn){submitBtn.textContent='Submit my score';submitBtn.disabled=false;}return;}}
-      else data.scores.push(entry);
-      await jsonbinUpdate(ALLTIME_BIN_ID,data);
-      showToast('✓ Score submitted!');
-      if(submitBtn){submitBtn.textContent='✓ Submitted';submitBtn.disabled=true;}
-      fLoadGlobalAllTime();
-    }
-  } catch(e){
-    showToast('Submit failed — try again');
-    if(submitBtn){submitBtn.textContent='Submit my score';submitBtn.disabled=false;}
-  }
+  const entry={name,score:finalStats.score,found:finalStats.found,level:finalStats.level,date:Date.now()};
+  let submitted=0,errors=0;
+  try{
+    const data=await jsonbinGet(ALLTIME_BIN);
+    const ex=data.scores.findIndex(s=>s.name===name);
+    if(ex>=0){if(entry.score>data.scores[ex].score)data.scores[ex]=entry;}
+    else data.scores.push(entry);
+    await jsonbinUpdate(ALLTIME_BIN,data);submitted++;
+  }catch(e){errors++;}
+  await autoSubmitToGroups();
+  if(errors===0){showToast(`✓ Submitted!`);if(btn){btn.textContent='✓ Submitted';btn.disabled=true;}}
+  else{showToast('Some submissions failed');if(btn){btn.textContent='Submit to all leaderboards';btn.disabled=false;}}
 }
 
 // ============================================================
-// GROUP BOARDS
+// GROUPS
 // ============================================================
-let fCurrentGroup = null;
-let fGroupSubTab = 'daily';
+function genGroupCode(){return'TRK-'+Math.floor(100+Math.random()*900);}
 
-function fGetBinIds() { try { return JSON.parse(localStorage.getItem('trika-bin-ids') || '{}'); } catch { return {}; } }
-function fSaveBinIds(ids) { localStorage.setItem('trika-bin-ids', JSON.stringify(ids)); }
-function fGetMyGroups() { try { return JSON.parse(localStorage.getItem('trika-my-groups') || '[]'); } catch { return []; } }
-function fSaveMyGroups(g) { localStorage.setItem('trika-my-groups', JSON.stringify(g)); }
-function fAddMyGroup(group) { const g = fGetMyGroups(); if (!g.find(x => x.code === group.code)) { g.push(group); fSaveMyGroups(g); } }
-
-function genGroupCode() { return 'TRK-' + Math.floor(100 + Math.random() * 900); }
-
-async function jsonbinCreate(name, data) {
-  const r = await fetch(`${JSONBIN_BASE}/b`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY, 'X-Bin-Name': name, 'X-Bin-Private': 'false' },
-    body: JSON.stringify(data)
-  });
-  if (!r.ok) throw new Error('create failed');
-  const d = await r.json();
-  return d.metadata.id;
-}
-
-async function fCreateGroup(name) {
-  const code = genGroupCode();
-  const binId = await jsonbinCreate(`trika-group-${code}`, {
-    name, code,
-    daily: {},        // daily puzzle scores by date
-    freeplay: {},     // free play scores by date
-    alltime: []       // all-time free play best scores
-  });
-  const ids = fGetBinIds();
-  ids[`group-${code}`] = binId;
-  fSaveBinIds(ids);
-  const group = { name, code, binId };
-  fAddMyGroup(group);
-  showToast(`Board "${name}" created!`);
-  fRenderGroupsHome();
-  fOpenGroupView(code, name);
-}
-
-async function fSearchGroups(query) {
-  // Search by code first (exact match)
-  const ids = fGetBinIds();
-  const upper = query.toUpperCase();
-  const codeKey = `group-${upper}`;
-  if (ids[codeKey]) {
-    try {
-      const data = await jsonbinGet(ids[codeKey]);
-      return [{ name: data.name, code: data.code, binId: ids[codeKey] }];
-    } catch(e) {}
-  }
-  // Search by name in joined groups
-  const myGroups = fGetMyGroups();
-  const byName = myGroups.filter(g => g.name.toLowerCase().includes(query.toLowerCase()));
-  return byName;
-}
-
-function fRenderGroupsHome() {
-  document.getElementById('f-lb-groups-home').style.display = '';
-  document.getElementById('f-lb-group-view').style.display = 'none';
-  document.getElementById('f-input-group-name').value = '';
-
-  const groups = fGetMyGroups();
-  const container = document.getElementById('f-lb-my-groups');
-  if (!groups.length) {
-    container.innerHTML = '<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:8px 0;">No boards yet — create one or join a friend\'s.</div>';
-    return;
-  }
-  container.innerHTML = groups.map(g => `
-    <div onclick="fOpenGroupView('${g.code}','${g.name.replace(/'/g,"\\'")}')" style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:10px;border:1px solid var(--line-soft);background:var(--bg-card);margin-bottom:6px;cursor:pointer;">
-      <div>
-        <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:15px;">${g.name}</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);margin-top:2px;">${g.code}</div>
-      </div>
-      <div style="color:var(--accent);font-weight:700;font-size:18px;">›</div>
+function renderGroupsHome(){
+  $('groups-home').style.display='';$('group-view').style.display='none';
+  $('input-group-name').value='';
+  const groups=fGetMyGroups();
+  const container=$('my-groups-list');
+  if(!groups.length){container.innerHTML='<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:8px 0;">No boards yet — create one below.</div>';return;}
+  container.innerHTML=groups.map(g=>`
+    <div onclick="openGroupView('${g.code}','${g.name.replace(/'/g,"\\'")}')" class="group-row">
+      <div><div class="group-row-name">${g.name}</div><div class="group-row-code">${g.code}</div></div>
+      <div class="group-chevron">›</div>
     </div>`).join('');
 }
 
-async function fOpenGroupView(code, name) {
-  fCurrentGroup = { code, name };
-  document.getElementById('f-lb-groups-home').style.display = 'none';
-  document.getElementById('f-lb-group-view').style.display = '';
-  document.getElementById('f-group-view-name').textContent = name;
-  document.getElementById('f-group-view-code').textContent = code;
-  fLoadGroupBoard(code, fGroupSubTab);
+async function createGroup(name){
+  const code=genGroupCode();
+  showToast('Creating...');
+  try{
+    const binId=await jsonbinCreate(`trika-group-${code}`,{name,code,freeplay:{},alltime:[]});
+    const ids=fGetBinIds();ids[`group-${code}`]=binId;fSaveBinIds(ids);
+    fAddMyGroup({name,code,binId});
+    showToast(`"${name}" created!`);
+    renderGroupsHome();openGroupView(code,name);
+  }catch(e){showToast('Create failed — try again');}
 }
 
-async function fLoadGroupBoard(code, tab) {
-  const ids = fGetBinIds();
-  const binId = ids[`group-${code}`];
-  const list = document.getElementById('f-group-list');
-  if (!binId) { list.innerHTML = '<div style="text-align:center;color:var(--bad);font-size:13px;padding:16px;">Board not found</div>'; return; }
-  list.innerHTML = '<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:16px;">Loading...</div>';
-  try {
-    const data = await jsonbinGet(binId);
-    const today = pacificDayKey();
-    let scores = [];
-    if (tab === 'daily') {
-      scores = (data.daily && data.daily[today] || []).sort((a,b) => b.score-a.score);
-    } else if (tab === 'freeplay') {
-      scores = (data.freeplay && data.freeplay[today] || []).sort((a,b) => b.score-a.score);
-    } else {
-      scores = (data.alltime || []).sort((a,b) => b.score-a.score);
-    }
-    if (!scores.length) {
-      const labels = { daily: "Today's Daily", freeplay: "Today's Free Play", alltime: 'All-Time Free Play' };
-      list.innerHTML = `<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:16px;">No ${labels[tab]} scores yet — be the first!</div>`;
-      return;
-    }
-    renderGlobalList('f-group-list', scores, getPlayerName('free'));
-  } catch(e) { list.innerHTML = '<div style="text-align:center;color:var(--bad);font-size:13px;padding:16px;">Could not load — try again</div>'; }
+function openGroupView(code,name){
+  currentGroup={code,name};
+  $('groups-home').style.display='none';$('group-view').style.display='';
+  $('group-view-name').textContent=name;$('group-view-code').textContent=code;
+  document.querySelectorAll('[data-grouptab]').forEach(t=>t.classList.toggle('active',t.dataset.grouptab==='freeplay'));
+  lbGroupSubTab='freeplay';
+  loadGroupBoard(code,'freeplay');
 }
 
-async function fShareGroup() {
-  if (!fCurrentGroup) return;
-  const ids = fGetBinIds();
-  const binId = ids[`group-${fCurrentGroup.code}`];
-  if (!binId) { showToast('Board not ready — try again'); return; }
-  const url = `https://playtrika.com?join=${fCurrentGroup.code}&bid=${binId}`;
-  const text = `Join my Trika board "${fCurrentGroup.name}" and compete!\n\n${url}`;
-  if (navigator.share) { try { await navigator.share({ title: `Trika — ${fCurrentGroup.name}`, text, url }); return; } catch(e){} }
-  try { await navigator.clipboard.writeText(text); showToast('Invite link copied!'); } catch(e) { window.prompt('Copy invite link:', url); }
+async function loadGroupBoard(code,tab){
+  const ids=fGetBinIds();const binId=ids[`group-${code}`];
+  const list=$('group-list');
+  if(!binId){list.innerHTML='<div style="text-align:center;color:var(--bad);font-size:13px;padding:16px;">Board not found</div>';return;}
+  list.innerHTML='<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:16px;">Loading...</div>';
+  try{
+    const data=await jsonbinGet(binId);
+    const today=pacificDayKey();
+    let scores=[];
+    if(tab==='freeplay'){scores=((data.freeplay&&data.freeplay[today])||[]).sort((a,b)=>b.score-a.score);}
+    else{scores=(data.alltime||[]).sort((a,b)=>b.score-a.score);}
+    if(!scores.length){list.innerHTML='<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:16px;">No scores yet — be the first!</div>';return;}
+    renderGlobalList('group-list',scores,getPlayerName());
+  }catch(e){list.innerHTML='<div style="text-align:center;color:var(--bad);font-size:13px;padding:16px;">Could not load — try again</div>';}
 }
 
-async function fAutoSubmitToGroups() {
-  // Auto-submit free play score to all groups
-  const name = getPlayerName('free');
-  if (!name || !fFinalStats || fFinalStats.score === 0) return;
-  const groups = fGetMyGroups();
-  if (!groups.length) return;
-  const entry = { name, score: fFinalStats.score, found: fFinalStats.found, level: fFinalStats.level, date: Date.now() };
-  await Promise.allSettled(groups.map(g => fSubmitToGroup(g.code, entry, 'freeplay', true)));
+async function shareGroup(){
+  if(!currentGroup)return;
+  const ids=fGetBinIds();const binId=ids[`group-${currentGroup.code}`];
+  if(!binId){showToast('Board not ready');return;}
+  const url=`https://playtrika.com/numbers?join=${currentGroup.code}&bid=${binId}`;
+  const text=`Join my Trika Numbers board "${currentGroup.name}"!\n\n${url}`;
+  if(navigator.share){try{await navigator.share({title:`Trika — ${currentGroup.name}`,text,url});return;}catch(e){}}
+  try{await navigator.clipboard.writeText(text);showToast('Invite link copied!');}catch(e){window.prompt('Copy invite link:',url);}
 }
 
-async function dAutoSubmitToGroups() {
-  // Auto-submit daily score to all groups
-  const name = getPlayerName('daily') || getPlayerName('free');
-  if (!name || !dFinalStats || dFinalStats.score === 0) return;
-  const groups = fGetMyGroups();
-  if (!groups.length) return;
-  const entry = { name, score: dFinalStats.score, found: dFinalStats.found, level: dFinalStats.level, date: Date.now() };
-  await Promise.allSettled(groups.map(g => fSubmitToGroup(g.code, entry, 'daily', true)));
-}
-
-async function fSubmitToGroup(code, entry, mode = 'freeplay', silent = false) {
-  const ids = fGetBinIds();
-  const binId = ids[`group-${code}`];
-  if (!binId) return;
-  try {
-    const data = await jsonbinGet(binId);
-    const today = pacificDayKey();
-
-    if (mode === 'daily') {
-      // Submit to daily scores
-      if (!data.daily) data.daily = {};
-      if (!data.daily[today]) data.daily[today] = [];
-      const di = data.daily[today].findIndex(s => s.name === entry.name);
-      if (di >= 0) { if (entry.score > data.daily[today][di].score) data.daily[today][di] = entry; else if (silent) return; }
-      else data.daily[today].push(entry);
-    } else {
-      // Submit to freeplay today scores
-      if (!data.freeplay) data.freeplay = {};
-      if (!data.freeplay[today]) data.freeplay[today] = [];
-      const fi = data.freeplay[today].findIndex(s => s.name === entry.name);
-      if (fi >= 0) { if (entry.score > data.freeplay[today][fi].score) data.freeplay[today][fi] = entry; else if (silent) return; }
+async function submitToGroup(code,entry,tab='freeplay',silent=false){
+  const ids=fGetBinIds();const binId=ids[`group-${code}`];
+  if(!binId)return;
+  try{
+    const data=await jsonbinGet(binId);
+    const today=pacificDayKey();
+    if(tab==='freeplay'){
+      if(!data.freeplay)data.freeplay={};
+      if(!data.freeplay[today])data.freeplay[today]=[];
+      const fi=data.freeplay[today].findIndex(s=>s.name===entry.name);
+      if(fi>=0){if(entry.score>data.freeplay[today][fi].score)data.freeplay[today][fi]=entry;else if(silent)return;}
       else data.freeplay[today].push(entry);
-      // Also update all-time
-      if (!data.alltime) data.alltime = [];
-      const ai = data.alltime.findIndex(s => s.name === entry.name);
-      if (ai >= 0) { if (entry.score > data.alltime[ai].score) data.alltime[ai] = entry; }
+      if(!data.alltime)data.alltime=[];
+      const ai=data.alltime.findIndex(s=>s.name===entry.name);
+      if(ai>=0){if(entry.score>data.alltime[ai].score)data.alltime[ai]=entry;}
       else data.alltime.push(entry);
     }
-
-    await jsonbinUpdate(binId, data);
-    if (!silent) { showToast('Score submitted!'); fLoadGroupBoard(code, fGroupSubTab); }
-  } catch(e) { if (!silent) showToast('Submit failed — try again'); }
+    await jsonbinUpdate(binId,data);
+    if(!silent){showToast('Score submitted!');loadGroupBoard(code,lbGroupSubTab);}
+  }catch(e){if(!silent)showToast('Submit failed — try again');}
 }
 
-// Deep link — auto-join from invite URL
-function checkDeepLink() {
-  const params = new URLSearchParams(window.location.search);
-  const joinCode = params.get('join');
-  const binId = params.get('bid');
-  if (!joinCode) return;
-  window.history.replaceState({}, '', window.location.pathname);
-  if (binId) {
-    const ids = fGetBinIds();
-    if (!ids[`group-${joinCode.toUpperCase()}`]) {
-      ids[`group-${joinCode.toUpperCase()}`] = binId;
-      fSaveBinIds(ids);
-    }
-  }
-  const ids = fGetBinIds();
-  const resolvedBinId = ids[`group-${joinCode.toUpperCase()}`];
-  if (!resolvedBinId) { showToast('Board not found — ask creator to reshare'); return; }
-  jsonbinGet(resolvedBinId).then(data => {
-    const group = { name: data.name, code: data.code, binId: resolvedBinId };
-    fAddMyGroup(group);
-    setTimeout(() => showToast(`Joined "${data.name}"! Play a game to submit your score.`), 800);
-  }).catch(() => showToast('Could not join board — try again'));
+async function autoSubmitToGroups(){
+  const name=getPlayerName();
+  if(!name||!finalStats||finalStats.score===0)return;
+  const groups=fGetMyGroups();if(!groups.length)return;
+  const entry={name,score:finalStats.score,found:finalStats.found,level:finalStats.level,date:Date.now()};
+  await Promise.allSettled(groups.map(g=>submitToGroup(g.code,entry,'freeplay',true)));
 }
 
-// Group event listeners
-document.getElementById('f-btn-create-submit').addEventListener('click', async () => {
-  const name = document.getElementById('f-input-group-name').value.trim();
-  if (!name) { showToast('Enter a board name'); return; }
-  showToast('Creating...');
-  await fCreateGroup(name);
+$('btn-create-group').addEventListener('click',async()=>{
+  const name=$('input-group-name').value.trim();
+  if(!name){showToast('Enter a board name');return;}
+  await createGroup(name);
 });
-document.getElementById('f-input-group-name').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('f-btn-create-submit').click(); });
+$('input-group-name').addEventListener('keydown',e=>{if(e.key==='Enter')$('btn-create-group').click();});
+$('btn-share-group').addEventListener('click',shareGroup);
+$('btn-group-back').addEventListener('click',()=>{currentGroup=null;renderGroupsHome();});
+$('lb-btn-submit-alltime').addEventListener('click',()=>startSubmit('alltime'));
 
-document.getElementById('f-btn-share-group').addEventListener('click', fShareGroup);
-document.getElementById('f-btn-group-back').addEventListener('click', () => { fCurrentGroup=null; fRenderGroupsHome(); });
+// ============================================================
+// DEEP LINK
+// ============================================================
+function pacificDayKey(){
+  const now=new Date();const ptOffset=isDST(now)?-7:-8;
+  const pt=new Date(now.getTime()+ptOffset*3600000);
+  return `${pt.getUTCFullYear()}-${String(pt.getUTCMonth()+1).padStart(2,'0')}-${String(pt.getUTCDate()).padStart(2,'0')}`;
+}
+function isDST(date){const jan=new Date(date.getFullYear(),0,1).getTimezoneOffset();const jul=new Date(date.getFullYear(),6,1).getTimezoneOffset();return date.getTimezoneOffset()<Math.max(jan,jul);}
 
-document.querySelectorAll('[data-grouptab]').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('[data-grouptab]').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    fGroupSubTab = tab.dataset.grouptab;
-    if (fCurrentGroup) fLoadGroupBoard(fCurrentGroup.code, fGroupSubTab);
-  });
-});
+function checkDeepLink(){
+  const params=new URLSearchParams(window.location.search);
+  const joinCode=params.get('join');const binId=params.get('bid');
+  if(!joinCode)return;
+  window.history.replaceState({},'',window.location.pathname);
+  if(binId){const ids=fGetBinIds();if(!ids[`group-${joinCode.toUpperCase()}`]){ids[`group-${joinCode.toUpperCase()}`]=binId;fSaveBinIds(ids);}}
+  const ids=fGetBinIds();const resolvedBinId=ids[`group-${joinCode.toUpperCase()}`];
+  if(!resolvedBinId){showToast('Board not found — ask creator to reshare');return;}
+  jsonbinGet(resolvedBinId).then(data=>{
+    fAddMyGroup({name:data.name,code:data.code,binId:resolvedBinId});
+    setTimeout(()=>showToast(`Joined "${data.name}"! Play a game to submit your score.`),800);
+  }).catch(()=>showToast('Could not join board — try again'));
+}
+
+// ============================================================
+// VIEW MANAGEMENT
+// ============================================================
+function showView(id){
+  $('landing').style.display=id==='landing'?'flex':'none';
+  $('game').style.display=id==='game'?'block':'none';
+}
+
+$('btn-play').addEventListener('click',()=>{showView('game');startGame();});
+$('btn-home').addEventListener('click',()=>{stopTimer();showView('landing');});
+
+// ============================================================
+// PARTICLE CSS
+// ============================================================
+const style=document.createElement('style');
+style.textContent='@keyframes particleBurst{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--px),var(--py)) scale(0);opacity:0}}';
+document.head.appendChild(style);
 
 // ============================================================
 // INIT
 // ============================================================
 showView('landing');
-updateLanding();
 checkDeepLink();
 </script>
 </body>
