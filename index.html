@@ -247,27 +247,83 @@ function getSkipKey(game){ return `trika-skip-rules-${game}`; }
 
 function renderVisual(game, color){
   const el = document.getElementById('rules-visual');
-  if(game === 'trika' || game === 'blitz'){
+  if(game === 'trika'){
     el.innerHTML = `
-      <div class="rules-demo-grid g3">
-        <div class="demo-tile t4">4</div>
-        <div class="demo-tile t2 highlighted">3</div>
-        <div class="demo-tile t6 highlighted">6</div>
-        <div class="demo-tile t9">9</div>
-        <div class="demo-tile t5 highlighted">9</div>
-        <div class="demo-tile t3">3</div>
-        <div class="demo-tile t7">7</div>
-        <div class="demo-tile t2">2</div>
-        <div class="demo-tile t1">1</div>
-      </div>
-      <div class="demo-eq">3 + 6 = 9 ✓</div>`;
+      <div style="display:flex;gap:18px;align-items:flex-start;justify-content:center;">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:0.1em;text-transform:uppercase;text-align:center;margin-bottom:6px;">row</div>
+          <div class="rules-demo-grid g3">
+            <div class="demo-tile t2 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #ea580c;outline-offset:2px;">2</div>
+            <div class="demo-tile t6 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #ea580c;outline-offset:2px;">6</div>
+            <div class="demo-tile t8 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #ea580c;outline-offset:2px;">8</div>
+            <div class="demo-tile t4">4</div>
+            <div class="demo-tile t1">1</div>
+            <div class="demo-tile t9">9</div>
+            <div class="demo-tile t7">7</div>
+            <div class="demo-tile t3">3</div>
+            <div class="demo-tile t5">5</div>
+          </div>
+          <div class="demo-eq" style="color:#ea580c;">2 + 6 = 8 ✓</div>
+        </div>
+        <div style="font-family:'Fraunces',serif;font-size:20px;color:var(--ink-soft);padding-top:22px;">or</div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:0.1em;text-transform:uppercase;text-align:center;margin-bottom:6px;">column</div>
+          <div class="rules-demo-grid g3">
+            <div class="demo-tile t2">2</div>
+            <div class="demo-tile t3 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #ea580c;outline-offset:2px;">3</div>
+            <div class="demo-tile t7">7</div>
+            <div class="demo-tile t1">1</div>
+            <div class="demo-tile t6 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #ea580c;outline-offset:2px;">6</div>
+            <div class="demo-tile t4">4</div>
+            <div class="demo-tile t5">5</div>
+            <div class="demo-tile t9 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #ea580c;outline-offset:2px;">9</div>
+            <div class="demo-tile t8">8</div>
+          </div>
+          <div class="demo-eq" style="color:#ea580c;">3 + 6 = 9 ✓</div>
+        </div>
+      </div>`;
+  } else if(game === 'blitz'){
+    el.innerHTML = `
+      <div style="display:flex;gap:18px;align-items:flex-start;justify-content:center;">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:0.1em;text-transform:uppercase;text-align:center;margin-bottom:6px;">row</div>
+          <div class="rules-demo-grid g3">
+            <div class="demo-tile t2 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #dc2626;outline-offset:2px;">2</div>
+            <div class="demo-tile t6 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #dc2626;outline-offset:2px;">6</div>
+            <div class="demo-tile t8 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #dc2626;outline-offset:2px;">8</div>
+            <div class="demo-tile t4">4</div>
+            <div class="demo-tile t1">1</div>
+            <div class="demo-tile t9">9</div>
+            <div class="demo-tile t7">7</div>
+            <div class="demo-tile t3">3</div>
+            <div class="demo-tile t5">5</div>
+          </div>
+          <div class="demo-eq" style="color:#dc2626;">2 + 6 = 8 ✓</div>
+        </div>
+        <div style="font-family:'Fraunces',serif;font-size:20px;color:var(--ink-soft);padding-top:22px;">or</div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:0.1em;text-transform:uppercase;text-align:center;margin-bottom:6px;">column</div>
+          <div class="rules-demo-grid g3">
+            <div class="demo-tile t2">2</div>
+            <div class="demo-tile t3 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #dc2626;outline-offset:2px;">3</div>
+            <div class="demo-tile t7">7</div>
+            <div class="demo-tile t1">1</div>
+            <div class="demo-tile t6 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #dc2626;outline-offset:2px;">6</div>
+            <div class="demo-tile t4">4</div>
+            <div class="demo-tile t5">5</div>
+            <div class="demo-tile t9 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #dc2626;outline-offset:2px;">9</div>
+            <div class="demo-tile t8">8</div>
+          </div>
+          <div class="demo-eq" style="color:#dc2626;">3 + 6 = 9 ✓</div>
+        </div>
+      </div>`;
   } else if(game === 'precision'){
     el.innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
         <div class="rules-demo-grid g3">
-          <div class="demo-tile t3 highlighted">3</div>
-          <div class="demo-tile t6 highlighted">6</div>
-          <div class="demo-tile t9 highlighted">9</div>
+          <div class="demo-tile t3 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #0f766e;outline-offset:2px;">3</div>
+          <div class="demo-tile t6 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #0f766e;outline-offset:2px;">6</div>
+          <div class="demo-tile t9 highlighted" style="animation:demoGlow 1.5s ease infinite alternate;outline:3px solid #0f766e;outline-offset:2px;">9</div>
           <div class="demo-tile t4">4</div>
           <div class="demo-tile t2">2</div>
           <div class="demo-tile t5">5</div>
@@ -276,28 +332,33 @@ function renderVisual(game, color){
           <div class="demo-tile t8">8</div>
         </div>
         <div style="text-align:center;">
-          <div class="demo-sum-label">your sum</div>
-          <div class="demo-sum">9</div>
-          <div class="demo-target">target: 33</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-soft);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">you choose:</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:#0f766e;background:#f0fdf4;border:2px solid #0f766e;border-radius:8px;padding:6px 10px;margin-bottom:6px;">3 + 6 = 9 → +9</div>
+          <div style="font-family:'Inter',sans-serif;font-size:11px;color:var(--ink-soft);margin-bottom:6px;">or</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:#0284c7;background:#eff6ff;border:2px solid #0284c7;border-radius:8px;padding:6px 10px;">9 − 6 = 3 → +3</div>
         </div>
-      </div>
-      <div class="demo-eq">3 + 6 = 9 → adds 9 to your sum</div>`;
+      </div>`;
   } else if(game === 'survival'){
+    // Show a 5x5 slice of the board with 3 non-adjacent tiles highlighted
+    const grid = [
+      [null, 't3',  null, 't7',  null],
+      ['t6', null,  't2', null,  't9'],
+      [null, 't4',  null, 't5',  null],
+      ['t8', null,  't1', null,  't3'],
+      [null, 't6',  null, 't9',  null],
+    ];
+    // highlighted positions (non-adjacent): [0][1]=3, [2][2]=null→use [1][0]=6, [3][2]=1
+    const highlighted = new Set(['0-1','2-4','4-1']);
     el.innerHTML = `
-      <div style="display:inline-grid;grid-template-columns:repeat(7,1fr);gap:3px;">
-        ${[null,null,null,null,null,null,null,
-           null,null,null,null,null,null,null,
-           null,null,null,null,null,null,null,
-           'h','h',null,null,null,null,null,
-           't3','t6','t9','t4','t2','t5','t7']
-          .map((t,i)=>t===null?
-            `<div style="width:28px;height:28px;border-radius:5px;background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.15);"></div>`:
-            t==='h'?
-            `<div class="demo-tile small t4" style="width:28px;height:28px;animation:demoGlow 1.5s ease infinite alternate;outline:2px solid #7c3aed;outline-offset:1px;">?</div>`:
-            `<div class="demo-tile small ${t}" style="width:28px;height:28px;">${t.replace('t','')}</div>`
-          ).join('')}
+      <div style="display:inline-grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:8px;">
+        ${grid.map((row,r)=>row.map((t,c)=>{
+          const isH = highlighted.has(r+'-'+c);
+          if(!t) return `<div style="width:30px;height:30px;border-radius:5px;background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.12);"></div>`;
+          return `<div class="demo-tile small ${t}" style="width:30px;height:30px;${isH?'animation:demoGlow 1.5s ease infinite alternate;outline:2px solid #7c3aed;outline-offset:2px;':''}">${t.replace('t','')}</div>`;
+        }).join('')).join('')}
       </div>
-      <div class="demo-eq" style="color:#7c3aed;">tap any three → anywhere on the board</div>`;
+      <div class="demo-eq" style="color:#7c3aed;">tap any 3 tiles anywhere — order = equation</div>
+      <div style="font-family:'Inter',sans-serif;font-size:11px;color:var(--ink-soft);margin-top:4px;">they don't need to be adjacent</div>`;
   }
 }
 
@@ -306,7 +367,7 @@ function showRules(game){
   if(!g) return;
   // Check if player has skipped rules for this game
   if(localStorage.getItem(getSkipKey(game)) === 'true'){
-    window.location.href = g.url;
+    window.location.href = g.url + '?play=1';
     return;
   }
   currentGame = game;
@@ -348,7 +409,7 @@ function goToGame(){
   if(skipChecked){
     localStorage.setItem(getSkipKey(currentGame), 'true');
   }
-  window.location.href = GAMES[currentGame].url;
+  window.location.href = GAMES[currentGame].url + '?play=1';
 }
 </script>
 </body>
