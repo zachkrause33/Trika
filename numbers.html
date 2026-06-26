@@ -924,7 +924,7 @@ function showModal(id){document.getElementById(id).classList.remove('hide');}
 function hideModal(id){const el=document.getElementById(id);if(el)el.classList.add('hide');}
 
 $('btn-again').addEventListener('click',startGame);
-$('btn-back').addEventListener('click',()=>{stopTimer();showView('landing');});
+$('btn-back').addEventListener('click',()=>{stopTimer();window.location.href='/';});
 $('btn-leaderboard').addEventListener('click',openLeaderboard);
 $('btn-view-leaderboard').addEventListener('click',()=>{hideModal('gameover');openLeaderboard();});
 $('btn-lb-close').addEventListener('click',()=>hideModal('leaderboard'));
