@@ -1105,6 +1105,10 @@ document.head.appendChild(style);
 // INIT
 // ============================================================
 showView('landing');
+if(new URLSearchParams(window.location.search).get('play')==='1'){
+  window.history.replaceState({},'',window.location.pathname);
+  showView('game');startGame();
+}
 
 async function createGroup(name){
   const code=genGroupCode();
