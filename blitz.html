@@ -518,7 +518,7 @@ function showView(id){
 }
 
 $('btn-play').addEventListener('click',()=>startGame());
-$('btn-back').addEventListener('click',()=>{stopTimer();showView('landing');});
+$('btn-back').addEventListener('click',()=>{stopTimer();window.location.href='/';});
 $('btn-restart-game').addEventListener('click',()=>{stopTimer();startGame();});
 $('btn-again').addEventListener('click',()=>{$('gameover').classList.add('hide');startGame();});
 $('btn-share').addEventListener('click',share);
