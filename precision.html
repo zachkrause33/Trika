@@ -783,6 +783,10 @@ $('btn-again').addEventListener('click',()=>{$('result').classList.add('hide');s
 $('btn-share').addEventListener('click',share);
 
 showView('landing');
+if(new URLSearchParams(window.location.search).get('play')==='1'){
+  window.history.replaceState({},'',window.location.pathname);
+  startGame();
+}
 
 // ============================================================
 // LEADERBOARD
