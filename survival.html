@@ -584,7 +584,7 @@ async function share(){
 }
 
 $('btn-play').addEventListener('click',startGame);
-$('btn-back').addEventListener('click',()=>{stopTimers();gameRunning=false;$('game').classList.add('hide');$('landing').classList.remove('hide');});
+$('btn-back').addEventListener('click',()=>{stopTimers();gameRunning=false;window.location.href='/';});
 $('btn-restart').addEventListener('click',()=>{stopTimers();startGame();});
 $('btn-again').addEventListener('click',()=>{$('gameover').classList.add('hide');startGame();});
 $('btn-share').addEventListener('click',share);
