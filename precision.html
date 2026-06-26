@@ -777,7 +777,7 @@ function showEqChoice(eqs){
 }
 
 $('btn-play').addEventListener('click',startGame);
-$('btn-back').addEventListener('click',()=>{stopTimer();showView('landing');});
+$('btn-back').addEventListener('click',()=>{stopTimer();window.location.href='/';});
 $('btn-new').addEventListener('click',()=>{stopTimer();startGame();});
 $('btn-again').addEventListener('click',()=>{$('result').classList.add('hide');startGame();});
 $('btn-share').addEventListener('click',share);
