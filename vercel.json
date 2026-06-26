@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/numbers", "destination": "/numbers.html" },
+    { "source": "/blitz", "destination": "/blitz.html" },
+    { "source": "/precision", "destination": "/precision.html" },
+    { "source": "/survival", "destination": "/survival.html" }
+  ]
+}
