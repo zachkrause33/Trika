@@ -397,7 +397,7 @@ let pendingCells=null;
 // State
 let board=[],selected=[],runningSum=0,guessesLeft=MAX_GUESSES,busy=false;
 let history=[];
-let startTime=null,timerInterval=null,elapsed=0;
+let startTime=null,timerInterval=null,elapsed=0,finalStats=null;
 
 function countVisibleEqs(){
   let count=0;
@@ -687,7 +687,8 @@ async function handleCorrect(result,cells){
 
 function showResult(){
   stopTimer();
-  const diff=runningSum-TARGET; // negative = under, positive = over, 0 = exact
+  const diff=runningSum-TARGET;
+  finalStats={sum:runningSum,diff,elapsed};
 
   // Personal best — closest to 33 = lowest absolute diff, tiebreak = faster time
   const stored=JSON.parse(localStorage.getItem('trika-precision-best')||'null');
@@ -842,7 +843,7 @@ async function lbLoad(){
 }
 
 async function lbSubmit(){
-  if(!finalStats||!finalStats)return;
+  if(!finalStats)return;
   const name=lbGetName()||$('lb-name-input').value.trim();
   if(!name){toast('Enter a name first');return;}
   lbSetName(name);$('lb-name-input').value=name;
@@ -863,7 +864,7 @@ async function lbSubmit(){
     if(!dData.scores)dData.scores={};
     if(!dData.scores[key])dData.scores[key]=[];
     const dIdx=dData.scores[key].findIndex(s=>s.name===name);
-    if(dIdx>=0){if(Math.abs(entry.diff)<Math.abs(atData.scores[atIdx].diff)||(Math.abs(entry.diff)===Math.abs(atData.scores[atIdx].diff)&&entry.elapsed<atData.scores[atIdx].elapsed))dData.scores[key][dIdx]=entry;}
+    if(dIdx>=0){if(Math.abs(entry.diff)<Math.abs(dData.scores[key][dIdx].diff)||(Math.abs(entry.diff)===Math.abs(dData.scores[key][dIdx].diff)&&entry.elapsed<dData.scores[key][dIdx].elapsed))dData.scores[key][dIdx]=entry;}
     else dData.scores[key].push(entry);
     await lbSet(DAILY_BIN,dData);
   }catch(e){ok=false;}
@@ -881,12 +882,12 @@ function openLb(){
   lbLoad();
 }
 
-document.querySelectorAll('.lb-tab').forEach(t=>t.addEventListener('click',()=>{
-  lbTab=t.dataset.lbtab;
-  document.querySelectorAll('.lb-tab').forEach(x=>x.classList.toggle('active',x.dataset.lbtab===lbTab));
-  lbLoad();
-}));
 window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.lb-tab').forEach(t=>t.addEventListener('click',()=>{
+    lbTab=t.dataset.lbtab;
+    document.querySelectorAll('.lb-tab').forEach(x=>x.classList.toggle('active',x.dataset.lbtab===lbTab));
+    lbLoad();
+  }));
   const lbSubmitEl=document.getElementById('lb-submit-btn');
   const lbCloseEl=document.getElementById('lb-close-btn');
   const lbOpenEl=document.getElementById('lb-open-btn');
