@@ -125,7 +125,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika</div>
-        <div class="game-desc">Spot equations in the grid. Beat the clock. Build your streak.</div>
+        <div class="game-desc">Find equations hidden in the grid. Every correct answer buys more time. Build a streak to multiply your score. Board grows from 3×3 to 7×7.</div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('trika')">Play</button>
     </div>
@@ -134,7 +134,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Blitz</div>
-        <div class="game-desc">45 seconds flat. Find as many equations as you can.</div>
+        <div class="game-desc">60 seconds. Fixed 3×3 board. Find as many equations as you can — harder operations score more points.</div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('blitz')">Play</button>
     </div>
@@ -143,7 +143,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Precision</div>
-        <div class="game-desc">6 equations. Each result adds to your sum. Land as close to 33 as you can.</div>
+        <div class="game-desc">Use exactly 6 equations. Each result adds to your running sum. Land as close to 33 as possible — closest wins.</div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('precision')">Play</button>
     </div>
@@ -152,7 +152,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Survival</div>
-        <div class="game-desc">Numbers fall. Tap any three to form an equation. Don't let the board fill up.</div>
+        <div class="game-desc">Numbers fall and stack. Tap any 3 tiles anywhere to clear an equation. Speed increases — don't let the board fill up.</div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('survival')">Play</button>
     </div>
@@ -189,7 +189,7 @@ const GAMES = {
     steps: [
       'Tap three tiles in a <strong>row or column</strong> that form a valid equation — like 9−6=3 or 4×5=20.',
       'Every correct equation adds time. Operations unlock as you progress: addition first, then subtraction, multiplication, and division.',
-      'Build a streak to multiply your score. The board grows from 3×3 to 5×5 as you find more equations.',
+      'Build a streak to multiply your score. The board grows from 3×3 to 7×7 as you find more equations.',
       'Game ends when time runs out.'
     ]
   },
@@ -199,7 +199,7 @@ const GAMES = {
     url: '/blitz',
     steps: [
       'Same equation mechanic — tap three tiles in a <strong>row or column</strong> that form a valid equation.',
-      'You have <strong>45 seconds flat.</strong> No time is added for correct answers.',
+      'You have <strong>60 seconds flat.</strong> No time is added for correct answers.',
       'Harder operations score more: + 100pts · − 200pts · × 500pts · ÷ 1,000pts.',
       'How many equations can you find before time runs out?'
     ]
