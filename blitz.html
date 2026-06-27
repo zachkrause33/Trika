@@ -541,13 +541,15 @@ if(new URLSearchParams(window.location.search).get('play')==='1'){
 const JBKEY='$2a$10$yDd21niqXkaX1MiteHDKOeYbzS7AlbeZ0MFdkSy34mEi0OiEf0N7C';
 const ALLTIME_BIN='6a3ec94df5f4af5e2935b2f9';
 const DAILY_BIN='6a3ec94df5f4af5e2935b2fa';
-let lbTab='alltime';
+let lbTab='myruns';
 
 async function lbGet(id){const r=await fetch(`https://api.jsonbin.io/v3/b/${id}/latest`,{headers:{'X-Master-Key':JBKEY}});const d=await r.json();return d.record;}
 async function lbSet(id,data){await fetch(`https://api.jsonbin.io/v3/b/${id}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JBKEY},body:JSON.stringify(data)});}
 function lbDayKey(){const n=new Date(),j=new Date(n.getFullYear(),0,1).getTimezoneOffset(),l=new Date(n.getFullYear(),6,1).getTimezoneOffset(),off=n.getTimezoneOffset()<Math.max(j,l)?-7:-8,pt=new Date(n.getTime()+off*3600000);return`${pt.getUTCFullYear()}-${String(pt.getUTCMonth()+1).padStart(2,'0')}-${String(pt.getUTCDate()).padStart(2,'0')}`;}
 function lbGetName(){return localStorage.getItem('blitz-player-name')||'';}
 function lbSetName(n){localStorage.setItem('blitz-player-name',n);}
+function myRunsGet(){return JSON.parse(localStorage.getItem('blitz-my-runs')||'[]');}
+function myRunsSave(entry){const runs=myRunsGet();runs.unshift(entry);localStorage.setItem('blitz-my-runs',JSON.stringify(runs.slice(0,20)));}
 
 function lbRenderList(scores, myName, sortFn, labelFn){
   const el=$('lb-list');el.innerHTML='';
@@ -562,22 +564,38 @@ function lbRenderList(scores, myName, sortFn, labelFn){
   });
 }
 
+function lbRenderMyRuns(){
+  const el=$('lb-list');el.innerHTML='';
+  const runs=myRunsGet();
+  if(!runs.length){el.innerHTML='<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:16px 0;">No runs yet — play a game first!</div>';return;}
+  runs.forEach((s,i)=>{
+    const row=document.createElement('div');row.className='lb-row';
+    const d=new Date(s.date);
+    const timeStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    row.innerHTML=`<div class="lb-rank">${i+1}</div><div class="lb-name">${timeStr}</div><div class="lb-score">${s.score.toLocaleString()} · ${s.found}eq</div>`;
+    el.appendChild(row);
+  });
+}
+
 async function lbLoad(){
   $('lb-status').textContent='Loading...';
   $('lb-list').innerHTML='';
   const myName=lbGetName();
   try{
-    if(lbTab==='alltime'){
-      const data=await lbGet(ALLTIME_BIN);
-      const scores=data.scores||[];
-      lbRenderList(scores,myName,(a,b)=>b.score-a.score,s=>`${s.score.toLocaleString()} · ${s.found}eq`);
-      $('lb-status').textContent=`All-time · ${scores.length} player${scores.length!==1?'s':''}`;
-    }else{
+    if(lbTab==='myruns'){
+      lbRenderMyRuns();
+      $('lb-status').textContent=`Your runs · ${myRunsGet().length} total`;
+    }else if(lbTab==='daily'){
       const key=lbDayKey();
       const data=await lbGet(DAILY_BIN);
       const scores=((data.scores||{})[key]||[]);
       lbRenderList(scores,myName,(a,b)=>b.score-a.score,s=>`${s.score.toLocaleString()} · ${s.found}eq`);
       $('lb-status').textContent=`Today · ${scores.length} player${scores.length!==1?'s':''}`;
+    }else{
+      const data=await lbGet(ALLTIME_BIN);
+      const scores=data.scores||[];
+      lbRenderList(scores,myName,(a,b)=>b.score-a.score,s=>`${s.score.toLocaleString()} · ${s.found}eq`);
+      $('lb-status').textContent=`All-time · ${scores.length} player${scores.length!==1?'s':''}`;
     }
   }catch(e){$('lb-status').textContent='Could not load — try again';}
 }
@@ -588,7 +606,8 @@ async function lbSubmit(){
   if(!name){toast('Enter a name first');return;}
   lbSetName(name);$('lb-name-input').value=name;
   $('lb-submit-btn').textContent='Submitting...';$('lb-submit-btn').disabled=true;
-  const entry={name,...{score:finalStats.score,found:finalStats.found},date:Date.now()};
+  const entry={name,score:finalStats.score,found:finalStats.found,date:Date.now()};
+  myRunsSave(entry);
   let ok=true;
   try{
     // All-Time
@@ -598,6 +617,7 @@ async function lbSubmit(){
     if(atIdx>=0){if(entry.score>atData.scores[atIdx].score)atData.scores[atIdx]=entry;}
     else atData.scores.push(entry);
     await lbSet(ALLTIME_BIN,atData);
+    await new Promise(r=>setTimeout(r,350));
     // Daily
     const key=lbDayKey();
     const dData=await lbGet(DAILY_BIN);
@@ -614,8 +634,8 @@ async function lbSubmit(){
 }
 
 function openLb(){
-  lbTab='alltime';
-  document.querySelectorAll('.lb-tab').forEach(t=>t.classList.toggle('active',t.dataset.lbtab==='alltime'));
+  lbTab='myruns';
+  document.querySelectorAll('.lb-tab').forEach(t=>t.classList.toggle('active',t.dataset.lbtab==='myruns'));
   const name=lbGetName();
   $('lb-name-input').value=name;
   $('lb-modal').classList.remove('hide');
@@ -644,8 +664,9 @@ window.addEventListener('DOMContentLoaded',()=>{
   <div class="lb-card">
     <div class="lb-title">Trika Blitz Leaderboard</div>
     <div class="lb-tabs">
-      <div class="lb-tab active" data-lbtab="alltime" style="background:#dc2626">All-Time</div>
+      <div class="lb-tab active" data-lbtab="myruns" style="background:#dc2626">My Runs</div>
       <div class="lb-tab" data-lbtab="daily">Today</div>
+      <div class="lb-tab" data-lbtab="alltime">All-Time</div>
     </div>
     <div class="lb-status" id="lb-status">Loading...</div>
     <div class="lb-list" id="lb-list"></div>
