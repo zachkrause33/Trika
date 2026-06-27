@@ -52,12 +52,12 @@
   .card-precision .game-name{color:#0f766e;}
   .card-precision .game-play-btn{background:#0f766e;box-shadow:0 4px 12px rgba(15,118,110,0.3);}
 
-  .card-survival{background:#2d1f3d;}
+  .card-survival{background:#ffffff;}
   .card-survival .game-accent{background:#7c3aed;}
-  .card-survival .game-name{color:#e9d5ff;}
-  .card-survival .game-desc{color:#a78bbc;}
+  .card-survival .game-name{color:#6d28d9;}
+  .card-survival .game-desc{color:#6b6558;}
   .card-survival .game-play-btn{background:#7c3aed;box-shadow:0 4px 12px rgba(124,58,237,0.4);}
-  .card-survival{border-color:#3d2a54;}
+  .card-survival{border-color:#ddd6fe;}
 
   /* Rules sheet */
   .rules-overlay{position:fixed;inset:0;background:rgba(26,26,26,0.6);z-index:100;display:flex;align-items:flex-end;justify-content:center;}
@@ -299,23 +299,28 @@ function renderVisual(game){
         </div>
       </div>`;
   } else if(game === 'survival'){
-    // 5 columns x 5 rows — tiles stacked at bottom (gravity down), empty at top
-    // Bottom 3 rows filled, top 2 mostly empty
-    // 3 highlighted non-adjacent tiles scattered across the filled area
     el.innerHTML = `
       <div style="display:inline-grid;grid-template-columns:repeat(5,28px);grid-template-rows:repeat(5,28px);gap:3px;margin-bottom:6px;">
-        <!-- row 0: mostly empty -->
+        <!-- row 0: empty -->
         <div class="demo-tile empty-cell"></div><div class="demo-tile empty-cell"></div><div class="demo-tile empty-cell"></div><div class="demo-tile empty-cell"></div><div class="demo-tile empty-cell"></div>
         <!-- row 1: one tile -->
         <div class="demo-tile empty-cell"></div><div class="demo-tile empty-cell"></div><div class="demo-tile t3">3</div><div class="demo-tile empty-cell"></div><div class="demo-tile empty-cell"></div>
-        <!-- row 2: three tiles -->
-        <div class="demo-tile t4">4</div><div class="demo-tile empty-cell"></div><div class="demo-tile t7">7</div><div class="demo-tile empty-cell"></div><div class="demo-tile t2">2</div>
-        <!-- row 3: full row, one highlighted -->
-        <div class="demo-tile t6" style="outline:2px solid #7c3aed;outline-offset:2px;">6</div><div class="demo-tile t1">1</div><div class="demo-tile t5">5</div><div class="demo-tile t9">9</div><div class="demo-tile t3">3</div>
-        <!-- row 4: full row, two highlighted -->
-        <div class="demo-tile t8">8</div><div class="demo-tile t2" style="outline:2px solid #7c3aed;outline-offset:2px;">2</div><div class="demo-tile t4">4</div><div class="demo-tile t6">6</div><div class="demo-tile t9" style="outline:2px solid #7c3aed;outline-offset:2px;">9</div>
+        <!-- row 2: partial -->
+        <div class="demo-tile t4">4</div><div class="demo-tile empty-cell"></div><div class="demo-tile t7">7</div><div class="demo-tile empty-cell"></div><div class="demo-tile t5">5</div>
+        <!-- row 3: full — contains 6 (highlighted pos 0) and 3 (highlighted pos 4) -->
+        <div class="demo-tile t6" style="outline:2.5px solid #7c3aed;outline-offset:2px;font-weight:900;">6</div>
+        <div class="demo-tile t1">1</div>
+        <div class="demo-tile t5">5</div>
+        <div class="demo-tile t9">9</div>
+        <div class="demo-tile t3" style="outline:2.5px solid #7c3aed;outline-offset:2px;font-weight:900;">3</div>
+        <!-- row 4: full — contains 2 (highlighted pos 1) -->
+        <div class="demo-tile t8">8</div>
+        <div class="demo-tile t2" style="outline:2.5px solid #7c3aed;outline-offset:2px;font-weight:900;">2</div>
+        <div class="demo-tile t4">4</div>
+        <div class="demo-tile t7">7</div>
+        <div class="demo-tile t6">6</div>
       </div>
-      <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:#7c3aed;margin-top:4px;">6 ÷ 2 = 3 — tap anywhere, any order ✓</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:#7c3aed;margin-top:4px;"><span style="outline:1.5px solid #7c3aed;border-radius:3px;padding:1px 3px;">6</span> ÷ <span style="outline:1.5px solid #7c3aed;border-radius:3px;padding:1px 3px;">2</span> = <span style="outline:1.5px solid #7c3aed;border-radius:3px;padding:1px 3px;">3</span> — tap anywhere ✓</div>
       <div style="font-family:'Inter',sans-serif;font-size:11px;color:var(--ink-soft);margin-top:3px;">tiles don't need to be adjacent</div>`;
   }
 }
