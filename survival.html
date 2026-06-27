@@ -679,7 +679,7 @@ async function lbSubmit(){
     if(!dData.scores)dData.scores={};
     if(!dData.scores[key])dData.scores[key]=[];
     const dIdx=dData.scores[key].findIndex(s=>s.name===name);
-    if(dIdx>=0){if(entry.score>atData.scores[atIdx].score)dData.scores[key][dIdx]=entry;}
+    if(dIdx>=0){if(entry.score>dData.scores[key][dIdx].score)dData.scores[key][dIdx]=entry;}
     else dData.scores[key].push(entry);
     await lbSet(DAILY_BIN,dData);
   }catch(e){ok=false;}
