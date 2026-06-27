@@ -125,7 +125,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika</div>
-        <div class="game-desc">Find equations hidden in the grid. Every correct answer buys more time. Build a streak to multiply your score. Board grows from 3×3 to 7×7.</div>
+        <div class="game-desc">Find equations hidden in the grid. Every correct answer buys more time. Build a streak to multiply your score. Board grows from 3×3 to 5×5.</div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('trika')">Play</button>
     </div>
@@ -189,7 +189,7 @@ const GAMES = {
     steps: [
       'Tap three tiles in a <strong>row or column</strong> that form a valid equation — like 9−6=3 or 4×5=20.',
       'Every correct equation adds time. Operations unlock as you progress: addition first, then subtraction, multiplication, and division.',
-      'Build a streak to multiply your score. The board grows from 3×3 to 7×7 as you find more equations.',
+      'Build a streak to multiply your score. The board grows from 3×3 to 5×5 as you find more equations.',
       'Game ends when time runs out.'
     ]
   },
@@ -199,7 +199,7 @@ const GAMES = {
     url: '/blitz',
     steps: [
       'Same equation mechanic — tap three tiles in a <strong>row or column</strong> that form a valid equation.',
-      'You have <strong>60 seconds flat.</strong> No time is added for correct answers.',
+      'You have <strong>60 seconds flat.</strong> Wrong guesses cost you 5 seconds. No time is added for correct answers.',
       'Harder operations score more: + 100pts · − 200pts · × 500pts · ÷ 1,000pts.',
       'How many equations can you find before time runs out?'
     ]
