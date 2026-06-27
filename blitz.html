@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Trika Blitz — 45 seconds, find as many equations as you can</title>
-<meta name="description" content="45 seconds. Find as many equations as you can. Free math blitz game." />
+<title>Trika Blitz — 60 seconds, find as many equations as you can</title>
+<meta name="description" content="60 seconds. Find as many equations as you can. Free math blitz game." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -164,7 +164,7 @@
   .lb-title{font-family:'Fraunces',serif;font-weight:700;font-size:22px;margin-bottom:14px;color:var(--ink);}
   .lb-tabs{display:flex;gap:6px;margin-bottom:14px;}
   .lb-tab{flex:1;padding:8px 4px;border-radius:8px;border:1.5px solid var(--line);font-family:'Inter',sans-serif;font-weight:700;font-size:11px;text-align:center;cursor:pointer;color:var(--ink-soft);background:var(--bg);transition:all 0.15s;}
-  .lb-tab.active{color:#fff;border-color:transparent;}
+  .lb-tab.active{color:#fff;border-color:transparent;background:#dc2626;}
   .lb-list{display:flex;flex-direction:column;gap:6px;min-height:60px;margin-bottom:12px;}
   .lb-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg);border-radius:8px;}
   .lb-rank{font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--ink-soft);width:22px;text-align:center;}
@@ -198,10 +198,10 @@
       <div class="landing-dot"></div>
     </div>
     <div class="landing-title">Trika Blitz</div>
-    <div class="landing-sub">45 seconds. find as many as you can.</div>
+    <div class="landing-sub">60 seconds. find as many as you can.</div>
     <div class="landing-tagline">free · no account needed</div>
   </div>
-  <div class="big-timer">45</div>
+  <div class="big-timer">60</div>
   <div class="landing-play">
     <button id="btn-play">Start the clock</button>
   </div>
@@ -214,7 +214,7 @@
       </div>
       <div class="how-step">
         <div class="how-num">2</div>
-        <div class="how-text">You have <strong>45 seconds flat.</strong> No time is added. Find as many equations as possible.</div>
+        <div class="how-text">You have <strong>60 seconds flat.</strong> No time is added. Find as many equations as possible.</div>
       </div>
       <div class="how-step">
         <div class="how-num">3</div>
@@ -236,7 +236,7 @@
   <header>
     <div>
       <div class="brand-name">Trika Blitz</div>
-      <div class="brand-tag">45 seconds · find as many as you can</div>
+      <div class="brand-tag">60 seconds · find as many as you can</div>
     </div>
     <div class="score-area">
       <div class="score" id="score">0</div>
@@ -246,7 +246,7 @@
 
   <!-- Big timer -->
   <div class="timer-section">
-    <div class="timer-display" id="timer-display">45.0</div>
+    <div class="timer-display" id="timer-display">60.0</div>
     <div class="timer-bar-bg">
       <div class="timer-bar safe" id="timer-bar"></div>
     </div>
@@ -306,7 +306,7 @@
 </div>
 
 <script>
-const TOTAL_TIME = 45;
+const TOTAL_TIME = 60;
 const GRID_SIZE = 3;
 const MAX_NUM = 20;
 const OP_PTS = { plus:100, minus:200, mult:500, div:1000 };
@@ -513,7 +513,7 @@ function gameOver(){
 async function share(){
   if(!finalStats)return;
   const opLabels={plus:'addition',minus:'subtraction',mult:'multiplication',div:'division'};
-  const text=`Trika Blitz — 45 seconds\n${finalStats.score.toLocaleString()} pts · ${finalStats.found} equations found\nBest operation: ${opLabels[finalStats.bestOp]}\nplaytrika.com/blitz`;
+  const text=`Trika Blitz — 60 seconds\n${finalStats.score.toLocaleString()} pts · ${finalStats.found} equations found\nBest operation: ${opLabels[finalStats.bestOp]}\nplaytrika.com/blitz`;
   if(navigator.share){try{await navigator.share({title:'Trika Blitz',text,url:'https://playtrika.com/blitz'});return;}catch(e){}}
   try{await navigator.clipboard.writeText(text);toast('Score copied!');}catch(e){window.prompt('Copy:',text);}
 }
@@ -642,12 +642,12 @@ function openLb(){
   lbLoad();
 }
 
-document.querySelectorAll('.lb-tab').forEach(t=>t.addEventListener('click',()=>{
-  lbTab=t.dataset.lbtab;
-  document.querySelectorAll('.lb-tab').forEach(x=>x.classList.toggle('active',x.dataset.lbtab===lbTab));
-  lbLoad();
-}));
 window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.lb-tab').forEach(t=>t.addEventListener('click',()=>{
+    lbTab=t.dataset.lbtab;
+    document.querySelectorAll('.lb-tab').forEach(x=>x.classList.toggle('active',x.dataset.lbtab===lbTab));
+    lbLoad();
+  }));
   const lbSubmitEl=document.getElementById('lb-submit-btn');
   const lbCloseEl=document.getElementById('lb-close-btn');
   const lbOpenEl=document.getElementById('lb-open-btn');
@@ -664,7 +664,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   <div class="lb-card">
     <div class="lb-title">Trika Blitz Leaderboard</div>
     <div class="lb-tabs">
-      <div class="lb-tab active" data-lbtab="myruns" style="background:#dc2626">My Runs</div>
+      <div class="lb-tab active" data-lbtab="myruns">My Runs</div>
       <div class="lb-tab" data-lbtab="daily">Today</div>
       <div class="lb-tab" data-lbtab="alltime">All-Time</div>
     </div>
