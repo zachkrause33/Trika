@@ -447,6 +447,10 @@ async function checkSelection(){
   else{
     selected=[];render();updateEqDisplay();
     flashBg('bad');
+    timer=Math.max(0,timer-5);
+    updateTimerUI();
+    toast('−5s');
+    if(timer<=0){stopTimer();gameOver();}
   }
 }
 
