@@ -516,6 +516,7 @@ function gameOver(){
   $('fs-pb').textContent=Math.max(score,stored.score).toLocaleString();
   $('nb-wrap').innerHTML=isNew&&score>0?'<div class="new-best">🎉 NEW BEST</div>':'';
   setTimeout(()=>$('gameover').classList.remove('hide'),800);
+  if(isNew&&score>0){const n=lbGetName();if(n)setTimeout(()=>lbSubmit(),1200);}
 }
 
 async function share(){
