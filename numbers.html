@@ -904,6 +904,7 @@ function gameOver(){
 
 
   setTimeout(()=>showModal('gameover'),2400);
+  if(isNewBest&&score>0){const n=localStorage.getItem('trika-player-name-free');if(n)setTimeout(()=>startSubmit('alltime'),3000);}
 }
 
 // ============================================================
