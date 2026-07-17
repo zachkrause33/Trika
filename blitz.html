@@ -340,7 +340,7 @@ function checkEq(p,q,r,ops){
 
 // State
 let board=[], selected=[], score=0, foundCount=0, timer=TOTAL_TIME;
-let timerInterval=null, busy=false, bestOp='plus', finalStats=null;
+let timerInterval=null, busy=false, bestOp='plus', finalStats=null, lastTick=null;
 
 function difficultyFor(found){
   if(found<3)return{maxNum:9,ops:['plus','minus','mult','div']};
@@ -376,14 +376,27 @@ function startGame(){
   updateTimerUI();
   $('eq-display').innerHTML='<span class="placeholder">select three tiles</span>';
   stopTimer();
-  timerInterval=setInterval(()=>{
-    timer=Math.max(0,timer-0.1);
-    updateTimerUI();
-    if(timer<=0){stopTimer();gameOver();}
-  },100);
+  lastTick=Date.now();
+  timerInterval=setInterval(tick,100);
+}
+
+function tick(){
+  const now=Date.now();
+  const dt=(now-lastTick)/1000;
+  lastTick=now;
+  timer=Math.max(0,timer-dt);
+  updateTimerUI();
+  if(timer<=0){stopTimer();gameOver();}
 }
 
 function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+
+// Tab-visibility exploit fix: timer is wall-clock driven, so a throttled or
+// suspended background tab can't stall it — force a correction the instant
+// the tab becomes visible again.
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&timerInterval)tick();
+});
 
 function render(){
   const g=$('grid');g.innerHTML='';

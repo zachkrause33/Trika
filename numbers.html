@@ -107,6 +107,15 @@
   .gained.show{animation:gainedFloat 1.2s ease;}
   @keyframes gainedFloat{0%{transform:translateY(0);opacity:0}20%{transform:translateY(-4px);opacity:1}80%{transform:translateY(-4px);opacity:1}100%{transform:translateY(-12px);opacity:0}}
 
+  .timer-row{display:flex;align-items:center;gap:8px;}
+  .timer-row .timer-bar-bg{flex:1;}
+  .pause-btn{flex-shrink:0;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--bg-card);color:var(--ink-soft);font-size:11px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+  .pause-btn:active{transform:scale(0.92);}
+  .pause-overlay{position:absolute;inset:0;z-index:60;background:var(--bg-card);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+  .pause-overlay-icon{font-size:36px;opacity:0.5;}
+  .pause-overlay-title{font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:var(--ink);}
+  .pause-overlay button{padding:12px 28px;}
+
   .eq-display{text-align:center;min-height:28px;margin-bottom:6px;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--ink-soft);letter-spacing:0.1em;transition:all 0.2s;}
   .eq-display .placeholder{font-style:italic;font-size:13px;font-weight:400;letter-spacing:0.05em;font-family:'Fraunces',serif;}
   .eq-display.plus{color:var(--op-plus);}.eq-display.minus{color:var(--op-minus);}.eq-display.mult{color:var(--op-mult);}.eq-display.div{color:var(--op-div);}
@@ -332,7 +341,10 @@
     <div class="op-pill" id="op-div">÷</div>
   </div>
   <div class="timer-wrap">
-    <div class="timer-bar-bg"><div class="timer-bar" id="timer-bar"></div></div>
+    <div class="timer-row">
+      <button class="pause-btn" id="btn-pause" aria-label="Pause game" title="Pause">⏸</button>
+      <div class="timer-bar-bg"><div class="timer-bar" id="timer-bar"></div></div>
+    </div>
     <div class="timer-text">
       <span id="find-label">find an equation</span>
       <span><span class="gained" id="gained-label"></span> <span class="seconds" id="seconds-label">30.0s</span></span>
@@ -342,6 +354,11 @@
   <div class="board-wrap">
     <div class="board"><div class="grid size-3" id="grid"></div></div>
     <div class="flash-overlay" id="flash"></div>
+    <div class="pause-overlay hide" id="pause-overlay">
+      <div class="pause-overlay-icon">⏸</div>
+      <div class="pause-overlay-title">Paused</div>
+      <button class="primary" id="btn-resume">Resume</button>
+    </div>
   </div>
   <div class="actions">
     <button id="btn-hint" class="primary">Hint 3/3 (−3s)</button>
@@ -693,7 +710,7 @@ function renderBoard(board,gridSize,selected){
 // ============================================================
 let engine=null,board=[],gridSize=3,lastSolution=null;
 let selected=[],score=0,foundCount=0,streak=0,bestStreak=0;
-let timer=START_TIME,timerInterval=null,busy=false;
+let timer=START_TIME,timerInterval=null,busy=false,lastTick=null,paused=false;
 let hints=MAX_HINTS,finalStats=null;
 let lbActiveTab="mine",lbMineSubTab="all";
 let pendingSubmit=null;
@@ -704,19 +721,56 @@ function startGame(){
   const state=engine.init(0);
   board=state.board;gridSize=state.gridSize;lastSolution=state.lastSolution;
   selected=[];score=0;foundCount=0;streak=0;bestStreak=0;
-  timer=START_TIME;busy=false;hints=MAX_HINTS;finalStats=null;
+  timer=START_TIME;busy=false;hints=MAX_HINTS;finalStats=null;paused=false;
+  $('pause-overlay').classList.add('hide');
   setTimeout(()=>{
     renderGame();updateTimerUI();
     $('eq-display').innerHTML='<span class="placeholder">select three tiles</span>';
-    stopTimer();
-    timerInterval=setInterval(()=>{
-      timer=Math.max(0,timer-0.1);updateTimerUI();
-      if(timer<=0){stopTimer();gameOver();}
-    },100);
+    startTimer();
   },50);
 }
 
+function startTimer(){
+  stopTimer();
+  lastTick=Date.now();
+  timerInterval=setInterval(tick,100);
+}
+
+function tick(){
+  const now=Date.now();
+  const dt=(now-lastTick)/1000;
+  lastTick=now;
+  timer=Math.max(0,timer-dt);
+  updateTimerUI();
+  if(timer<=0){stopTimer();gameOver();}
+}
+
 function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+
+// Tab-visibility exploit fix: the timer is wall-clock driven (tick() computes
+// elapsed real time, not a fixed step), so throttled/suspended background
+// timers can't stall it — force a correction the instant the tab is visible
+// again instead of waiting on a possibly-delayed interval fire.
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&timerInterval)tick();
+});
+
+function pauseGame(){
+  if(paused||!timerInterval)return;
+  paused=true;
+  stopTimer();
+  $('pause-overlay').classList.remove('hide');
+}
+
+function resumeGame(){
+  if(!paused)return;
+  paused=false;
+  $('pause-overlay').classList.add('hide');
+  startTimer();
+}
+
+$('btn-pause').addEventListener('click',pauseGame);
+$('btn-resume').addEventListener('click',resumeGame);
 
 function renderGame(){
   renderBoard(board,gridSize,selected);
@@ -749,7 +803,7 @@ function updateTimerUI(){
 // ============================================================
 $('grid').addEventListener('click',e=>{
   const t=e.target.closest('.tile');
-  if(!t||busy)return;
+  if(!t||busy||paused)return;
   const r=parseInt(t.dataset.r),c=parseInt(t.dataset.c);
   if(isNaN(r)||isNaN(c))return;
   const pos=selected.findIndex(s=>s.r===r&&s.c===c);
@@ -858,7 +912,7 @@ async function handleCorrect(result,cells){
 
 // Hint
 $('btn-hint').addEventListener('click',()=>{
-  if(busy)return;
+  if(busy||paused)return;
   if(hints<=0){showToast('No hints left');return;}
   if(timer<=HINT_COST+1){showToast('Not enough time');return;}
   hints--;timer=Math.max(0,timer-HINT_COST);

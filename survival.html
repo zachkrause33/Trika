@@ -600,6 +600,28 @@ $('btn-restart').addEventListener('click',()=>{stopTimers();startGame();});
 $('btn-again').addEventListener('click',()=>{$('gameover').classList.add('hide');startGame();});
 $('btn-share').addEventListener('click',share);
 
+// Tab-visibility exploit fix: elapsed time is already wall-clock based, but
+// the falling-tile interval is throttled/suspended along with everything
+// else in a hidden tab, so hiding the tab used to buy free survival time
+// with no drops landing. On return, replay the drops that should have
+// happened while away instead of letting them evaporate.
+let hiddenSince=null;
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){
+    if(gameRunning)hiddenSince=Date.now();
+  } else if(hiddenSince!==null){
+    const hiddenMs=Date.now()-hiddenSince;
+    hiddenSince=null;
+    if(gameRunning){
+      elapsed=Date.now()-startTime;
+      $('timer').textContent=formatTime(elapsed);
+      updateSpeed();
+      const missed=Math.min(Math.floor(hiddenMs/fallSpeed),ROWS*COLS);
+      for(let i=0;i<missed&&gameRunning;i++)dropNumber();
+    }
+  }
+});
+
 // Init board grid cells
 (function initGrid(){
   const b=$('board');b.innerHTML='';
