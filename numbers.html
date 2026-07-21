@@ -195,9 +195,6 @@
   .eq-was .eq{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:18px;color:var(--good);}
   .new-best-badge{display:inline-block;background:linear-gradient(135deg,var(--accent),#d946ef);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.15em;padding:5px 12px;border-radius:20px;margin-bottom:14px;animation:badgePop 0.6s ease;}
   @keyframes badgePop{0%{transform:scale(0.5);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
-  .level-reached-badge{background:var(--bg-card);border:1.5px solid var(--accent);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;flex-direction:column;align-items:center;gap:4px;animation:badgePop 0.5s ease 0.2s backwards;}
-  .level-reached-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;color:var(--ink-soft);text-transform:uppercase;}
-  .level-reached-name{font-family:'Fraunces',serif;font-weight:700;font-size:22px;background:linear-gradient(135deg,var(--accent),#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
 
   /* Leaderboard */
   .lb-tabs{display:flex;gap:6px;margin-bottom:12px;}
@@ -388,16 +385,11 @@
   <div class="modal-card">
     <h2 id="gameover-title">time's up</h2>
     <div id="new-best-wrap"></div>
-    <div class="level-reached-badge">
-      <span class="level-reached-label">reached</span>
-      <span class="level-reached-name" id="level-reached-name">Level 1</span>
-    </div>
     <div class="reached" id="final-score">0</div>
     <div class="reached-label">final score</div>
     <div class="summary">
       <div class="stat"><span class="v" id="final-found">0</span><span class="l">found</span></div>
       <div class="stat"><span class="v" id="final-streak">0</span><span class="l">best streak</span></div>
-      <div class="stat"><span class="v" id="final-level">1</span><span class="l">level</span></div>
     </div>
     <div class="eq-was" id="eq-was-wrap">
       <div class="label">a missed equation</div>
@@ -969,11 +961,9 @@ function gameOver(){
   const isNewBest=score>0&&store.runs.filter(r=>r.score>=score).length<=1;
 
   $('gameover-title').textContent="time's up";
-  $('level-reached-name').textContent=`Level ${diff.level}`;
   $('final-score').textContent=score.toLocaleString();
   $('final-found').textContent=foundCount;
   $('final-streak').textContent=bestStreak;
-  $('final-level').textContent=diff.level;
 
   const wrap=$('new-best-wrap');wrap.innerHTML='';
   if(isNewBest&&score>0){const b=document.createElement('div');b.className='new-best-badge';b.textContent='🎉 NEW BEST';wrap.appendChild(b);}
