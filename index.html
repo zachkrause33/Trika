@@ -49,9 +49,12 @@
   .game-play-btn:active{transform:scale(0.95);}
 
   /* Color themes */
-  .card-trika .game-accent{background:#ea580c;}
-  .card-trika .game-name{color:#c2410c;}
-  .card-trika .game-play-btn{background:#ea580c;box-shadow:0 4px 12px rgba(234,88,12,0.3);}
+  .card-trika{flex:1.6;position:relative;padding:16px 14px;border-width:2px;border-color:#fed7aa;background:linear-gradient(135deg,#fff7ed,#ffffff);}
+  .card-trika .game-accent{width:7px;background:#ea580c;}
+  .card-trika .game-name{color:#c2410c;font-size:25px;}
+  .card-trika .game-desc{font-size:13px;}
+  .card-trika .game-play-btn{background:#ea580c;box-shadow:0 4px 12px rgba(234,88,12,0.3);padding:11px 20px;font-size:14px;}
+  .game-badge{position:absolute;top:-8px;right:16px;background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;box-shadow:0 3px 10px rgba(234,88,12,0.4);}
 
   .card-blitz .game-accent{background:#dc2626;}
   .card-blitz .game-name{color:#b91c1c;}
@@ -126,6 +129,7 @@
   <div class="games-list">
 
     <div class="game-card card-trika" onclick="showRules('trika')">
+      <div class="game-badge">★ Most Played</div>
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika</div>
