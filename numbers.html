@@ -235,6 +235,17 @@
   .lb-overlay-card{background:var(--bg-card);border-radius:16px;padding:24px;width:100%;max-width:320px;box-shadow:0 8px 30px rgba(26,26,26,0.1);}
   .lb-overlay-card input{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-family:'Inter',sans-serif;font-size:16px;background:var(--bg);color:var(--ink);box-sizing:border-box;}
 
+  .lb-other-modes{margin-top:14px;padding-top:14px;border-top:1px solid var(--line-soft);text-align:left;}
+  .lb-other-modes-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;text-align:center;}
+  .lb-mode-cards{display:flex;gap:8px;}
+  .lb-mode-card{flex:1;padding:12px 8px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;}
+  .lb-mode-card:active{transform:scale(0.97);}
+  .lb-mode-card .mc-name{font-family:'Fraunces',serif;font-weight:700;font-size:14px;margin-bottom:2px;}
+  .lb-mode-card .mc-desc{font-family:'Inter',sans-serif;font-size:10px;color:var(--ink-soft);line-height:1.3;}
+  .lb-mode-card.blitz .mc-name{color:#dc2626;}
+  .lb-mode-card.precision .mc-name{color:#0f766e;}
+  .lb-mode-card.survival .mc-name{color:#7c3aed;}
+
   /* Groups */
   .group-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:10px;border:1px solid var(--line-soft);background:var(--bg-card);margin-bottom:6px;cursor:pointer;}
   .group-row-name{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;}
@@ -436,6 +447,23 @@
       <button class="primary" id="lb-btn-submit-daily" style="margin-top:10px;">Submit my score</button>
     </div>
     <button class="secondary" id="btn-lb-close" style="margin-top:12px;">Back</button>
+    <div class="lb-other-modes">
+      <div class="lb-other-modes-label">Try another mode</div>
+      <div class="lb-mode-cards">
+        <a class="lb-mode-card blitz" href="/blitz">
+          <div class="mc-name">Blitz</div>
+          <div class="mc-desc">60 seconds, fixed board</div>
+        </a>
+        <a class="lb-mode-card precision" href="/precision">
+          <div class="mc-name">Precision</div>
+          <div class="mc-desc">6 moves, hit the target</div>
+        </a>
+        <a class="lb-mode-card survival" href="/survival">
+          <div class="mc-name">Survival</div>
+          <div class="mc-desc">board fills, how long?</div>
+        </a>
+      </div>
+    </div>
     <!-- Name entry overlay -->
     <div id="lb-name-entry" class="lb-overlay hide">
       <div class="lb-overlay-card">
