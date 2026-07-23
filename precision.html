@@ -76,6 +76,15 @@
   .op-pill.active-mult{background:var(--op-mult);color:#fff;border-color:var(--op-mult);}
   .op-pill.active-div{background:var(--op-div);color:#fff;border-color:var(--op-div);}
 
+  /* Pick display — shows the two tapped tiles in order */
+  .pick-display{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;}
+  .pick-tile{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:19px;border:2px dashed var(--line);color:var(--ink-soft);background:var(--bg);transition:all 0.15s;}
+  .pick-tile.filled{border-style:solid;border-color:transparent;}
+  .pick-tile.correct{outline:3px solid var(--good);outline-offset:1px;}
+  .pick-tile.wrong{outline:3px solid var(--bad);outline-offset:1px;animation:pickShake 0.3s;}
+  @keyframes pickShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .pick-arrow{font-family:'Fraunces',serif;color:var(--ink-soft);font-size:16px;}
+
   /* Equation display */
   .eq-display{text-align:center;min-height:26px;margin-bottom:8px;font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;letter-spacing:0.05em;color:var(--ink-soft);}
   .eq-display .placeholder{font-style:italic;font-size:12px;font-weight:400;font-family:'Fraunces',serif;letter-spacing:0;}
@@ -93,10 +102,10 @@
   .tile.dropping{animation:drop 0.4s cubic-bezier(.22,1.2,.4,1);}
   @keyframes drop{0%{transform:translateY(-20px) scale(0.85);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}
 
-  .tile.mag-1{background:var(--tile-1);}.tile.mag-2{background:var(--tile-2);}.tile.mag-3{background:var(--tile-3);}.tile.mag-4{background:var(--tile-4);}.tile.mag-5{background:var(--tile-5);}
-  .tile.mag-6{background:var(--tile-6);color:#fff;}.tile.mag-7{background:var(--tile-7);color:#fff;}.tile.mag-8{background:var(--tile-8);color:#fff;}.tile.mag-9{background:var(--tile-9);color:#fff;}.tile.mag-10{background:var(--tile-10);color:#fff;}
-  .tile.mag-11{background:var(--tile-11);color:#fff;}.tile.mag-12{background:var(--tile-12);color:#fff;}.tile.mag-13{background:var(--tile-13);color:#fff;}.tile.mag-14{background:var(--tile-14);color:#fff;}.tile.mag-15{background:var(--tile-15);color:#fff;}
-  .tile.mag-16{background:var(--tile-16);color:#fff;}.tile.mag-17{background:var(--tile-17);color:#fff;}.tile.mag-18{background:var(--tile-18);color:#fff;}.tile.mag-19{background:var(--tile-19);color:#fff;}.tile.mag-20{background:var(--tile-20);color:#fff;}
+  .mag-1{background:var(--tile-1);}.mag-2{background:var(--tile-2);}.mag-3{background:var(--tile-3);}.mag-4{background:var(--tile-4);}.mag-5{background:var(--tile-5);}
+  .mag-6{background:var(--tile-6);color:#fff;}.mag-7{background:var(--tile-7);color:#fff;}.mag-8{background:var(--tile-8);color:#fff;}.mag-9{background:var(--tile-9);color:#fff;}.mag-10{background:var(--tile-10);color:#fff;}
+  .mag-11{background:var(--tile-11);color:#fff;}.mag-12{background:var(--tile-12);color:#fff;}.mag-13{background:var(--tile-13);color:#fff;}.mag-14{background:var(--tile-14);color:#fff;}.mag-15{background:var(--tile-15);color:#fff;}
+  .mag-16{background:var(--tile-16);color:#fff;}.mag-17{background:var(--tile-17);color:#fff;}.mag-18{background:var(--tile-18);color:#fff;}.mag-19{background:var(--tile-19);color:#fff;}.mag-20{background:var(--tile-20);color:#fff;}
 
   .flash{position:fixed;inset:0;pointer-events:none;z-index:100;opacity:0;}
   .flash.good{animation:fg 0.4s ease;}
@@ -254,6 +263,11 @@
     <div class="op-pill" id="op-div">÷</div>
   </div>
 
+  <div class="pick-display" id="pick-display">
+    <div class="pick-tile empty" id="pick-tile-1">?</div>
+    <div class="pick-arrow">→</div>
+    <div class="pick-tile empty" id="pick-tile-2">?</div>
+  </div>
   <div class="eq-display" id="eq-display"><span class="placeholder">tap a tile to start</span></div>
 
   <div class="board">
@@ -463,14 +477,19 @@ function onTile(r,c){
   if(selected.length===2)checkPairTap();
 }
 
+function setPickTile(el,v){
+  el.classList.remove('correct','wrong');
+  if(v===null){el.textContent='?';el.className='pick-tile empty';}
+  else{el.textContent=v;el.className=`pick-tile filled ${magnitudeClass(v)}`;}
+}
+
 function updateEqDisplay(){
   const el=$('eq-display');
   el.className='eq-display';
   if(!selected.length){el.innerHTML='<span class="placeholder">tap a tile to start</span>';}
-  else{
-    const v=board[selected[0].r][selected[0].c];
-    el.innerHTML=`${v} + ? = <strong>${target}</strong>`;
-  }
+  else{el.innerHTML=`target <strong>${target}</strong>`;}
+  setPickTile($('pick-tile-1'),selected[0]?board[selected[0].r][selected[0].c]:null);
+  setPickTile($('pick-tile-2'),selected[1]?board[selected[1].r][selected[1].c]:null);
 }
 
 async function checkPairTap(){
@@ -480,10 +499,13 @@ async function checkPairTap(){
   const result=checkPair(a,b,target,diff.ops);
   if(result){await handleCorrect(result,[s1,s2]);}
   else{
+    $('pick-tile-1').classList.add('wrong');
+    $('pick-tile-2').classList.add('wrong');
     flashBg('bad');
     toast(`Wrong guess −${WRONG_PENALTY}s`);
     timer=Math.max(0,timer-WRONG_PENALTY);
     streak=0;
+    await sleep(350);
     selected=[];renderGrid();updateEqDisplay();render();
     if(timer<=0){stopTimer();gameOver();}
   }
@@ -505,6 +527,8 @@ async function handleCorrect(result,cells){
     const el=$('grid').querySelector(`[data-r="${r}"][data-c="${c}"]`);
     if(el)el.classList.add('found-anim');
   });
+  $('pick-tile-1').classList.add('correct');
+  $('pick-tile-2').classList.add('correct');
 
   const eqEl=$('eq-display');
   eqEl.className='eq-display found';
