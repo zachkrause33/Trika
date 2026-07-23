@@ -42,26 +42,30 @@
 
   /* Game cards */
   .games-list{display:flex;flex-direction:column;gap:6px;flex:1;min-height:0;}
-  .game-card{background:var(--bg-card);border:1.5px solid var(--line-soft);border-radius:16px;padding:11px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.15s;text-decoration:none;flex:1;min-height:0;}
+  .game-card{background:var(--bg-card);border:1.5px solid var(--line-soft);border-radius:16px;padding:10px 13px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.15s;text-decoration:none;flex:1;min-height:0;opacity:0.92;}
   .game-card:active{transform:scale(0.98);}
   .game-accent{width:5px;border-radius:3px;flex-shrink:0;align-self:stretch;}
   .game-info{flex:1;min-width:0;}
-  .game-name{font-family:'Fraunces',serif;font-weight:700;font-size:20px;line-height:1;margin-bottom:3px;}
+  .game-name{font-family:'Fraunces',serif;font-weight:700;font-size:19px;line-height:1;margin-bottom:3px;}
   .game-desc{font-family:'Inter',sans-serif;font-size:12px;color:var(--ink-soft);line-height:1.35;}
   .game-play-btn{flex-shrink:0;padding:9px 16px;border-radius:10px;border:none;font-family:'Inter',sans-serif;font-weight:800;font-size:13px;color:#fff;cursor:pointer;transition:all 0.15s;letter-spacing:0.05em;}
   .game-play-btn:active{transform:scale(0.95);}
 
   /* Color themes */
-  .card-trika{flex:1.6;position:relative;padding:16px 14px;border-width:2px;border-color:#fed7aa;background:linear-gradient(135deg,#fff7ed,#ffffff);}
+  .card-trika{flex:1.9;position:relative;padding:20px 16px;border-width:2px;border-color:#fed7aa;background:linear-gradient(135deg,#fff7ed,#ffffff);opacity:1;}
   .card-trika .game-accent{width:7px;background:#ea580c;}
-  .card-trika .game-name{color:#c2410c;font-size:25px;}
+  .card-trika .game-name{color:#c2410c;font-size:28px;}
   .card-trika .game-desc{font-size:13px;}
-  .card-trika .game-play-btn{background:#ea580c;box-shadow:0 4px 12px rgba(234,88,12,0.3);padding:11px 20px;font-size:14px;}
+  .card-trika .game-play-btn{background:#ea580c;box-shadow:0 4px 12px rgba(234,88,12,0.3);padding:14px 24px;font-size:16px;}
   .game-badge{position:absolute;top:-8px;right:16px;background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;box-shadow:0 3px 10px rgba(234,88,12,0.4);}
 
   .card-blitz .game-accent{background:#dc2626;}
   .card-blitz .game-name{color:#b91c1c;}
   .card-blitz .game-play-btn{background:#dc2626;box-shadow:0 4px 12px rgba(220,38,38,0.3);}
+  .blitz-mode-toggle{display:flex;gap:6px;margin-top:5px;}
+  .blitz-mode-btn{padding:5px 10px;border-radius:8px;border:1.5px solid #dc2626;background:transparent;color:#dc2626;font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.03em;cursor:pointer;transition:all 0.15s;}
+  .blitz-mode-btn.active{background:#dc2626;color:#fff;}
+  .blitz-mode-btn:active{transform:scale(0.94);}
 
   .card-precision .game-accent{background:#0f766e;}
   .card-precision .game-name{color:#0f766e;}
@@ -136,7 +140,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika</div>
-        <div class="game-desc">Find equations hidden in the grid. Every correct answer buys more time. Build a streak to multiply your score. Board grows from 3×3 to 5×5.</div>
+        <div class="game-desc">Find equations hidden in the grid.</div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('trika')">Play</button>
     </div>
@@ -145,7 +149,10 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Blitz</div>
-        <div class="game-desc">Choose 1 or 5 minutes. Fixed 3×3 board. Find as many equations as you can — harder operations score more points.</div>
+        <div class="blitz-mode-toggle">
+          <button type="button" class="blitz-mode-btn active" data-mode="1" onclick="event.stopPropagation();setBlitzMode('1')">1 MIN</button>
+          <button type="button" class="blitz-mode-btn" data-mode="5" onclick="event.stopPropagation();setBlitzMode('5')">5 MIN</button>
+        </div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('blitz')">Play</button>
     </div>
@@ -154,7 +161,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Precision</div>
-        <div class="game-desc">A target number appears — find two adjacent tiles that reach it. Order matters for subtraction and division. Beat the clock.</div>
+        <div class="game-desc">A target number. Find the two tiles that reach it.</div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('precision')">Play</button>
     </div>
@@ -163,7 +170,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Survival</div>
-        <div class="game-desc">Numbers fall and stack. Tap any 3 tiles anywhere to clear an equation. Speed increases — don't let the board fill up.</div>
+        <div class="game-desc">Numbers fall. Clear equations before the board fills up.</div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('survival')">Play</button>
     </div>
@@ -252,8 +259,18 @@ const GAMES = {
 
 let currentGame = null;
 let skipChecked = false;
+let blitzMode = '1';
 
 function getSkipKey(game){ return `trika-skip-rules-${game}`; }
+
+function setBlitzMode(m){
+  blitzMode = m;
+  document.querySelectorAll('.blitz-mode-btn').forEach(b=>b.classList.toggle('active', b.dataset.mode===m));
+}
+
+function gameUrlSuffix(game){
+  return game === 'blitz' ? `mode=${blitzMode}&play=1` : 'play=1';
+}
 
 function renderVisual(game){
   const el = document.getElementById('rules-visual');
@@ -357,7 +374,7 @@ function showRules(game){
   const g = GAMES[game];
   if(!g) return;
   if(localStorage.getItem(getSkipKey(game)) === 'true'){
-    window.location.href = g.url + '?play=1';
+    window.location.href = g.url + '?' + gameUrlSuffix(game);
     return;
   }
   currentGame = game;
@@ -395,7 +412,7 @@ function toggleSkip(){
 function goToGame(){
   if(!currentGame) return;
   if(skipChecked) localStorage.setItem(getSkipKey(currentGame), 'true');
-  window.location.href = GAMES[currentGame].url + '?play=1';
+  window.location.href = GAMES[currentGame].url + '?' + gameUrlSuffix(currentGame);
 }
 </script>
 </body>
