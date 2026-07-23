@@ -154,7 +154,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Precision</div>
-        <div class="game-desc">Use exactly 6 equations. Each result adds to your running sum. Land as close to today's target as possible — closest wins.</div>
+        <div class="game-desc">A target number appears — find two tiles that reach it. Order matters for subtraction and division. Beat the clock.</div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('precision')">Play</button>
     </div>
@@ -231,10 +231,10 @@ const GAMES = {
     color: '#0f766e',
     url: '/precision',
     steps: [
-      'Tap three tiles in a row or column to form an equation. The equation\'s <strong>result</strong> is added to your running sum.',
-      'You have exactly <strong>6 equations</strong> — you must use all 6.',
-      'Goal: land your sum as close to today\'s <strong>target</strong> as possible. Under is good. Over still counts — closest wins.',
-      'If two readings are possible (like 3+6=9 or 9−6=3), you\'ll choose which one to use.'
+      'A <strong>target number</strong> is shown at the top. Find two tiles anywhere on the board that combine to reach it, then tap them in order.',
+      'Addition and multiplication work in <strong>either order</strong>. For subtraction and division, tap the <strong>larger number first</strong> — larger − smaller, larger ÷ smaller.',
+      'Correct pairs clear, a new target appears, and you gain time. Operations unlock as you go — addition first, then subtraction, multiplication, and division.',
+      'Wrong pairs cost 3 seconds. Your first tap is always safe — it\'s just picking your starting number.'
     ]
   },
   survival: {
@@ -309,20 +309,22 @@ function renderVisual(game){
       </div>`;
   } else if(game === 'precision'){
     el.innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:center;gap:14px;">
-        <div class="rules-demo-grid g3">
-          <div class="demo-tile t3" style="outline:3px solid #0f766e;outline-offset:2px;">3</div>
-          <div class="demo-tile t6" style="outline:3px solid #0f766e;outline-offset:2px;">6</div>
-          <div class="demo-tile t9" style="outline:3px solid #0f766e;outline-offset:2px;">9</div>
-          <div class="demo-tile t4">4</div><div class="demo-tile t2">2</div><div class="demo-tile t5">5</div>
-          <div class="demo-tile t7">7</div><div class="demo-tile t1">1</div><div class="demo-tile t8">8</div>
+      <div style="text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">target</div>
+        <div style="font-family:'Fraunces',serif;font-weight:700;font-size:30px;color:#0f766e;margin-bottom:12px;">6</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;">
+          <div style="text-align:center;">
+            <div class="demo-tile t9" style="outline:3px solid #0f766e;outline-offset:2px;">9</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--ink-soft);letter-spacing:0.05em;text-transform:uppercase;margin-top:3px;">tap 1st</div>
+          </div>
+          <div style="font-family:'Fraunces',serif;color:var(--ink-soft);padding-bottom:16px;">→</div>
+          <div style="text-align:center;">
+            <div class="demo-tile t3">3</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--ink-soft);letter-spacing:0.05em;text-transform:uppercase;margin-top:3px;">tap 2nd</div>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">you choose:</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:#0f766e;background:#f0fdf4;border:2px solid #0f766e;border-radius:7px;padding:5px 8px;margin-bottom:5px;">3 + 6 = 9 → +9</div>
-          <div style="font-family:'Inter',sans-serif;font-size:10px;color:var(--ink-soft);margin-bottom:5px;">or</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:#0284c7;background:#eff6ff;border:2px solid #0284c7;border-radius:7px;padding:5px 8px;">9 − 6 = 3 → +3</div>
-        </div>
+        <div class="demo-eq" style="color:#0f766e;">9 − 3 = 6 ✓</div>
+        <div style="font-family:'Inter',sans-serif;font-size:10px;color:var(--ink-soft);margin-top:6px;">tapping 3 first instead → wrong order ✗</div>
       </div>`;
   } else if(game === 'survival'){
     el.innerHTML = `
