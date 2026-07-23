@@ -215,7 +215,7 @@
     <div class="how-steps">
       <div class="how-step">
         <div class="how-num">1</div>
-        <div class="how-text">A <strong>target number</strong> appears at the top. Find two tiles on the board that combine to reach it, then tap them in order.</div>
+        <div class="how-text">A <strong>target number</strong> appears at the top. Find two <strong>adjacent</strong> tiles — same row or column, next to each other — that combine to reach it, then tap them in order.</div>
       </div>
       <div class="how-step">
         <div class="how-num">2</div>
@@ -322,7 +322,7 @@
 const GRID_SIZE = 5;
 const START_TIME = 30;
 const MAX_TIME = 45;
-const WRONG_PENALTY = 3;
+const WRONG_PENALTY = 5;
 const OP_PTS = { plus:100, minus:200, mult:500, div:1000 };
 const $ = id => document.getElementById(id);
 
@@ -339,8 +339,8 @@ function difficultyFor(found){
   if(found<4)return{maxNum:9,ops:['plus'],level:1};
   if(found<10)return{maxNum:9,ops:['plus','minus'],level:2};
   if(found<18)return{maxNum:12,ops:['plus','minus','mult'],level:3};
-  if(found<30)return{maxNum:15,ops:['plus','minus','mult','div'],level:4};
-  return{maxNum:20,ops:['plus','minus','mult','div'],level:4};
+  if(found<35)return{maxNum:20,ops:['plus','minus','mult','div'],level:4};
+  return{maxNum:30,ops:['plus','minus','mult','div'],level:4};
 }
 function streakMultiplier(s){
   if(s<3)return 1;if(s<5)return 2;if(s<7)return 3;
@@ -376,14 +376,28 @@ function buildBoard(maxNum){
   return b;
 }
 
-// Picks two random board tiles and a random unlocked op to derive a target,
-// guaranteeing at least one solvable pair exists on the current board.
+function isAdjacent(a,b){
+  return Math.abs(a.r-b.r)+Math.abs(a.c-b.c)===1;
+}
+
+function adjacentPairs(){
+  const pairs=[];
+  for(let r=0;r<GRID_SIZE;r++){
+    for(let c=0;c<GRID_SIZE;c++){
+      if(c+1<GRID_SIZE)pairs.push([{r,c},{r,c:c+1}]);
+      if(r+1<GRID_SIZE)pairs.push([{r,c},{r:r+1,c}]);
+    }
+  }
+  return pairs;
+}
+
+// Picks a random adjacent pair of tiles and a random unlocked op to derive a
+// target, guaranteeing at least one solvable adjacent pair exists on the
+// current board (tiles must be next to each other — same row or column).
 function generateTarget(ops){
-  const cells=[];
-  for(let r=0;r<GRID_SIZE;r++)for(let c=0;c<GRID_SIZE;c++)cells.push({r,c});
+  const pairs=adjacentPairs();
   for(let attempt=0;attempt<400;attempt++){
-    const p=cells[rnd(0,cells.length-1)],q=cells[rnd(0,cells.length-1)];
-    if(p.r===q.r&&p.c===q.c)continue;
+    const [p,q]=pairs[rnd(0,pairs.length-1)];
     const a=board[p.r][p.c],b=board[q.r][q.c];
     const op=ops[rnd(0,ops.length-1)];
     let t=null;
@@ -393,7 +407,8 @@ function generateTarget(ops){
     else if(op==='div'){const hi=Math.max(a,b),lo=Math.min(a,b);if(lo>0&&hi%lo===0)t=hi/lo;else continue;}
     if(t&&t>=1&&t<=400)return t;
   }
-  return board[0][0]+board[0][1];
+  const [p,q]=pairs[0];
+  return board[p.r][p.c]+board[q.r][q.c];
 }
 
 function startGame(){
@@ -494,6 +509,11 @@ function updateEqDisplay(){
 
 async function checkPairTap(){
   const [s1,s2]=selected;
+  if(!isAdjacent(s1,s2)){
+    toast('Tiles must be adjacent — same row or column, next to each other');
+    selected=[];renderGrid();updateEqDisplay();
+    return;
+  }
   const a=board[s1.r][s1.c],b=board[s2.r][s2.c];
   const diff=difficultyFor(foundCount);
   const result=checkPair(a,b,target,diff.ops);

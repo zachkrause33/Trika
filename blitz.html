@@ -34,6 +34,10 @@
   .landing-sub{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--ink-soft);margin-bottom:6px;}
   .landing-tagline{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);letter-spacing:0.1em;text-transform:uppercase;}
   .big-timer{font-family:'Fraunces',serif;font-weight:700;font-size:96px;line-height:1;color:var(--bad);text-align:center;opacity:0.15;}
+  .mode-toggle{display:flex;gap:8px;width:100%;}
+  .mode-pill{flex:1;padding:11px;border-radius:12px;border:2px solid var(--bad);background:transparent;color:var(--bad);font-family:'Inter',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.05em;cursor:pointer;transition:all 0.15s;}
+  .mode-pill.active{background:var(--bad);color:#fff;}
+  .mode-pill:active{transform:scale(0.97);}
   .landing-play{width:100%;}
   .landing-play button{width:100%;padding:18px;border-radius:16px;border:none;background:linear-gradient(135deg,#dc2626,#f97316);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:16px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 20px rgba(220,38,38,0.4);transition:all 0.2s;}
   .landing-play button:active{transform:scale(0.97);}
@@ -165,9 +169,13 @@
   .lb-modal.hide{display:none!important;}
   .lb-card{background:var(--bg-card);border-radius:20px;padding:24px 20px;width:100%;max-width:360px;margin:16px;box-shadow:0 8px 40px rgba(26,26,26,0.12);}
   .lb-title{font-family:'Fraunces',serif;font-weight:700;font-size:22px;margin-bottom:14px;color:var(--ink);}
+  .lb-mode-toggle{display:flex;gap:6px;margin-bottom:10px;}
+  .lb-mode-btn{flex:1;padding:8px 4px;border-radius:8px;border:1.5px solid var(--bad);font-family:'Inter',sans-serif;font-weight:800;font-size:11px;text-align:center;cursor:pointer;color:var(--bad);background:transparent;transition:all 0.15s;}
+  .lb-mode-btn.active{color:#fff;background:#dc2626;}
   .lb-tabs{display:flex;gap:6px;margin-bottom:14px;}
   .lb-tab{flex:1;padding:8px 4px;border-radius:8px;border:1.5px solid var(--line);font-family:'Inter',sans-serif;font-weight:700;font-size:11px;text-align:center;cursor:pointer;color:var(--ink-soft);background:var(--bg);transition:all 0.15s;}
   .lb-tab.active{color:#fff;border-color:transparent;background:#dc2626;}
+  .lb-mode-badge{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:0.05em;color:var(--ink-soft);background:var(--bg-card);border:1px solid var(--line);border-radius:5px;padding:2px 5px;margin-left:6px;flex-shrink:0;}
   .lb-list{display:flex;flex-direction:column;gap:6px;min-height:60px;margin-bottom:12px;}
   .lb-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg);border-radius:8px;}
   .lb-rank{font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--ink-soft);width:22px;text-align:center;}
@@ -201,10 +209,14 @@
       <div class="landing-dot"></div>
     </div>
     <div class="landing-title">Trika Blitz</div>
-    <div class="landing-sub">60 seconds. find as many as you can.</div>
+    <div class="landing-sub" id="landing-sub">find as many as you can.</div>
     <div class="landing-tagline">free · no account needed</div>
   </div>
-  <div class="big-timer">60</div>
+  <div class="big-timer" id="big-timer">1:00</div>
+  <div class="mode-toggle" id="mode-toggle">
+    <button class="mode-pill active" data-mode="1min">1 MIN</button>
+    <button class="mode-pill" data-mode="5min">5 MIN</button>
+  </div>
   <div class="landing-play">
     <button id="btn-play">Start the clock</button>
   </div>
@@ -217,7 +229,7 @@
       </div>
       <div class="how-step">
         <div class="how-num">2</div>
-        <div class="how-text">You have <strong>60 seconds flat.</strong> No time is added. Find as many equations as possible.</div>
+        <div class="how-text">Choose <strong>1 or 5 minutes</strong> on the button above. No time is added — find as many equations as possible before it runs out.</div>
       </div>
       <div class="how-step">
         <div class="how-num">3</div>
@@ -239,7 +251,7 @@
   <header>
     <div>
       <div class="brand-name">Trika Blitz</div>
-      <div class="brand-tag">60 seconds · find as many as you can</div>
+      <div class="brand-tag" id="brand-tag">60 seconds · find as many as you can</div>
     </div>
     <div class="score-area">
       <div class="score" id="score">0</div>
@@ -277,6 +289,7 @@
 <div class="modal hide" id="gameover">
   <div class="modal-card">
     <div class="modal-title">time's up</div>
+    <div class="modal-label" id="modal-mode-label" style="margin-bottom:-8px;">1 MIN</div>
     <div id="nb-wrap"></div>
     <div class="modal-score" id="final-score">0</div>
     <div class="modal-label">final score</div>
@@ -306,11 +319,35 @@
 </div>
 
 <script>
-const TOTAL_TIME = 60;
 const GRID_SIZE = 3;
-const MAX_NUM = 20;
 const OP_PTS = { plus:100, minus:200, mult:500, div:1000 };
+const OPS = ['plus','minus','mult','div'];
 const $ = id => document.getElementById(id);
+
+// Two modes, each with its own timer length, difficulty-by-boards-found
+// curve, and a separate pair of JSONBin leaderboard bins so scores never mix.
+const MODES = {
+  '1min': {
+    label:'1 MIN', totalTime:60,
+    maxNumFor(found){ if(found<3)return 9; if(found<6)return 12; return 20; },
+    allTimeBin:'6a3ec94df5f4af5e2935b2f9', dailyBin:'6a3ec94df5f4af5e2935b2fa',
+  },
+  '5min': {
+    label:'5 MIN', totalTime:300,
+    maxNumFor(found){ if(found<5)return 9; if(found<10)return 12; if(found<16)return 20; return 30; },
+    allTimeBin:'REPLACE_WITH_5MIN_ALLTIME_BIN_ID', dailyBin:'REPLACE_WITH_5MIN_DAILY_BIN_ID',
+  },
+};
+let currentMode='1min';
+let TOTAL_TIME = MODES[currentMode].totalTime;
+
+function formatBigTimer(sec){const m=Math.floor(sec/60),s=sec%60;return`${m}:${String(s).padStart(2,'0')}`;}
+function selectMode(mode){
+  currentMode=mode;
+  document.querySelectorAll('.mode-pill').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  $('big-timer').textContent=formatBigTimer(MODES[mode].totalTime);
+  $('landing-sub').textContent=mode==='5min'?'5 minutes. find as many as you can.':'60 seconds. find as many as you can.';
+}
 
 function toast(msg){const e=$('toast');e.textContent=msg;e.classList.remove('show');void e.offsetWidth;e.classList.add('show');}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
@@ -319,17 +356,19 @@ function tileClass(v){return`v${Math.max(1,Math.min(20,v))}`;}
 function flashBg(type){const e=$('flash');e.className='flash';void e.offsetWidth;e.className=`flash ${type}`;}
 
 // Equation logic
-function checkOri(a,b,c,ops){
+function checkOri(a,b,c,ops,maxNum){
   const m=[];
   if(ops.includes('div')&&b>1&&Number.isInteger(a/b)&&a/b===c&&c>=1)m.push({eq:`${a}÷${b}=${c}`,op:'div',pri:4});
-  if(ops.includes('mult')&&a*b===c&&c<=MAX_NUM)m.push({eq:`${a}×${b}=${c}`,op:'mult',pri:3});
+  if(ops.includes('mult')&&a*b===c&&c<=maxNum)m.push({eq:`${a}×${b}=${c}`,op:'mult',pri:3});
   if(ops.includes('minus')&&a-b===c&&c>=1)m.push({eq:`${a}−${b}=${c}`,op:'minus',pri:2});
-  if(ops.includes('plus')&&a+b===c&&c<=MAX_NUM)m.push({eq:`${a}+${b}=${c}`,op:'plus',pri:1});
+  if(ops.includes('plus')&&a+b===c&&c<=maxNum)m.push({eq:`${a}+${b}=${c}`,op:'plus',pri:1});
   return m;
 }
-function checkEq(p,q,r,ops){
-  ops=ops||difficultyFor(foundCount).ops;
-  const all=[...checkOri(p,q,r,ops),...checkOri(r,q,p,ops)];
+function checkEq(p,q,r,ops,maxNum){
+  const diff=difficultyFor(foundCount);
+  ops=ops||diff.ops;
+  maxNum=maxNum||diff.maxNum;
+  const all=[...checkOri(p,q,r,ops,maxNum),...checkOri(r,q,p,ops,maxNum)];
   if(!all.length)return null;
   all.sort((a,b)=>b.pri-a.pri);return all[0];
 }
@@ -339,9 +378,7 @@ let board=[], selected=[], score=0, foundCount=0, timer=TOTAL_TIME;
 let timerInterval=null, busy=false, bestOp='plus', finalStats=null, lastTick=null;
 
 function difficultyFor(found){
-  if(found<3)return{maxNum:9,ops:['plus','minus','mult','div']};
-  if(found<6)return{maxNum:12,ops:['plus','minus','mult','div']};
-  return{maxNum:20,ops:['plus','minus','mult','div']};
+  return{maxNum:MODES[currentMode].maxNumFor(found),ops:OPS};
 }
 
 function rndBoard(){
@@ -364,9 +401,11 @@ function rndBoard(){
 }
 
 function startGame(){
+  TOTAL_TIME=MODES[currentMode].totalTime;
   board=rndBoard();
   selected=[];score=0;foundCount=0;timer=TOTAL_TIME;busy=false;bestOp='plus';finalStats=null;
   $('gameover').classList.add('hide');
+  $('brand-tag').textContent=`${formatBigTimer(TOTAL_TIME)} · find as many as you can`;
   showView('game');
   render();
   updateTimerUI();
@@ -514,10 +553,12 @@ async function handleCorrect(result,cells){
 
 function gameOver(){
   busy=true;stopTimer();
-  finalStats={score,found:foundCount,bestOp};
-  const stored=JSON.parse(localStorage.getItem('trika-blitz-best')||'{"score":0}');
+  finalStats={score,found:foundCount,bestOp,mode:currentMode};
+  const bestKey=`trika-blitz-best-${currentMode}`;
+  const stored=JSON.parse(localStorage.getItem(bestKey)||'{"score":0}');
   const isNew=score>stored.score;
-  if(isNew)localStorage.setItem('trika-blitz-best',JSON.stringify({score,found:foundCount}));
+  if(isNew)localStorage.setItem(bestKey,JSON.stringify({score,found:foundCount}));
+  $('modal-mode-label').textContent=MODES[currentMode].label;
   $('final-score').textContent=score.toLocaleString();
   $('fs-found').textContent=foundCount;
   const opSymbols={plus:'+',minus:'−',mult:'×',div:'÷'};
@@ -531,7 +572,8 @@ function gameOver(){
 async function share(){
   if(!finalStats)return;
   const opLabels={plus:'addition',minus:'subtraction',mult:'multiplication',div:'division'};
-  const text=`Trika Blitz — 60 seconds\n${finalStats.score.toLocaleString()} pts · ${finalStats.found} equations found\nBest operation: ${opLabels[finalStats.bestOp]}\nplaytrika.com/blitz`;
+  const modeLabel=MODES[finalStats.mode].label;
+  const text=`Trika Blitz — ${modeLabel}\n${finalStats.score.toLocaleString()} pts · ${finalStats.found} equations found\nBest operation: ${opLabels[finalStats.bestOp]}\nplaytrika.com/blitz`;
   if(navigator.share){try{await navigator.share({title:'Trika Blitz',text,url:'https://playtrika.com/blitz'});return;}catch(e){}}
   try{await navigator.clipboard.writeText(text);toast('Score copied!');}catch(e){window.prompt('Copy:',text);}
 }
@@ -546,6 +588,8 @@ $('btn-back').addEventListener('click',()=>{stopTimer();window.location.href='/'
 $('btn-restart-game').addEventListener('click',()=>{stopTimer();startGame();});
 $('btn-again').addEventListener('click',()=>{$('gameover').classList.add('hide');startGame();});
 $('btn-share').addEventListener('click',share);
+document.querySelectorAll('.mode-pill').forEach(b=>b.addEventListener('click',()=>selectMode(b.dataset.mode)));
+selectMode('1min');
 
 showView('landing');
 if(new URLSearchParams(window.location.search).get('play')==='1'){
@@ -557,9 +601,8 @@ if(new URLSearchParams(window.location.search).get('play')==='1'){
 // LEADERBOARD
 // ============================================================
 const JBKEY='$2a$10$yDd21niqXkaX1MiteHDKOeYbzS7AlbeZ0MFdkSy34mEi0OiEf0N7C';
-const ALLTIME_BIN='6a3ec94df5f4af5e2935b2f9';
-const DAILY_BIN='6a3ec94df5f4af5e2935b2fa';
 let lbTab='myruns';
+let lbMode='1min';
 
 async function lbGet(id){const r=await fetch(`https://api.jsonbin.io/v3/b/${id}/latest`,{headers:{'X-Master-Key':JBKEY}});const d=await r.json();return d.record;}
 async function lbSet(id,data){await fetch(`https://api.jsonbin.io/v3/b/${id}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JBKEY},body:JSON.stringify(data)});}
@@ -582,6 +625,8 @@ function lbRenderList(scores, myName, sortFn, labelFn){
   });
 }
 
+// My Runs mixes both modes on this device — each row is labeled so the mode
+// is unambiguous even though the list itself isn't filtered by lbMode.
 function lbRenderMyRuns(){
   const el=$('lb-list');el.innerHTML='';
   const runs=myRunsGet();
@@ -590,7 +635,8 @@ function lbRenderMyRuns(){
     const row=document.createElement('div');row.className='lb-row';
     const d=new Date(s.date);
     const timeStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    row.innerHTML=`<div class="lb-rank">${i+1}</div><div class="lb-name">${timeStr}</div><div class="lb-score">${s.score.toLocaleString()} · ${s.found}eq</div>`;
+    const modeLabel=(MODES[s.mode]||MODES['1min']).label;
+    row.innerHTML=`<div class="lb-rank">${i+1}</div><div class="lb-name">${timeStr}<span class="lb-mode-badge">${modeLabel}</span></div><div class="lb-score">${s.score.toLocaleString()} · ${s.found}eq</div>`;
     el.appendChild(row);
   });
 }
@@ -599,21 +645,22 @@ async function lbLoad(){
   $('lb-status').textContent='Loading...';
   $('lb-list').innerHTML='';
   const myName=lbGetName();
+  const modeInfo=MODES[lbMode];
   try{
     if(lbTab==='myruns'){
       lbRenderMyRuns();
       $('lb-status').textContent=`Your runs · ${myRunsGet().length} total`;
     }else if(lbTab==='daily'){
       const key=lbDayKey();
-      const data=await lbGet(DAILY_BIN);
+      const data=await lbGet(modeInfo.dailyBin);
       const scores=((data.scores||{})[key]||[]);
       lbRenderList(scores,myName,(a,b)=>b.score-a.score,s=>`${s.score.toLocaleString()} · ${s.found}eq`);
-      $('lb-status').textContent=`Today · ${scores.length} player${scores.length!==1?'s':''}`;
+      $('lb-status').textContent=`Today · ${modeInfo.label} · ${scores.length} player${scores.length!==1?'s':''}`;
     }else{
-      const data=await lbGet(ALLTIME_BIN);
+      const data=await lbGet(modeInfo.allTimeBin);
       const scores=data.scores||[];
       lbRenderList(scores,myName,(a,b)=>b.score-a.score,s=>`${s.score.toLocaleString()} · ${s.found}eq`);
-      $('lb-status').textContent=`All-time · ${scores.length} player${scores.length!==1?'s':''}`;
+      $('lb-status').textContent=`All-time · ${modeInfo.label} · ${scores.length} player${scores.length!==1?'s':''}`;
     }
   }catch(e){$('lb-status').textContent='Could not load — try again';}
 }
@@ -624,27 +671,28 @@ async function lbSubmit(){
   if(!name){toast('Enter a name first');return;}
   lbSetName(name);$('lb-name-input').value=name;
   $('lb-submit-btn').textContent='Submitting...';$('lb-submit-btn').disabled=true;
-  const entry={name,score:finalStats.score,found:finalStats.found,date:Date.now()};
+  const modeInfo=MODES[finalStats.mode];
+  const entry={name,score:finalStats.score,found:finalStats.found,mode:finalStats.mode,date:Date.now()};
   myRunsSave(entry);
   let ok=true;
   try{
     // All-Time
-    const atData=await lbGet(ALLTIME_BIN);
+    const atData=await lbGet(modeInfo.allTimeBin);
     if(!atData.scores)atData.scores=[];
     const atIdx=atData.scores.findIndex(s=>s.name===name);
     if(atIdx>=0){if(entry.score>atData.scores[atIdx].score)atData.scores[atIdx]=entry;}
     else atData.scores.push(entry);
-    await lbSet(ALLTIME_BIN,atData);
+    await lbSet(modeInfo.allTimeBin,atData);
     await new Promise(r=>setTimeout(r,350));
     // Daily
     const key=lbDayKey();
-    const dData=await lbGet(DAILY_BIN);
+    const dData=await lbGet(modeInfo.dailyBin);
     if(!dData.scores)dData.scores={};
     if(!dData.scores[key])dData.scores[key]=[];
     const dIdx=dData.scores[key].findIndex(s=>s.name===name);
     if(dIdx>=0){if(entry.score>dData.scores[key][dIdx].score)dData.scores[key][dIdx]=entry;}
     else dData.scores[key].push(entry);
-    await lbSet(DAILY_BIN,dData);
+    await lbSet(modeInfo.dailyBin,dData);
   }catch(e){ok=false;}
   if(ok){toast('✓ Submitted!');$('lb-submit-btn').textContent='✓ Submitted';}
   else{toast('Submit failed');$('lb-submit-btn').textContent='Submit my score';$('lb-submit-btn').disabled=false;}
@@ -653,7 +701,9 @@ async function lbSubmit(){
 
 function openLb(){
   lbTab='myruns';
+  lbMode=finalStats?finalStats.mode:currentMode;
   document.querySelectorAll('.lb-tab').forEach(t=>t.classList.toggle('active',t.dataset.lbtab==='myruns'));
+  document.querySelectorAll('.lb-mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.lbmode===lbMode));
   const name=lbGetName();
   $('lb-name-input').value=name;
   $('lb-modal').classList.remove('hide');
@@ -664,6 +714,11 @@ window.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.lb-tab').forEach(t=>t.addEventListener('click',()=>{
     lbTab=t.dataset.lbtab;
     document.querySelectorAll('.lb-tab').forEach(x=>x.classList.toggle('active',x.dataset.lbtab===lbTab));
+    lbLoad();
+  }));
+  document.querySelectorAll('.lb-mode-btn').forEach(b=>b.addEventListener('click',()=>{
+    lbMode=b.dataset.lbmode;
+    document.querySelectorAll('.lb-mode-btn').forEach(x=>x.classList.toggle('active',x.dataset.lbmode===lbMode));
     lbLoad();
   }));
   const lbSubmitEl=document.getElementById('lb-submit-btn');
@@ -681,6 +736,10 @@ window.addEventListener('DOMContentLoaded',()=>{
 <div class="lb-modal hide" id="lb-modal">
   <div class="lb-card">
     <div class="lb-title">Trika Blitz Leaderboard</div>
+    <div class="lb-mode-toggle">
+      <div class="lb-mode-btn active" data-lbmode="1min">1 MIN</div>
+      <div class="lb-mode-btn" data-lbmode="5min">5 MIN</div>
+    </div>
     <div class="lb-tabs">
       <div class="lb-tab active" data-lbtab="myruns">My Runs</div>
       <div class="lb-tab" data-lbtab="daily">Today</div>

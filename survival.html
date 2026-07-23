@@ -340,10 +340,9 @@ function filledCount(){
   return n;
 }
 
-function maxNumForTime(ms){
-  if(ms<30000)return 9;
-  if(ms<60000)return 12;
-  if(ms<120000)return 15;
+function maxNumForLevel(level){
+  if(level<4)return 9;
+  if(level<7)return 12;
   return 20;
 }
 
@@ -381,7 +380,7 @@ function findEquationValue(){
   const filled=[];
   for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(board[r][c]!==null)filled.push(board[r][c]);
   if(filled.length<2)return null;
-  const maxN=maxNumForTime(elapsed);
+  const maxN=maxNumForLevel(speedLevel);
   for(let attempt=0;attempt<30;attempt++){
     const a=filled[rnd(0,filled.length-1)];
     const b=filled[rnd(0,filled.length-1)];
@@ -400,7 +399,7 @@ function dropNumber(){
   for(let c=0;c<COLS;c++)if(board[0][c]===null)availCols.push(c);
   if(!availCols.length){gameOver();return;}
   const col=availCols[rnd(0,availCols.length-1)];
-  const maxN=maxNumForTime(elapsed);
+  const maxN=maxNumForLevel(speedLevel);
   dropCount++;
   // Every 3rd drop seed an equation-completing value
   let val;

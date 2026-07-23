@@ -145,7 +145,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Blitz</div>
-        <div class="game-desc">60 seconds. Fixed 3×3 board. Find as many equations as you can — harder operations score more points.</div>
+        <div class="game-desc">Choose 1 or 5 minutes. Fixed 3×3 board. Find as many equations as you can — harder operations score more points.</div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('blitz')">Play</button>
     </div>
@@ -154,7 +154,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Precision</div>
-        <div class="game-desc">A target number appears — find two tiles that reach it. Order matters for subtraction and division. Beat the clock.</div>
+        <div class="game-desc">A target number appears — find two adjacent tiles that reach it. Order matters for subtraction and division. Beat the clock.</div>
       </div>
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('precision')">Play</button>
     </div>
@@ -221,7 +221,7 @@ const GAMES = {
     url: '/blitz',
     steps: [
       'Same equation mechanic — tap three tiles in a <strong>row or column</strong> that form a valid equation.',
-      'You have <strong>60 seconds flat.</strong> Wrong guesses cost you 5 seconds. No time is added for correct answers.',
+      'Pick your clock on the start screen: <strong>1 minute</strong> or <strong>5 minutes</strong>. Wrong guesses cost you 5 seconds. No time is added for correct answers.',
       'Harder operations score more: + 100pts · − 200pts · × 500pts · ÷ 1,000pts.',
       'How many equations can you find before time runs out?'
     ]
@@ -231,7 +231,7 @@ const GAMES = {
     color: '#0f766e',
     url: '/precision',
     steps: [
-      'A <strong>target number</strong> is shown at the top. Find two tiles anywhere on the board that combine to reach it, then tap them in order.',
+      'A <strong>target number</strong> is shown at the top. Find two <strong>adjacent</strong> tiles — same row or column, next to each other — that combine to reach it, then tap them in order.',
       'Addition and multiplication work in <strong>either order</strong>. For subtraction and division, tap the <strong>larger number first</strong> — larger − smaller, larger ÷ smaller.',
       'Correct pairs clear, a new target appears, and you gain time. Operations unlock as you go — addition first, then subtraction, multiplication, and division.',
       'Wrong pairs cost 3 seconds. Your first tap is always safe — it\'s just picking your starting number.'
