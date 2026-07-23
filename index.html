@@ -10,7 +10,7 @@
 <!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.io/js/pa-r8dPXidL_Ce4WzoyxV94s.js"></script>
 <script>
-  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||};
   plausible.init()
 </script>
 <style>
@@ -41,42 +41,42 @@
   .reddit-icon{width:16px;height:16px;flex-shrink:0;}
 
   /* Game cards */
-  .games-list{display:flex;flex-direction:column;gap:8px;flex:1;min-height:0;}
-  .game-card{background:var(--bg-card);border:1.5px solid var(--line-soft);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.15s;text-decoration:none;flex:1;min-height:0;}
+  .games-list{display:flex;flex-direction:column;gap:6px;flex:1;min-height:0;}
+  .game-card{background:#ffffff;border:1.5px solid var(--line-soft);border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.15s;text-decoration:none;flex:1;min-height:0;}
   .game-card:active{transform:scale(0.98);}
-  .game-accent{width:5px;border-radius:3px;flex-shrink:0;align-self:stretch;}
+  .game-accent{width:4px;border-radius:3px;flex-shrink:0;align-self:stretch;}
   .game-info{flex:1;min-width:0;}
-  .game-name{font-family:'Fraunces',serif;font-weight:700;font-size:20px;line-height:1;margin-bottom:4px;}
-  .game-desc{font-family:'Inter',sans-serif;font-size:13px;color:var(--ink-soft);line-height:1.35;}
-  .game-play-btn{flex-shrink:0;padding:10px 18px;border-radius:10px;border:none;font-family:'Inter',sans-serif;font-weight:800;font-size:14px;color:#fff;cursor:pointer;transition:all 0.15s;letter-spacing:0.05em;}
+  .game-name{font-family:'Fraunces',serif;font-weight:700;font-size:18px;line-height:1;margin-bottom:4px;}
+  .game-desc{font-family:'Inter',sans-serif;font-size:12px;color:#8a7f72;line-height:1.35;}
+  .game-play-btn{flex-shrink:0;width:62px;height:36px;border-radius:9px;border:none;font-family:'Inter',sans-serif;font-weight:800;font-size:13px;color:#fff;cursor:pointer;transition:all 0.15s;letter-spacing:0.05em;padding:0;display:flex;align-items:center;justify-content:center;}
   .game-play-btn:active{transform:scale(0.95);}
 
   /* Color themes */
-  .card-trika{flex:1.6;position:relative;padding:24px 16px;border-width:2px;border-color:#f4c09a;background:#ffffff;}
-  .card-trika .game-name{color:#c2410c;font-size:32px;margin-bottom:6px;}
-  .card-trika .game-desc{font-size:15px;}
-  .card-trika .game-play-btn{background:#ea580c;box-shadow:0 4px 14px rgba(234,88,12,0.35);padding:15px 24px;border-radius:12px;font-size:17px;}
+  .card-trika{flex:1.6;position:relative;padding:26px 20px;border:2px solid #f4c09a;border-radius:20px;background:#fff8f3;margin-bottom:8px;}
+  .card-trika .game-name{color:#c2410c;font-size:40px;margin-bottom:6px;}
+  .card-trika .game-desc{font-size:16px;color:#3d2b1a;}
+  .card-trika .game-play-btn{width:100px;height:56px;background:#ea580c;box-shadow:0 6px 16px rgba(234,88,12,0.35);border-radius:14px;font-size:18px;}
   .game-badge{position:absolute;top:-13px;right:14px;background:#ea580c;color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;}
 
-  .card-blitz{border-color:#f0e0e0;}
+  .card-blitz{border-color:#f0dede;cursor:default;}
+  .card-blitz:active{transform:none;}
   .card-blitz .game-accent{background:#dc2626;}
-  .card-blitz .game-name{color:#b91c1c;margin-bottom:8px;}
-  .card-blitz .game-play-btn{background:#dc2626;box-shadow:0 4px 12px rgba(220,38,38,0.3);}
-  .blitz-mode-toggle{display:flex;gap:8px;justify-content:center;}
-  .blitz-mode-btn{padding:6px 20px;border-radius:20px;border:2px solid #dc2626;background:transparent;color:#dc2626;font-family:'Inter',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.04em;cursor:pointer;transition:all 0.15s;}
-  .blitz-mode-btn.active{background:#dc2626;color:#fff;}
-  .blitz-mode-btn:active{transform:scale(0.94);}
+  .card-blitz .game-name{color:#b91c1c;margin-bottom:4px;}
+  .blitz-btns{display:flex;flex-direction:column;gap:5px;flex-shrink:0;}
+  .blitz-play-btn{display:flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:9px;font-family:'Inter',sans-serif;font-size:11px;font-weight:800;text-decoration:none;cursor:pointer;transition:all 0.15s;letter-spacing:0.03em;}
+  .blitz-play-btn:active{transform:scale(0.95);}
+  .blitz-play-filled{background:#dc2626;color:#fff;box-shadow:0 3px 8px rgba(220,38,38,0.25);}
+  .blitz-play-outline{background:transparent;color:#dc2626;border:2px solid #dc2626;}
 
   .card-precision{border-color:#c6e9e6;}
   .card-precision .game-accent{background:#0f766e;}
   .card-precision .game-name{color:#0f766e;}
-  .card-precision .game-play-btn{background:#0f766e;box-shadow:0 4px 12px rgba(15,118,110,0.3);}
+  .card-precision .game-play-btn{background:#0f766e;box-shadow:0 3px 8px rgba(15,118,110,0.25);}
 
   .card-survival{border-color:#ddd0f8;}
   .card-survival .game-accent{background:#7c3aed;}
   .card-survival .game-name{color:#6d28d9;}
-  .card-survival .game-desc{color:#6b6558;}
-  .card-survival .game-play-btn{background:#7c3aed;box-shadow:0 4px 12px rgba(124,58,237,0.3);}
+  .card-survival .game-play-btn{background:#7c3aed;box-shadow:0 3px 8px rgba(124,58,237,0.25);}
 
   /* Rules sheet */
   .rules-overlay{position:fixed;inset:0;background:rgba(26,26,26,0.6);z-index:100;display:flex;align-items:flex-end;justify-content:center;}
@@ -137,7 +137,6 @@
 
     <div class="game-card card-trika" onclick="showRules('trika')">
       <div class="game-badge">★ Most Played</div>
-      <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika</div>
         <div class="game-desc">Find equations hidden in the grid.</div>
@@ -145,16 +144,16 @@
       <button class="game-play-btn" onclick="event.stopPropagation();showRules('trika')">Play</button>
     </div>
 
-    <div class="game-card card-blitz" onclick="showRules('blitz')">
+    <div class="game-card card-blitz">
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Blitz</div>
-        <div class="blitz-mode-toggle">
-          <button type="button" class="blitz-mode-btn active" data-mode="1" onclick="event.stopPropagation();setBlitzMode('1')">1 MIN</button>
-          <button type="button" class="blitz-mode-btn" data-mode="5" onclick="event.stopPropagation();setBlitzMode('5')">5 MIN</button>
-        </div>
+        <div class="game-desc">Find as many equations as you can.</div>
       </div>
-      <button class="game-play-btn" onclick="event.stopPropagation();showRules('blitz')">Play</button>
+      <div class="blitz-btns">
+        <a href="/blitz?mode=1" class="blitz-play-btn blitz-play-filled">&#9654; 1 MIN</a>
+        <a href="/blitz?mode=5" class="blitz-play-btn blitz-play-outline">&#9654; 5 MIN</a>
+      </div>
     </div>
 
     <div class="game-card card-precision" onclick="showRules('precision')">
