@@ -52,17 +52,17 @@
   .game-play-btn:active{transform:scale(0.95);}
 
   /* Color themes */
-  .card-trika{flex:1.9;position:relative;padding:20px 16px;border-width:2px;border-color:#fed7aa;background:linear-gradient(135deg,#fff7ed,#ffffff);opacity:1;}
+  .card-trika{flex:2.3;position:relative;padding:30px 18px;border-width:2px;border-color:#fed7aa;background:linear-gradient(135deg,#fff7ed,#ffffff);opacity:1;}
   .card-trika .game-accent{width:7px;background:#ea580c;}
-  .card-trika .game-name{color:#c2410c;font-size:28px;}
+  .card-trika .game-name{color:#c2410c;font-size:33px;margin-bottom:5px;}
   .card-trika .game-desc{font-size:13px;}
-  .card-trika .game-play-btn{background:#ea580c;box-shadow:0 4px 12px rgba(234,88,12,0.3);padding:14px 24px;font-size:16px;}
+  .card-trika .game-play-btn{background:#ea580c;box-shadow:0 4px 12px rgba(234,88,12,0.3);padding:17px 30px;font-size:17px;}
   .game-badge{position:absolute;top:-8px;right:16px;background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;box-shadow:0 3px 10px rgba(234,88,12,0.4);}
 
   .card-blitz .game-accent{background:#dc2626;}
   .card-blitz .game-name{color:#b91c1c;}
   .card-blitz .game-play-btn{background:#dc2626;box-shadow:0 4px 12px rgba(220,38,38,0.3);}
-  .blitz-mode-toggle{display:flex;gap:6px;margin-top:5px;}
+  .blitz-mode-toggle{display:flex;gap:6px;margin-top:6px;}
   .blitz-mode-btn{padding:5px 10px;border-radius:8px;border:1.5px solid #dc2626;background:transparent;color:#dc2626;font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.03em;cursor:pointer;transition:all 0.15s;}
   .blitz-mode-btn.active{background:#dc2626;color:#fff;}
   .blitz-mode-btn:active{transform:scale(0.94);}
@@ -149,6 +149,7 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Blitz</div>
+        <div class="game-desc">60 seconds or 5 minutes. Find as many equations as you can.</div>
         <div class="blitz-mode-toggle">
           <button type="button" class="blitz-mode-btn active" data-mode="1" onclick="event.stopPropagation();setBlitzMode('1')">1 MIN</button>
           <button type="button" class="blitz-mode-btn" data-mode="5" onclick="event.stopPropagation();setBlitzMode('5')">5 MIN</button>
