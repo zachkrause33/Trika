@@ -205,10 +205,8 @@
   .lb-tab{flex:1;text-align:center;padding:10px 4px;border-radius:8px;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;line-height:1.2;border:none;}
   .lb-tab[data-tab="mine"]{background:#e8e4de;color:#6b6558;}
   .lb-tab[data-tab="alltime"]{background:#ede9fe;color:#7c3aed;}
-  .lb-tab[data-tab="daily"]{background:#fef9c3;color:#854d0e;}
   .lb-tab[data-tab="mine"].active{background:var(--ink);color:#fff;}
   .lb-tab[data-tab="alltime"].active{background:linear-gradient(135deg,#7c3aed,#d946ef);color:#fff;}
-  .lb-tab[data-tab="daily"].active{background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;}
   .lb-panel.hide{display:none;}
   .lb-list{max-height:320px;overflow-y:auto;}
   .lb-row-global{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px;background:var(--bg-card);border:1px solid var(--line-soft);}
@@ -244,6 +242,7 @@
   .other-modes-light a.oml-blitz{color:#dc2626;}
   .other-modes-light a.oml-precision{color:#0f766e;}
   .other-modes-light a.oml-survival{color:#7c3aed;}
+  .other-modes-light a.oml-home{color:var(--ink-soft);}
 
   /* Groups */
   .group-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:10px;border:1px solid var(--line-soft);background:var(--bg-card);margin-bottom:6px;cursor:pointer;}
@@ -412,7 +411,7 @@
     </div>
     <div class="other-modes-light">
       <span class="oml-label">Also try</span>
-      <a href="/blitz" class="oml-blitz">Blitz</a><span class="oml-dot">·</span><a href="/precision" class="oml-precision">Precision</a><span class="oml-dot">·</span><a href="/survival" class="oml-survival">Survival</a>
+      <a href="/blitz" class="oml-blitz">Blitz</a><span class="oml-dot">·</span><a href="/precision" class="oml-precision">Precision</a><span class="oml-dot">·</span><a href="/survival" class="oml-survival">Survival</a><span class="oml-dot">·</span><a href="/" class="oml-home">Home</a>
     </div>
   </div>
 </div>
@@ -424,8 +423,7 @@
     <div style="font-style:italic;font-size:14px;color:var(--ink-soft);margin-bottom:14px;">all-time rankings</div>
     <div class="lb-tabs">
       <div class="lb-tab active" data-tab="mine">My Runs</div>
-      <div class="lb-tab" data-tab="daily">Today</div>
-      <div class="lb-tab" data-tab="alltime">All-Time</div>
+      <div class="lb-tab" data-tab="alltime">Leaderboard</div>
     </div>
     <!-- My Runs -->
     <div id="lb-panel-mine" class="lb-panel">
@@ -440,12 +438,6 @@
       <div class="lb-global-status" id="lb-alltime-status">Loading...</div>
       <div class="lb-list" id="lb-list-alltime"></div>
       <button class="primary" id="lb-btn-submit-alltime" style="margin-top:10px;">Submit my score</button>
-    </div>
-    <!-- Groups -->
-    <div id="lb-panel-daily" class="lb-panel hide">
-      <div class="lb-global-status" id="lb-daily-status">Loading...</div>
-      <div class="lb-list" id="lb-list-daily"></div>
-      <button class="primary" id="lb-btn-submit-daily" style="margin-top:10px;">Submit my score</button>
     </div>
     <button class="secondary" id="btn-lb-close" style="margin-top:12px;">Back</button>
     <!-- Name entry overlay -->
@@ -474,7 +466,6 @@
 const JSONBIN_KEY  = '$2a$10$yDd21niqXkaX1MiteHDKOeYbzS7AlbeZ0MFdkSy34mEi0OiEf0N7C';
 const JSONBIN_BASE = 'https://api.jsonbin.io/v3';
 const ALLTIME_BIN  = '6a18407cddf5aa59f76ff039';
-const DAILY_BIN    = '6a3ec94dda38895dfe042968';
 const FREE_STORE_KEY = 'sum-game-v1';
 const START_TIME = 30;
 const MAX_TIME   = 40;
@@ -556,7 +547,7 @@ function checkEquation(p,q,r,ops){
   return{eq:all[0].eq,op:all[0].op};
 }
 
-function magnitudeClass(v){return `mag-${Math.max(1,Math.min(20,v))}`;}
+function magnitudeClass(v){return `mag-${Math.max(1,Math.min(20,v))}`;};
 
 function timePerFind(level){if(level>=4)return 10;if(level>=3)return 8;return 5;}
 function opTimeBonus(op){if(op==='div')return 4;if(op==='mult')return 3;return 0;}
@@ -1042,15 +1033,14 @@ function openLeaderboard(){
   showModal('leaderboard');
   lbActiveTab='mine';
   document.querySelectorAll('.lb-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab==='mine'));
-  ['mine','alltime','daily'].forEach(p=>document.getElementById(`lb-panel-${p}`).classList.toggle('hide',p!=='mine'));
+  ['mine','alltime'].forEach(p=>document.getElementById(`lb-panel-${p}`).classList.toggle('hide',p!=='mine'));
   renderMinePanel();
 }
 
 function renderLbPanel(){
-  ['mine','alltime','daily'].forEach(p=>document.getElementById(`lb-panel-${p}`).classList.toggle('hide',p!==lbActiveTab));
+  ['mine','alltime'].forEach(p=>document.getElementById(`lb-panel-${p}`).classList.toggle('hide',p!==lbActiveTab));
   if(lbActiveTab==='mine')renderMinePanel();
   if(lbActiveTab==='alltime')loadAllTime();
-  if(lbActiveTab==='daily')loadDaily();
 }
 
 function renderMinePanel(){
@@ -1087,7 +1077,7 @@ async function loadAllTime(){
     const data=await jsonbinGet(ALLTIME_BIN);
     const scores=(data.scores||[]).sort((a,b)=>b.score-a.score);
     renderGlobalList('lb-list-alltime',scores,getPlayerName());
-    $('lb-alltime-status').textContent=`All-time · ${scores.length} player${scores.length!==1?'s':''}`;
+    $('lb-alltime-status').textContent=`Leaderboard · ${scores.length} player${scores.length!==1?'s':''}`;
   }catch(e){$('lb-alltime-status').textContent='Could not load — try again';}
 }
 
@@ -1107,18 +1097,6 @@ function nameSubmit(){
   if(pendingSubmit){doSubmitAll(name);pendingSubmit=null;}
 }
 
-async function loadDaily(){
-  const key=pacificDayKey();
-  $('lb-daily-status').textContent='Loading...';
-  $('lb-list-daily').innerHTML='';
-  try{
-    const data=await jsonbinGet(DAILY_BIN);
-    const scores=((data.scores||{})[key]||[]).sort((a,b)=>b.score-a.score);
-    renderGlobalList('lb-list-daily',scores,getPlayerName());
-    $('lb-daily-status').textContent=`Today · ${scores.length} player${scores.length!==1?'s':''}`;
-  }catch(e){$('lb-daily-status').textContent='Could not load — try again';}
-}
-
 async function doSubmitAll(name){
   const btn=$('btn-submit-score');
   if(btn){btn.textContent='Submitting...';btn.disabled=true;}
@@ -1133,23 +1111,11 @@ async function doSubmitAll(name){
     else data.scores.push(entry);
     await jsonbinUpdate(ALLTIME_BIN,data);
   }catch(e){errors++;}
-  // Daily
-  try{
-    const key=pacificDayKey();
-    const data=await jsonbinGet(DAILY_BIN);
-    if(!data.scores)data.scores={};
-    if(!data.scores[key])data.scores[key]=[];
-    const di=data.scores[key].findIndex(s=>s.name===name);
-    if(di>=0){if(entry.score>data.scores[key][di].score)data.scores[key][di]=entry;}
-    else data.scores[key].push(entry);
-    await jsonbinUpdate(DAILY_BIN,data);
-  }catch(e){errors++;}
   if(errors===0){showToast('✓ Submitted!');if(btn){btn.textContent='✓ Submitted';btn.disabled=true;}}
-  else{showToast('Submit failed — try again');if(btn){btn.textContent='Submit to all leaderboards';btn.disabled=false;}}
+  else{showToast('Submit failed — try again');if(btn){btn.textContent='Submit to leaderboard';btn.disabled=false;}}
 }
 
 $('lb-btn-submit-alltime').addEventListener('click',()=>startSubmit('alltime'));
-$('lb-btn-submit-daily').addEventListener('click',()=>startSubmit('daily'));
 
 // ============================================================
 // UTILS
