@@ -77,9 +77,9 @@
      number you're working toward sits beside the tiles you're filling in. */
   .target-row{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:6px;}
   .target-box{text-align:center;}
-  .target-box-val{font-family:'Fraunces',serif;font-weight:700;font-size:42px;line-height:1;background:linear-gradient(135deg,#0f766e,#14b8a6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .target-box-val{font-family:'Fraunces',serif;font-weight:700;font-size:56px;line-height:1;background:linear-gradient(135deg,#0f766e,#14b8a6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
   .target-box-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:0.15em;text-transform:uppercase;margin-top:2px;}
-  .target-divider{width:1px;height:38px;background:var(--line);flex-shrink:0;}
+  .target-eq-sign{font-family:'Fraunces',serif;font-weight:700;font-size:32px;color:var(--ink-soft);flex-shrink:0;}
 
   /* Pick display — shows the two tapped tiles in order */
   .pick-display{display:flex;align-items:center;justify-content:center;gap:10px;}
@@ -228,7 +228,7 @@
       </div>
       <div class="how-step">
         <div class="how-num">3</div>
-        <div class="how-text">Correct pairs clear, a new target appears, and you gain time. Operations unlock as you go — addition first, then subtraction, multiplication, and division.</div>
+        <div class="how-text">Correct pairs clear, a new target appears, and you gain time. Puzzles start with addition and subtraction, but <strong>any operation always counts</strong> — spot a multiplication or division early and it's still a win.</div>
       </div>
       <div class="how-step">
         <div class="how-num">4</div>
@@ -265,15 +265,15 @@
   </div>
 
   <div class="target-row">
-    <div class="target-box">
-      <div class="target-box-val" id="target-num">—</div>
-      <div class="target-box-label">target</div>
-    </div>
-    <div class="target-divider"></div>
     <div class="pick-display" id="pick-display">
       <div class="pick-tile empty" id="pick-tile-1">?</div>
       <div class="pick-arrow">→</div>
       <div class="pick-tile empty" id="pick-tile-2">?</div>
+    </div>
+    <div class="target-eq-sign">=</div>
+    <div class="target-box">
+      <div class="target-box-val" id="target-num">—</div>
+      <div class="target-box-label">target</div>
     </div>
   </div>
   <div class="eq-display" id="eq-display"><span class="placeholder">tap a tile to start</span></div>
@@ -332,6 +332,7 @@ const START_TIME = 30;
 const MAX_TIME = 45;
 const WRONG_PENALTY = 5;
 const OP_PTS = { plus:100, minus:200, mult:500, div:1000 };
+const ALL_OPS = ['plus','minus','mult','div'];
 const $ = id => document.getElementById(id);
 
 function toast(msg){const e=$('toast');e.textContent=msg;e.classList.remove('show');void e.offsetWidth;e.classList.add('show');}
@@ -467,6 +468,10 @@ function render(){
   $('score-val').textContent=score.toLocaleString();
   $('mult-val').textContent=`×${mult}`;
   $('level-val').textContent=diff.level;
+  // Highlighted pills show which ops the auto-generated target is currently
+  // drawing from (addition/subtraction first) — purely pacing, not a lock.
+  // checkPairTap always accepts all four ops, so a multiplication or
+  // division a player spots early still counts.
   ['plus','minus','mult','div'].forEach(op=>{
     const el=$(`op-${op}`);
     el.className='op-pill'+(diff.ops.includes(op)?` active-${op}`:'');
@@ -522,8 +527,10 @@ async function checkPairTap(){
     return;
   }
   const a=board[s1.r][s1.c],b=board[s2.r][s2.c];
-  const diff=difficultyFor(foundCount);
-  const result=checkPair(a,b,target,diff.ops);
+  // Target generation is biased toward easier ops as you progress (see
+  // difficultyFor), but checking accepts ANY operation — a player who spots
+  // a multiplication or division early should never be penalized for it.
+  const result=checkPair(a,b,target,ALL_OPS);
   if(result){await handleCorrect(result,[s1,s2]);}
   else{
     $('pick-tile-1').classList.add('wrong');
