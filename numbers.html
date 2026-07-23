@@ -530,8 +530,8 @@ function difficultyFor(found){
   if(found<4)maxNum=9;
   else if(found<10)maxNum=9;
   else if(found<18)maxNum=12;
-  else if(found<30)maxNum=15;
-  else maxNum=20;
+  else if(found<35)maxNum=20;
+  else maxNum=30;
   return{size,maxNum,ops,level:lvl};
 }
 
@@ -840,7 +840,13 @@ async function checkEquationTap(){
   const diff=difficultyFor(foundCount);
   const result=checkEquation(vals[0],vals[1],vals[2],diff.ops);
   if(result){await handleCorrect(result,sorted);}
-  else{selected=[];renderGame();updateEqDisplay();flashBg('bad');streak=0;renderGame();}
+  else{
+    selected=[];renderGame();updateEqDisplay();flashBg('bad');streak=0;renderGame();
+    timer=Math.max(0,timer-5);
+    updateTimerUI();
+    showToast('Wrong guess −5s');
+    if(timer<=0){stopTimer();gameOver();}
+  }
 }
 
 function flashBg(type){const el=$('flash');el.className='flash-overlay';void el.offsetWidth;el.className=`flash-overlay flash-${type}`;}
