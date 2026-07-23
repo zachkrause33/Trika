@@ -190,6 +190,11 @@
   .summary .stat .l{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--ink-soft);letter-spacing:0.15em;text-transform:uppercase;}
   .modal-buttons{display:flex;gap:8px;margin-bottom:10px;}
   .modal-buttons button{flex:1;padding:16px;font-size:14px;border-radius:14px;font-family:'Inter',sans-serif;font-weight:800;cursor:pointer;border:none;transition:all 0.2s;}
+  .social-row{display:flex;gap:8px;margin-bottom:10px;}
+  .social-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;border-radius:12px;color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;transition:all 0.2s;}
+  .social-btn:active{transform:scale(0.97);}
+  .social-btn.discord{background:#5865f2;}
+  .social-btn.reddit{background:#FF4500;}
   .eq-was{background:var(--bg);border-radius:10px;padding:10px 14px;margin-bottom:14px;text-align:center;}
   .eq-was .label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:4px;}
   .eq-was .eq{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:18px;color:var(--good);}
@@ -398,9 +403,15 @@
     <div class="modal-buttons">
       <button class="secondary" id="btn-share-result" style="background:var(--bg-deep);">📤 Share</button>
       <button class="primary" id="btn-again">Play again</button>
-      <a href="https://discord.gg/H6awaHFRY" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;border-radius:12px;background:#5865f2;color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;margin-top:2px;">
+    </div>
+    <div class="social-row">
+      <a class="social-btn discord" href="https://discord.gg/H6awaHFRY" target="_blank" rel="noopener">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028z"/></svg>
-        Share on Discord
+        Discord
+      </a>
+      <a class="social-btn reddit" href="https://www.reddit.com/r/Play_Trika/" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 3.314 1.343 6.314 3.515 8.485l-2.286 2.286C.775 23.225 1.097 24 1.738 24H12c6.627 0 12-5.373 12-12S18.627 0 12 0Zm4.388 3.199c1.104 0 1.999.895 1.999 1.999 0 1.105-.895 2-1.999 2-.946 0-1.739-.657-1.947-1.539v.002c-1.147.162-2.032 1.15-2.032 2.341v.007c1.776.067 3.4.567 4.686 1.363.473-.363 1.064-.58 1.707-.58 1.547 0 2.802 1.254 2.802 2.802 0 1.117-.655 2.081-1.601 2.531-.088 3.256-3.637 5.876-7.997 5.876-4.361 0-7.905-2.617-7.998-5.87-.954-.447-1.614-1.415-1.614-2.538 0-1.548 1.255-2.802 2.803-2.802.645 0 1.239.218 1.712.585 1.275-.79 2.881-1.291 4.64-1.365v-.01c0-1.663 1.263-3.034 2.88-3.207.188-.911.993-1.595 1.959-1.595Zm-8.085 8.376c-.784 0-1.459.78-1.506 1.797-.047 1.016.64 1.429 1.426 1.429.786 0 1.371-.369 1.418-1.385.047-1.017-.553-1.841-1.338-1.841Zm7.406 0c-.786 0-1.385.824-1.338 1.841.047 1.017.634 1.385 1.418 1.385.785 0 1.473-.413 1.426-1.429-.046-1.017-.721-1.797-1.506-1.797Zm-3.703 4.013c-.974 0-1.907.048-2.77.135-.147.015-.241.168-.183.305.483 1.154 1.622 1.964 2.953 1.964 1.33 0 2.47-.81 2.953-1.964.057-.137-.037-.29-.184-.305-.863-.087-1.795-.135-2.769-.135Z"/></svg>
+        Reddit
       </a>
     </div>
     <button class="primary" id="btn-submit-score" style="margin-top:6px;background:linear-gradient(135deg,#7c3aed,#d946ef);box-shadow:0 4px 14px rgba(124,58,237,0.35);">Submit to all leaderboards</button>
