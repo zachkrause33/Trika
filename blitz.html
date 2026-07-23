@@ -163,6 +163,7 @@
   .other-modes-light a.oml-numbers{color:#ea580c;}
   .other-modes-light a.oml-precision{color:#0f766e;}
   .other-modes-light a.oml-survival{color:#9f1239;}
+  .other-modes-light a.oml-home{color:var(--ink-soft);}
 
   /* Leaderboard */
   .lb-modal{position:fixed;inset:0;background:rgba(254,249,240,0.97);display:flex;align-items:center;justify-content:center;z-index:280;overflow-y:auto;}
@@ -313,7 +314,7 @@
     </div>
     <div class="other-modes-light">
       <span class="oml-label">Also try</span>
-      <a href="/numbers" class="oml-numbers">Trika</a><span class="oml-dot">·</span><a href="/precision" class="oml-precision">Precision</a><span class="oml-dot">·</span><a href="/survival" class="oml-survival">Survival</a>
+      <a href="/numbers" class="oml-numbers">Trika</a><span class="oml-dot">·</span><a href="/precision" class="oml-precision">Precision</a><span class="oml-dot">·</span><a href="/survival" class="oml-survival">Survival</a><span class="oml-dot">·</span><a href="/" class="oml-home">Home</a>
     </div>
   </div>
 </div>
@@ -325,17 +326,17 @@ const OPS = ['plus','minus','mult','div'];
 const $ = id => document.getElementById(id);
 
 // Two modes, each with its own timer length, difficulty-by-boards-found
-// curve, and a separate pair of JSONBin leaderboard bins so scores never mix.
+// curve, and a separate JSONBin leaderboard bin so scores never mix.
 const MODES = {
   '1min': {
     label:'1 MIN', totalTime:60,
     maxNumFor(found){ if(found<3)return 9; if(found<6)return 12; return 20; },
-    allTimeBin:'6a3ec94df5f4af5e2935b2f9', dailyBin:'6a3ec94df5f4af5e2935b2fa',
+    allTimeBin:'6a3ec94df5f4af5e2935b2f9',
   },
   '5min': {
     label:'5 MIN', totalTime:300,
     maxNumFor(found){ if(found<5)return 9; if(found<10)return 12; if(found<16)return 20; return 30; },
-    allTimeBin:'6a622a85f5f4af5e29b69b1e', dailyBin:'6a622ac0f5f4af5e29b69cf3',
+    allTimeBin:'6a622a85f5f4af5e29b69b1e',
   },
 };
 let currentMode='1min';
@@ -607,7 +608,6 @@ let lbMode='1min';
 
 async function lbGet(id){const r=await fetch(`https://api.jsonbin.io/v3/b/${id}/latest`,{headers:{'X-Master-Key':JBKEY}});const d=await r.json();return d.record;}
 async function lbSet(id,data){await fetch(`https://api.jsonbin.io/v3/b/${id}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JBKEY},body:JSON.stringify(data)});}
-function lbDayKey(){const n=new Date(),j=new Date(n.getFullYear(),0,1).getTimezoneOffset(),l=new Date(n.getFullYear(),6,1).getTimezoneOffset(),off=n.getTimezoneOffset()<Math.max(j,l)?-7:-8,pt=new Date(n.getTime()+off*3600000);return`${pt.getUTCFullYear()}-${String(pt.getUTCMonth()+1).padStart(2,'0')}-${String(pt.getUTCDate()).padStart(2,'0')}`;}
 function lbGetName(){return localStorage.getItem('blitz-player-name')||'';}
 function lbSetName(n){localStorage.setItem('blitz-player-name',n);}
 function myRunsGet(){return JSON.parse(localStorage.getItem('blitz-my-runs')||'[]');}
@@ -651,17 +651,11 @@ async function lbLoad(){
     if(lbTab==='myruns'){
       lbRenderMyRuns();
       $('lb-status').textContent=`Your runs · ${myRunsGet().length} total`;
-    }else if(lbTab==='daily'){
-      const key=lbDayKey();
-      const data=await lbGet(modeInfo.dailyBin);
-      const scores=((data.scores||{})[key]||[]);
-      lbRenderList(scores,myName,(a,b)=>b.score-a.score,s=>`${s.score.toLocaleString()} · ${s.found}eq`);
-      $('lb-status').textContent=`Today · ${modeInfo.label} · ${scores.length} player${scores.length!==1?'s':''}`;
     }else{
       const data=await lbGet(modeInfo.allTimeBin);
       const scores=data.scores||[];
       lbRenderList(scores,myName,(a,b)=>b.score-a.score,s=>`${s.score.toLocaleString()} · ${s.found}eq`);
-      $('lb-status').textContent=`All-time · ${modeInfo.label} · ${scores.length} player${scores.length!==1?'s':''}`;
+      $('lb-status').textContent=`Leaderboard · ${modeInfo.label} · ${scores.length} player${scores.length!==1?'s':''}`;
     }
   }catch(e){$('lb-status').textContent='Could not load — try again';}
 }
@@ -684,16 +678,6 @@ async function lbSubmit(){
     if(atIdx>=0){if(entry.score>atData.scores[atIdx].score)atData.scores[atIdx]=entry;}
     else atData.scores.push(entry);
     await lbSet(modeInfo.allTimeBin,atData);
-    await new Promise(r=>setTimeout(r,350));
-    // Daily
-    const key=lbDayKey();
-    const dData=await lbGet(modeInfo.dailyBin);
-    if(!dData.scores)dData.scores={};
-    if(!dData.scores[key])dData.scores[key]=[];
-    const dIdx=dData.scores[key].findIndex(s=>s.name===name);
-    if(dIdx>=0){if(entry.score>dData.scores[key][dIdx].score)dData.scores[key][dIdx]=entry;}
-    else dData.scores[key].push(entry);
-    await lbSet(modeInfo.dailyBin,dData);
   }catch(e){ok=false;}
   if(ok){toast('✓ Submitted!');$('lb-submit-btn').textContent='✓ Submitted';}
   else{toast('Submit failed');$('lb-submit-btn').textContent='Submit my score';$('lb-submit-btn').disabled=false;}
@@ -743,8 +727,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     </div>
     <div class="lb-tabs">
       <div class="lb-tab active" data-lbtab="myruns">My Runs</div>
-      <div class="lb-tab" data-lbtab="daily">Today</div>
-      <div class="lb-tab" data-lbtab="alltime">All-Time</div>
+      <div class="lb-tab" data-lbtab="alltime">Leaderboard</div>
     </div>
     <div class="lb-status" id="lb-status">Loading...</div>
     <div class="lb-list" id="lb-list"></div>
