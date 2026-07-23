@@ -23,60 +23,60 @@
   .app{max-width:440px;margin:0 auto;height:100svh;display:flex;flex-direction:column;padding:20px 16px 24px;}
 
   .hub-header{text-align:center;margin-bottom:12px;flex-shrink:0;}
-  .hub-dots{display:flex;gap:10px;justify-content:center;margin-bottom:8px;}
+  .hub-dots{display:flex;gap:8px;justify-content:center;margin-bottom:8px;}
   .hub-dot{width:10px;height:10px;border-radius:50%;}
   .hub-dot.orange{background:#ea580c;}
   .hub-dot.red{background:#dc2626;}
   .hub-dot.teal{background:#0f766e;}
   .hub-dot.dark{background:#7c3aed;}
-  .hub-title{font-family:'Fraunces',serif;font-weight:700;font-size:44px;line-height:1;background:linear-gradient(135deg,#ea580c,#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:2px;}
+  .hub-title{font-family:'Fraunces',serif;font-weight:700;font-size:54px;line-height:1;background:linear-gradient(135deg,#ea580c,#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:2px;}
 
   /* Social bar */
-  .discord-bar{flex-shrink:0;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;}
-  .discord-link{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:20px;background:#5865f2;color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:12px;text-decoration:none;letter-spacing:0.03em;transition:all 0.15s;}
+  .discord-bar{flex-shrink:0;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px;}
+  .discord-link{display:flex;align-items:center;gap:7px;padding:10px 22px;border-radius:20px;background:#5865f2;color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:0.03em;transition:all 0.15s;}
   .discord-link:active{transform:scale(0.96);}
   .discord-icon{width:16px;height:16px;flex-shrink:0;}
-  .reddit-link{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:20px;background:#FF4500;color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:12px;text-decoration:none;letter-spacing:0.03em;transition:all 0.15s;}
+  .reddit-link{display:flex;align-items:center;gap:7px;padding:10px 22px;border-radius:20px;background:#FF4500;color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:0.03em;transition:all 0.15s;}
   .reddit-link:active{transform:scale(0.96);}
   .reddit-icon{width:16px;height:16px;flex-shrink:0;}
 
   /* Game cards */
-  .games-list{display:flex;flex-direction:column;gap:6px;flex:1;min-height:0;}
-  .game-card{background:var(--bg-card);border:1.5px solid var(--line-soft);border-radius:16px;padding:10px 13px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.15s;text-decoration:none;flex:1;min-height:0;opacity:0.92;}
+  .games-list{display:flex;flex-direction:column;gap:8px;flex:1;min-height:0;}
+  .game-card{background:var(--bg-card);border:1.5px solid var(--line-soft);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.15s;text-decoration:none;flex:1;min-height:0;}
   .game-card:active{transform:scale(0.98);}
   .game-accent{width:5px;border-radius:3px;flex-shrink:0;align-self:stretch;}
   .game-info{flex:1;min-width:0;}
-  .game-name{font-family:'Fraunces',serif;font-weight:700;font-size:19px;line-height:1;margin-bottom:3px;}
-  .game-desc{font-family:'Inter',sans-serif;font-size:12px;color:var(--ink-soft);line-height:1.35;}
-  .game-play-btn{flex-shrink:0;padding:9px 16px;border-radius:10px;border:none;font-family:'Inter',sans-serif;font-weight:800;font-size:13px;color:#fff;cursor:pointer;transition:all 0.15s;letter-spacing:0.05em;}
+  .game-name{font-family:'Fraunces',serif;font-weight:700;font-size:20px;line-height:1;margin-bottom:4px;}
+  .game-desc{font-family:'Inter',sans-serif;font-size:13px;color:var(--ink-soft);line-height:1.35;}
+  .game-play-btn{flex-shrink:0;padding:10px 18px;border-radius:10px;border:none;font-family:'Inter',sans-serif;font-weight:800;font-size:14px;color:#fff;cursor:pointer;transition:all 0.15s;letter-spacing:0.05em;}
   .game-play-btn:active{transform:scale(0.95);}
 
   /* Color themes */
-  .card-trika{flex:2.3;position:relative;padding:30px 18px;border-width:2px;border-color:#fed7aa;background:linear-gradient(135deg,#fff7ed,#ffffff);opacity:1;}
-  .card-trika .game-accent{width:7px;background:#ea580c;}
-  .card-trika .game-name{color:#c2410c;font-size:33px;margin-bottom:5px;}
-  .card-trika .game-desc{font-size:13px;}
-  .card-trika .game-play-btn{background:#ea580c;box-shadow:0 4px 12px rgba(234,88,12,0.3);padding:17px 30px;font-size:17px;}
-  .game-badge{position:absolute;top:-8px;right:16px;background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;box-shadow:0 3px 10px rgba(234,88,12,0.4);}
+  .card-trika{flex:1.6;position:relative;padding:24px 16px;border-width:2px;border-color:#f4c09a;background:#ffffff;}
+  .card-trika .game-name{color:#c2410c;font-size:32px;margin-bottom:6px;}
+  .card-trika .game-desc{font-size:15px;}
+  .card-trika .game-play-btn{background:#ea580c;box-shadow:0 4px 14px rgba(234,88,12,0.35);padding:15px 24px;border-radius:12px;font-size:17px;}
+  .game-badge{position:absolute;top:-13px;right:14px;background:#ea580c;color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;}
 
+  .card-blitz{border-color:#f0e0e0;}
   .card-blitz .game-accent{background:#dc2626;}
-  .card-blitz .game-name{color:#b91c1c;}
+  .card-blitz .game-name{color:#b91c1c;margin-bottom:8px;}
   .card-blitz .game-play-btn{background:#dc2626;box-shadow:0 4px 12px rgba(220,38,38,0.3);}
-  .blitz-mode-toggle{display:flex;gap:6px;margin-top:6px;}
-  .blitz-mode-btn{padding:5px 10px;border-radius:8px;border:1.5px solid #dc2626;background:transparent;color:#dc2626;font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.03em;cursor:pointer;transition:all 0.15s;}
+  .blitz-mode-toggle{display:flex;gap:8px;justify-content:center;}
+  .blitz-mode-btn{padding:6px 20px;border-radius:20px;border:2px solid #dc2626;background:transparent;color:#dc2626;font-family:'Inter',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.04em;cursor:pointer;transition:all 0.15s;}
   .blitz-mode-btn.active{background:#dc2626;color:#fff;}
   .blitz-mode-btn:active{transform:scale(0.94);}
 
+  .card-precision{border-color:#c6e9e6;}
   .card-precision .game-accent{background:#0f766e;}
   .card-precision .game-name{color:#0f766e;}
   .card-precision .game-play-btn{background:#0f766e;box-shadow:0 4px 12px rgba(15,118,110,0.3);}
 
-  .card-survival{background:#ffffff;}
+  .card-survival{border-color:#ddd0f8;}
   .card-survival .game-accent{background:#7c3aed;}
   .card-survival .game-name{color:#6d28d9;}
   .card-survival .game-desc{color:#6b6558;}
-  .card-survival .game-play-btn{background:#7c3aed;box-shadow:0 4px 12px rgba(124,58,237,0.4);}
-  .card-survival{border-color:#ddd6fe;}
+  .card-survival .game-play-btn{background:#7c3aed;box-shadow:0 4px 12px rgba(124,58,237,0.3);}
 
   /* Rules sheet */
   .rules-overlay{position:fixed;inset:0;background:rgba(26,26,26,0.6);z-index:100;display:flex;align-items:flex-end;justify-content:center;}
@@ -149,7 +149,6 @@
       <div class="game-accent"></div>
       <div class="game-info">
         <div class="game-name">Trika Blitz</div>
-        <div class="game-desc">60 seconds or 5 minutes. Find as many equations as you can.</div>
         <div class="blitz-mode-toggle">
           <button type="button" class="blitz-mode-btn active" data-mode="1" onclick="event.stopPropagation();setBlitzMode('1')">1 MIN</button>
           <button type="button" class="blitz-mode-btn" data-mode="5" onclick="event.stopPropagation();setBlitzMode('5')">5 MIN</button>
