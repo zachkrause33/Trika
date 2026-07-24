@@ -10,7 +10,7 @@
 <!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.io/js/pa-r8dPXidL_Ce4WzoyxV94s.js"></script>
 <script>
-  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||};
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
 <style>
@@ -151,8 +151,8 @@
         <div class="game-desc">Find as many equations as you can.</div>
       </div>
       <div class="blitz-btns">
-        <a href="/blitz?mode=1" class="blitz-play-btn blitz-play-filled">&#9654; 1 MIN</a>
-        <a href="/blitz?mode=5" class="blitz-play-btn blitz-play-outline">&#9654; 5 MIN</a>
+        <div class="blitz-play-btn blitz-play-filled" onclick="event.stopPropagation();setBlitzMode('1');showRules('blitz')">&#9654; 1 MIN</div>
+        <div class="blitz-play-btn blitz-play-outline" onclick="event.stopPropagation();setBlitzMode('5');showRules('blitz')">&#9654; 5 MIN</div>
       </div>
     </div>
 
