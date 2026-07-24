@@ -518,11 +518,9 @@ function difficultyFor(found){
   else if(found<10){ops=['plus','minus'];lvl=2;}
   else if(found<18){ops=['plus','minus','mult'];lvl=3;}
   else{ops=['plus','minus','mult','div'];lvl=4;}
-  if(found<4)maxNum=9;
-  else if(found<10)maxNum=9;
-  else if(found<18)maxNum=12;
-  else if(found<35)maxNum=20;
-  else maxNum=30;
+  if(found<10)maxNum=9;
+  else if(found<20)maxNum=12;
+  else maxNum=20;
   return{size,maxNum,ops,level:lvl};
 }
 
