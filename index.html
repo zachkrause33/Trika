@@ -32,10 +32,14 @@
   .hub-title{font-family:'Fraunces',serif;font-weight:700;font-size:54px;line-height:1;background:linear-gradient(135deg,#ea580c,#d946ef);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:2px;}
 
   /* Social bar */
-  .social-bar{flex-shrink:0;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px;}
-  .social-bar a{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--ink-soft);text-decoration:none;opacity:0.55;transition:opacity 0.15s;}
-  .social-bar a:active{opacity:0.8;}
-  .social-sep{color:var(--line);font-size:10px;opacity:0.5;}
+  .social-bar{flex-shrink:0;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .social-bar a{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;text-decoration:none;opacity:0.45;transition:opacity 0.15s;}
+  .social-bar a:active{opacity:0.7;}
+  .social-bar .s-discord{color:#5865f2;}
+  .social-bar .s-reddit{color:#FF4500;}
+  .social-sep{color:var(--line);font-size:11px;opacity:0.4;}
+  .social-bar .s-playlin{opacity:0.5;display:flex;align-items:center;}
+  .social-bar .s-playlin img{height:22px;width:auto;}
 
   /* Game cards */
   .games-list{display:flex;flex-direction:column;gap:6px;flex:1;min-height:0;}
@@ -174,11 +178,11 @@
   </div>
 
   <div class="social-bar">
-    <a href="https://discord.gg/H6awaHFRY" target="_blank" rel="noopener">Discord</a>
+    <a class="s-discord" href="https://discord.gg/H6awaHFRY" target="_blank" rel="noopener">Discord</a>
     <span class="social-sep">&middot;</span>
-    <a href="https://www.reddit.com/r/Play_Trika/" target="_blank" rel="noopener">Reddit</a>
+    <a class="s-reddit" href="https://www.reddit.com/r/Play_Trika/" target="_blank" rel="noopener">Reddit</a>
     <span class="social-sep">&middot;</span>
-    <a href="https://playlin.io/game/trika-numbers/" target="_blank" rel="noopener">Playlin</a>
+    <a class="s-playlin" href="https://playlin.io/game/trika-numbers/" target="_blank" rel="noopener"><img src="https://cdn.playlin.io/creators/featured-dark.svg" alt="Featured on Playlin" /></a>
   </div>
 
 </div>
