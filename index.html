@@ -120,6 +120,12 @@
   @keyframes demoGlow{0%{transform:scale(1)}100%{transform:scale(1.06)}}
   .demo-eq{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;color:#16a34a;margin-top:8px;}
 </style>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ea580c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Trika">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
 </head>
 <body>
 <div class="app">
@@ -412,5 +418,6 @@ function goToGame(){
   window.location.href = GAMES[currentGame].url + '?' + gameUrlSuffix(currentGame);
 }
 </script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/service-worker.js');});}</script>
 </body>
 </html>
