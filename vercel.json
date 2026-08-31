@@ -4,5 +4,13 @@
     { "source": "/blitz", "destination": "/blitz.html" },
     { "source": "/precision", "destination": "/precision.html" },
     { "source": "/survival", "destination": "/survival.html" }
+  ],
+  "headers": [
+    {
+      "source": "/manifest.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json" }
+      ]
+    }
   ]
 }

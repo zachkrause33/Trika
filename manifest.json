@@ -1,0 +1,15 @@
+{
+  "name": "Trika",
+  "short_name": "Trika",
+  "description": "Find equations hidden in a grid of numbers. Four modes, daily leaderboards, free to play.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fef9f0",
+  "theme_color": "#ea580c",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
