@@ -644,12 +644,9 @@ if(new URLSearchParams(window.location.search).get('play')==='1'){
 // ============================================================
 // LEADERBOARD
 // ============================================================
-const JBKEY='$2a$10$yDd21niqXkaX1MiteHDKOeYbzS7AlbeZ0MFdkSy34mEi0OiEf0N7C';
-const ALLTIME_BIN='6a3ec97fda38895dfe042a5c';
 let lbTab='myruns';
 
-async function lbGet(id){const r=await fetch(`https://api.jsonbin.io/v3/b/${id}/latest`,{headers:{'X-Master-Key':JBKEY}});const d=await r.json();return d.record;}
-async function lbSet(id,data){await fetch(`https://api.jsonbin.io/v3/b/${id}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JBKEY},body:JSON.stringify(data)});}
+async function lbApi(body){const r=await fetch('/api/leaderboard',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('api error');return r.json();}
 function lbGetName(){return localStorage.getItem('precision-player-name')||'';}
 function lbSetName(n){localStorage.setItem('precision-player-name',n);}
 function myRunsGet(){return JSON.parse(localStorage.getItem('precision-my-runs')||'[]');}
@@ -690,7 +687,7 @@ async function lbLoad(){
       lbRenderMyRuns();
       $('lb-status').textContent=`Your runs · ${myRunsGet().length} total`;
     }else{
-      const data=await lbGet(ALLTIME_BIN);
+      const data=await lbApi({action:'get',game:'precision',board:'alltime'});
       const scores=data.scores||[];
       lbRenderList(scores,myName,(a,b)=>b.score-a.score,s=>`${s.score.toLocaleString()} · ${s.found}eq`);
       $('lb-status').textContent=`Leaderboard · ${scores.length} player${scores.length!==1?'s':''}`;
@@ -708,14 +705,8 @@ async function lbSubmit(){
   myRunsSave(entry);
   let ok=true;
   try{
-    // All-Time
-    const atData=await lbGet(ALLTIME_BIN);
-    if(!atData.scores)atData.scores=[];
-    const atIdx=atData.scores.findIndex(s=>s.name===name);
-    if(atIdx>=0){if(entry.score>atData.scores[atIdx].score)atData.scores[atIdx]=entry;}
-    else atData.scores.push(entry);
-    await lbSet(ALLTIME_BIN,atData);
-  }catch(e){ok=false;console.error('LB submit error:',e);}
+    await lbApi({action:'submit',game:'precision',board:'alltime',entry});
+  }catch(e){ok=false;}
   if(ok){toast('✓ Submitted!');$('lb-submit-btn').textContent='✓ Submitted';}
   else{toast('Submit failed — try again');$('lb-submit-btn').textContent='Submit my score';$('lb-submit-btn').disabled=false;}
   lbLoad();
