@@ -1,11 +1,12 @@
-const CACHE_NAME = 'trika-v1';
+const CACHE_NAME = 'trika-v2';
 const URLS_TO_CACHE = [
   '/',
   '/index.html',
   '/numbers.html',
   '/blitz.html',
   '/precision.html',
-  '/survival.html'
+  '/survival.html',
+  '/privacy.html'
 ];
 
 self.addEventListener('install', e => {
