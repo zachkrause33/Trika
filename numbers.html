@@ -469,9 +469,7 @@
 // ============================================================
 // CONSTANTS
 // ============================================================
-const JSONBIN_KEY  = '$2a$10$yDd21niqXkaX1MiteHDKOeYbzS7AlbeZ0MFdkSy34mEi0OiEf0N7C';
-const JSONBIN_BASE = 'https://api.jsonbin.io/v3';
-const ALLTIME_BIN  = '6a18407cddf5aa59f76ff039';
+const LB_API = '/api/leaderboard';
 const FREE_STORE_KEY = 'sum-game-v1';
 const START_TIME = 30;
 const MAX_TIME   = 40;
@@ -486,20 +484,10 @@ function showToast(msg){const el=$('toast');el.textContent=msg;el.classList.remo
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 function rnd(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
 
-async function jsonbinGet(id){
-  const r=await fetch(`${JSONBIN_BASE}/b/${id}/latest`,{headers:{'X-Master-Key':JSONBIN_KEY,'X-Bin-Meta':'false'}});
-  if(!r.ok) throw new Error('get failed');
-  return await r.json();
-}
-async function jsonbinUpdate(id,data){
-  const r=await fetch(`${JSONBIN_BASE}/b/${id}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},body:JSON.stringify(data)});
-  if(!r.ok) throw new Error('update failed');
-  return await r.json();
-}
-async function jsonbinCreate(name,data){
-  const r=await fetch(`${JSONBIN_BASE}/b`,{method:'POST',headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY,'X-Bin-Name':name,'X-Bin-Private':'false'},body:JSON.stringify(data)});
-  if(!r.ok) throw new Error('create failed');
-  const d=await r.json();return d.metadata.id;
+async function lbApi(body){
+  const r=await fetch(LB_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok) throw new Error('api error');
+  return r.json();
 }
 
 function getPlayerName(){return localStorage.getItem('trika-player-name-free')||'';}
@@ -1078,7 +1066,7 @@ async function loadAllTime(){
   $('lb-alltime-status').textContent='Loading...';
   $('lb-list-alltime').innerHTML='';
   try{
-    const data=await jsonbinGet(ALLTIME_BIN);
+    const data=await lbApi({action:'get',game:'numbers',board:'alltime'});
     const scores=(data.scores||[]).sort((a,b)=>b.score-a.score);
     renderGlobalList('lb-list-alltime',scores,getPlayerName());
     $('lb-alltime-status').textContent=`Leaderboard · ${scores.length} player${scores.length!==1?'s':''}`;
@@ -1107,13 +1095,8 @@ async function doSubmitAll(name){
   showToast('Submitting...');
   const entry={name,score:finalStats.score,found:finalStats.found,level:finalStats.level,date:Date.now()};
   let errors=0;
-  // All-Time
   try{
-    const data=await jsonbinGet(ALLTIME_BIN);
-    const ex=data.scores.findIndex(s=>s.name===name);
-    if(ex>=0){if(entry.score>data.scores[ex].score)data.scores[ex]=entry;}
-    else data.scores.push(entry);
-    await jsonbinUpdate(ALLTIME_BIN,data);
+    await lbApi({action:'submit',game:'numbers',board:'alltime',entry});
   }catch(e){errors++;}
   if(errors===0){showToast('✓ Submitted!');if(btn){btn.textContent='✓ Submitted';btn.disabled=true;}}
   else{showToast('Submit failed — try again');if(btn){btn.textContent='Submit to leaderboard';btn.disabled=false;}}
@@ -1161,7 +1144,7 @@ async function createGroup(name){
   const code=genGroupCode();
   showToast('Creating...');
   try{
-    const binId=await jsonbinCreate(`trika-group-${code}`,{name,code,freeplay:{},alltime:[]});
+    const resp=await lbApi({action:'group_create',name,code});const binId=resp.binId;
     const ids=fGetBinIds();ids[`group-${code}`]=binId;fSaveBinIds(ids);
     fAddMyGroup({name,code,binId});
     showToast(`"${name}" created!`);
@@ -1184,8 +1167,8 @@ async function loadGroupBoard(code,tab){
   if(!binId){list.innerHTML='<div style="text-align:center;color:var(--bad);font-size:13px;padding:16px;">Board not found</div>';return;}
   list.innerHTML='<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:16px;">Loading...</div>';
   try{
-    const data=await jsonbinGet(binId);
-    const today=pacificDayKey();
+    const data=await lbApi({action:'group_get',binId});
+    const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles'}).format(new Date());
     let scores=[];
     if(tab==='freeplay'){scores=((data.freeplay&&data.freeplay[today])||[]).sort((a,b)=>b.score-a.score);}
     else{scores=(data.alltime||[]).sort((a,b)=>b.score-a.score);}
@@ -1208,20 +1191,7 @@ async function submitToGroup(code,entry,tab='freeplay',silent=false){
   const ids=fGetBinIds();const binId=ids[`group-${code}`];
   if(!binId)return;
   try{
-    const data=await jsonbinGet(binId);
-    const today=pacificDayKey();
-    if(tab==='freeplay'){
-      if(!data.freeplay)data.freeplay={};
-      if(!data.freeplay[today])data.freeplay[today]=[];
-      const fi=data.freeplay[today].findIndex(s=>s.name===entry.name);
-      if(fi>=0){if(entry.score>data.freeplay[today][fi].score)data.freeplay[today][fi]=entry;else if(silent)return;}
-      else data.freeplay[today].push(entry);
-      if(!data.alltime)data.alltime=[];
-      const ai=data.alltime.findIndex(s=>s.name===entry.name);
-      if(ai>=0){if(entry.score>data.alltime[ai].score)data.alltime[ai]=entry;}
-      else data.alltime.push(entry);
-    }
-    await jsonbinUpdate(binId,data);
+    await lbApi({action:'group_submit',binId,entry});
     if(!silent){showToast('Score submitted!');loadGroupBoard(code,lbGroupSubTab);}
   }catch(e){if(!silent)showToast('Submit failed — try again');}
 }
@@ -1254,7 +1224,7 @@ function checkDeepLink(){
   if(binId){const ids=fGetBinIds();if(!ids[`group-${joinCode.toUpperCase()}`]){ids[`group-${joinCode.toUpperCase()}`]=binId;fSaveBinIds(ids);}}
   const ids=fGetBinIds();const resolvedBinId=ids[`group-${joinCode.toUpperCase()}`];
   if(!resolvedBinId){showToast('Board not found — ask creator to reshare');return;}
-  jsonbinGet(resolvedBinId).then(data=>{
+  lbApi({action:'group_get',binId:resolvedBinId}).then(data=>{
     fAddMyGroup({name:data.name,code:data.code,binId:resolvedBinId});
     setTimeout(()=>showToast(`Joined "${data.name}"! Play a game to submit your score.`),800);
   }).catch(()=>showToast('Could not join board — try again'));
